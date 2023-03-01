@@ -90,7 +90,7 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>csuoee__Noncredit_ID__c</field>
+            <field>Noncredit_ID__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.Noncredit_ID__c</elementReference>

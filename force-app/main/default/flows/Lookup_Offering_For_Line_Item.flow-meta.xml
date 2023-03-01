@@ -44,7 +44,7 @@
         </outputAssignments>
         <outputAssignments>
             <assignToReference>$Record.Requires_LMS_Fulfillment__c</assignToReference>
-            <field>csuoee__Requires_Canvas__c</field>
+            <field>Requires_Canvas__c</field>
         </outputAssignments>
     </recordLookups>
     <start>
