@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requires_LMS_Fulfillment__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>True if an enrollment requires LMS updates (Canvas).</description>
+    <externalId>false</externalId>
+    <inlineHelpText>True if an enrollment requires LMS updates (Canvas).</inlineHelpText>
+    <label>Requires LMS Fulfillment</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

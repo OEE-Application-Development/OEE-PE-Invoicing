@@ -7,6 +7,7 @@ project:
         api_version: '57.0'
     dependencies:
         - github: 'https://github.com/SalesforceFoundation/EDA'
+        - github: 'https://github.com/OEE-Application-Development/OEE-PE-Unlocked'
     git:
         default_branch: 'main'
     source_format: sfdx

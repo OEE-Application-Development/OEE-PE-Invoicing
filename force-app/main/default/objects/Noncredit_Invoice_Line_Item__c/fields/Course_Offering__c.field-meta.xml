@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Course_Offering__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The course offering that this payment was made against.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The course offering that this payment was made against.</inlineHelpText>
+    <label>Course Offering</label>
+    <referenceTo>hed__Course_Offering__c</referenceTo>
+    <relationshipLabel>Noncredit Invoice Line Items</relationshipLabel>
+    <relationshipName>Noncredit_Invoice_Line_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

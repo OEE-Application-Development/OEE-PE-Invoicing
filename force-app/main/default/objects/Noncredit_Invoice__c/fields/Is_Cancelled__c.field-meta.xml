@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Cancelled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set true if this invoice should be ignored e.g. is a duplicate or something.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Set true if this invoice should be ignored e.g. is a duplicate or something.</inlineHelpText>
+    <label>Is Cancelled</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

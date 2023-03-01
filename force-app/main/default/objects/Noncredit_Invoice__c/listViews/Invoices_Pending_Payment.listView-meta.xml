@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invoices_Pending_Payment</fullName>
+    <columns>NAME</columns>
+    <columns>Invoice_Number__c</columns>
+    <columns>Registration_Id__c</columns>
+    <columns>Payer_Account__c</columns>
+    <columns>Noncredit_ID__c</columns>
+    <columns>Total_Amount__c</columns>
+    <columns>Total_Paid__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Is_Paid__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Is_Cancelled__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Invoices Pending Payment</label>
+</ListView>
