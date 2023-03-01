@@ -1,1 +1,28 @@
-{"packageDirectories": [{"path": "force-app", "default": true}], "namespace": "csuoee", "sourceApiVersion": "57.0"}
+{
+    "packageDirectories": [
+        {
+            "package": "OEE-PE-Invoicing",
+            "versionNumber": "0.1.0.NEXT",
+            "path": "force-app", 
+            "definitionFile": "orgs/release.json",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "04t1R0000016bHcQAI"
+                },
+                {
+                    "package": "04tDn000000zGhHIAU"
+                },
+                {
+                    "package": "04t5b000002BQYIAA4"
+                },
+                {
+                    "package": "04t5b000002BQZ6AAO"
+                }
+            ]
+        }
+    ], 
+    "name": "OEE-PE-Invoicing",
+    "namespace": "csuoee", 
+    "sourceApiVersion": "57.0"
+}
