@@ -1,0 +1,28 @@
+minimum_cumulusci_version: '3.73.0'
+project:
+    name: OEE-PE-Invoicing
+    package:
+        name: OEE-PE-Invoicing
+        namespace: csuoee
+        api_version: '57.0'
+    dependencies:
+        - github: 'https://github.com/SalesforceFoundation/EDA'
+    git:
+        default_branch: 'main'
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/OEE-PE-Invoicing/tests
+            options:
+                outputdir: robot/OEE-PE-Invoicing/results
+
+    robot_testdoc:
+        options:
+            path: robot/OEE-PE-Invoicing/tests
+            output: robot/OEE-PE-Invoicing/doc/OEE-PE-Invoicing_tests.html
+
+    run_tests:
+        options:
+            required_org_code_coverage_percent: 75
