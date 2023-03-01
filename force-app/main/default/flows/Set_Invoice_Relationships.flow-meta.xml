@@ -18,7 +18,7 @@
             <name>Contact_Not_Set</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Contact__c</leftValueReference>
+                <leftValueReference>$Record.csuoee__Contact__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
