@@ -74,7 +74,7 @@
             <field>Noncredit_ID__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.csuoee__User_Id__c</elementReference>
+                <elementReference>$Record.User_Id__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -95,7 +95,7 @@
             <field>Section_Reference__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.csuoee__Section_Reference__c</elementReference>
+                <elementReference>$Record.Section_Reference__c</elementReference>
             </value>
         </filters>
         <filters>
@@ -138,7 +138,7 @@
         <connector>
             <targetReference>Lookup_Invoice_Candidates</targetReference>
         </connector>
-        <object>csuoee__Confirmation_Publish__e</object>
+        <object>Confirmation_Publish__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
     <status>Active</status>

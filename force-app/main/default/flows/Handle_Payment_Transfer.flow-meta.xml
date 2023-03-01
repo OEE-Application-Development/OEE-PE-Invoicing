@@ -14,7 +14,7 @@
             <name>Credit</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Is_Credit__c</leftValueReference>
+                <leftValueReference>$Record.csuoee__Is_Credit__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -32,7 +32,7 @@
         <description>Makes sure a debit amount is negative.</description>
         <name>MakeDebitNegative</name>
         <dataType>Number</dataType>
-        <expression>-1*ABS({!$Record.Amount__c})</expression>
+        <expression>-1*ABS({!$Record.csuoee__Amount__c})</expression>
         <scale>2</scale>
     </formulas>
     <interviewLabel>Handle Payment Transfer {!$Flow.CurrentDateTime}</interviewLabel>
