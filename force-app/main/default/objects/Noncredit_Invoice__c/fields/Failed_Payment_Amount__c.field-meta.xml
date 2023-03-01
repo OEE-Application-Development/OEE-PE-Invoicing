@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Failed_Payment_Amount__c</fullName>
+    <description>The sum of payments made that were declined / failed to process.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The sum of payments made that were declined / failed to process.</inlineHelpText>
+    <label>Failed Payment Amount</label>
+    <summarizedField>Noncredit_Invoice_Payment__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        <field>Noncredit_Invoice_Payment__c.Successful__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Noncredit_Invoice_Payment__c.Noncredit_Invoice__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

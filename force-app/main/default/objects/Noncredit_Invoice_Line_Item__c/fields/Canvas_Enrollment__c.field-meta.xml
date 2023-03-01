@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Canvas_Enrollment__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Canvas Enrollment</description>
+    <externalId>false</externalId>
+    <label>Canvas Enrollment</label>
+    <referenceTo>lms_hed__LMS_Course_Enrollment__c</referenceTo>
+    <relationshipLabel>Noncredit Invoice Line Items</relationshipLabel>
+    <relationshipName>Noncredit_Invoice_Line_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

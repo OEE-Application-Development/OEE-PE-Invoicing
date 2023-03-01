@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actual_LMS_Fulfilled_Count__c</fullName>
+    <description>Count of LMS Enrollments that are fulfilled.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Count of LMS Enrollments that are fulfilled.</inlineHelpText>
+    <label>Actual LMS Fulfilled Count</label>
+    <summaryFilterItems>
+        <field>Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Noncredit_Invoice_Line_Item__c.Noncredit_Invoice__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

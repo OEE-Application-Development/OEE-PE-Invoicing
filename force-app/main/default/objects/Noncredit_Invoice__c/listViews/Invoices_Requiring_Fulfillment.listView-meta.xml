@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invoices_Requiring_Fulfillment</fullName>
+    <columns>NAME</columns>
+    <columns>Invoice_Number__c</columns>
+    <columns>Registration_Id__c</columns>
+    <columns>Contact__c</columns>
+    <columns>Noncredit_ID__c</columns>
+    <columns>Total_Amount__c</columns>
+    <columns>LMS_Fulfillment_Required_Count__c</columns>
+    <columns>Actual_LMS_Fulfilled_Count__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Is_Completely_Fulfilled__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Invoices Requiring Fulfillment</label>
+</ListView>
