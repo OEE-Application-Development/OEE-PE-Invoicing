@@ -1,28 +1,33 @@
 {
-    "packageDirectories": [
+  "packageDirectories": [
+    {
+      "package": "OEE-PE-Invoicing",
+      "versionNumber": "0.2.0.NEXT",
+      "path": "force-app",
+      "definitionFile": "orgs/release.json",
+      "default": true,
+      "dependencies": [
         {
-            "package": "OEE-PE-Invoicing",
-            "versionNumber": "0.1.0.NEXT",
-            "path": "force-app", 
-            "definitionFile": "orgs/release.json",
-            "default": true,
-            "dependencies": [
-                {
-                    "package": "04t1R0000016bHcQAI"
-                },
-                {
-                    "package": "04tDn000000zGhHIAU"
-                },
-                {
-                    "package": "04t5b000002BQYIAA4"
-                },
-                {
-                    "package": "04t5b000002BQZ6AAO"
-                }
-            ]
+          "package": "04t1R0000016bHcQAI"
+        },
+        {
+          "package": "04tDn000000zGhHIAU"
+        },
+        {
+          "package": "04t5b000002BQYIAA4"
+        },
+        {
+          "package": "04t5b000002BQZ6AAO"
         }
-    ], 
-    "name": "OEE-PE-Invoicing",
-    "namespace": "csuoee", 
-    "sourceApiVersion": "57.0"
+      ]
+    }
+  ],
+  "name": "OEE-PE-Invoicing",
+  "namespace": "csuoee",
+  "packageAliases": {
+    "OEE-PE-Invoicing": "0Ho5b000000oLmaCAE",
+    "OEE-PE-Invoicing@0.1.0-2": "04t5b000002BQZGAA4",
+    "OEE-PE-Invoicing@0.1.0-3": "04t5b000002BQZLAA4"
+  },
+  "sourceApiVersion": "57.0"
 }

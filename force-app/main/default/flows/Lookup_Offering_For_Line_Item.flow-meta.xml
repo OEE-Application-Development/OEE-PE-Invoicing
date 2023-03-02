@@ -39,11 +39,11 @@
         </filters>
         <object>hed__Course_Offering__c</object>
         <outputAssignments>
-            <assignToReference>$Record.Course_Offering__c</assignToReference>
+            <assignToReference>$Record.csuoee__Course_Offering__c</assignToReference>
             <field>Id</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>$Record.Requires_LMS_Fulfillment__c</assignToReference>
+            <assignToReference>$Record.csuoee__Requires_LMS_Fulfillment__c</assignToReference>
             <field>Requires_Canvas__c</field>
         </outputAssignments>
     </recordLookups>

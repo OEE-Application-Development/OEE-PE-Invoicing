@@ -75,7 +75,7 @@
         </filters>
         <object>Account</object>
         <outputAssignments>
-            <assignToReference>$Record.Payer_Account__c</assignToReference>
+            <assignToReference>$Record.csuoee__Payer_Account__c</assignToReference>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
@@ -98,11 +98,11 @@
         </filters>
         <object>Contact</object>
         <outputAssignments>
-            <assignToReference>$Record.Payer_Account__c</assignToReference>
+            <assignToReference>$Record.csuoee__Payer_Account__c</assignToReference>
             <field>AccountId</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>$Record.Contact__c</assignToReference>
+            <assignToReference>$Record.csuoee__Contact__c</assignToReference>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
