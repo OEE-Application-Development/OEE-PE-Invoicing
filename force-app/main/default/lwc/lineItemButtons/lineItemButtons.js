@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineItem";
 import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
 import modalConfirm from "c/modalConfirm";
-import CloseActionScreenEvent from 'lightning/actions';
+import modalAlert from "c/modalAlert";
 
 export default class LineItemButtons extends LightningElement {
 
@@ -16,10 +16,16 @@ export default class LineItemButtons extends LightningElement {
             if(result) {
                 confirmLineItem({lineItemId: this.recordId})
                 .then((result) => {
-                    this.dispatchEvent(new CloseActionScreenEvent());
+                    modalAlert.open({
+                        title: 'Confirmation Sent',
+                        content: 'Confirmation Sent! Please close this tab; the update will come through shortly.'
+                    });
                 })
                 .catch((error) => {
-                    
+                    modalAlert.open({
+                        title: 'Confirmation Error',
+                        content: 'Send failure! If this issue persists, please contact IT.'
+                    });
                 });
             }
         });
@@ -33,10 +39,16 @@ export default class LineItemButtons extends LightningElement {
             if(result) {
                 voidLineItem({lineItemId: this.recordId})
                 .then((result) => {
-                    this.dispatchEvent(new CloseActionScreenEvent());
+                    modalAlert.open({
+                        title: 'Void Sent',
+                        content: 'Void Sent! Please close this tab; the update will come through shortly.'
+                    });
                 })
                 .catch((error) => {
-                    
+                    modalAlert.open({
+                        title: 'Void Error',
+                        content: 'Send failure! If this issue persists, please contact IT.'
+                    });
                 });
             }
         })
