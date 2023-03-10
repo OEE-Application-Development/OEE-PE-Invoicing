@@ -18,6 +18,11 @@
         </connector>
     </assignments>
     <environments>Default</environments>
+    <formulas>
+        <name>IsConfirmed</name>
+        <dataType>Boolean</dataType>
+        <expression>NOT({!$Record.csuoee__Is_Drop__c})</expression>
+    </formulas>
     <interviewLabel>Handle Section Confirmation Event {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Handle Section Confirmation Event</label>
     <loops>
@@ -105,8 +110,16 @@
                 <elementReference>InvoiceIds</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Is_Confirmed__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Is_Drop__c</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Noncredit_Invoice_Line_Item__c</object>
+        <queriedFields>Id</queriedFields>
         <sortField>CreatedDate</sortField>
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -127,7 +140,7 @@
         <inputAssignments>
             <field>Is_Confirmed__c</field>
             <value>
-                <booleanValue>true</booleanValue>
+                <elementReference>IsConfirmed</elementReference>
             </value>
         </inputAssignments>
         <object>Noncredit_Invoice_Line_Item__c</object>
