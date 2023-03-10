@@ -385,4 +385,22 @@
         </columns>
         <masterLabel>Noncredit Invoices (Payer Account)</masterLabel>
     </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Line_Item_Count__c</field>
+            <table>Account.Noncredit_Invoices__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Confirmed_Line_Item_Count__c</field>
+            <table>Account.Noncredit_Invoices__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Is_Completely_Confirmed__c</field>
+            <table>Account.Noncredit_Invoices__r</table>
+        </columns>
+        <masterLabel>Noncredit Invoices</masterLabel>
+    </sections>
 </ReportType>

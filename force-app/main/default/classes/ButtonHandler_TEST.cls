@@ -1,5 +1,43 @@
 @IsTest
-private class LineItemButtonHandler_TEST {
+private class ButtonHandler_TEST {
+
+    @IsTest
+    private static void confirmAndCancelInvoiceEmpty() {
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        Boolean result = false;
+        //Empty Confirm
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        result = InvoiceButtonHandler.confirmInvoice(invoice.Id);
+        
+        System.assert(result);
+        
+        //Empty cancel
+        result = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        Test.stopTest();
+        System.assert(result);
+    }
+
+    @IsTest
+    private static void confirmAndCancelInvoice() {
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem(invoice);
+        Boolean result = false;
+        //Empty Confirm
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+
+        //Confirm 1
+        result = InvoiceButtonHandler.confirmInvoice(invoice.Id);
+        
+        System.assert(result);
+        
+        //Cancel 1
+        result = InvoiceButtonHandler.confirmInvoice(invoice.Id);
+        Test.stopTest();
+
+        System.assert(result);
+    }
 
     @IsTest
     private static void confirmLineItem() {
@@ -25,7 +63,11 @@ private class LineItemButtonHandler_TEST {
 
     @IsTest
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem() {
-        csuoee__Noncredit_Invoice__c invoice = generateInvoice() ;
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        return generateLineItem(invoice);
+    }
+
+    private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
         csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = invoice.Id, csuoee__Noncredit_Invoice__r = invoice, csuoee__Section_Reference__c = '1111SP-AAA-222-100', csuoee__Line_Item_Amount__c = 120);
         insert lineItem;
         return lineItem;

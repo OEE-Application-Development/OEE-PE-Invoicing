@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Line_Item_Count__c</fullName>
+    <externalId>false</externalId>
+    <label>Line Item Count</label>
+    <summaryForeignKey>Noncredit_Invoice_Line_Item__c.Noncredit_Invoice__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>
