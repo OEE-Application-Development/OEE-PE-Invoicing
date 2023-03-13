@@ -33,7 +33,7 @@ private class ButtonHandler_TEST {
         System.assert(result);
         
         //Cancel 1
-        result = InvoiceButtonHandler.confirmInvoice(invoice.Id);
+        result = InvoiceButtonHandler.cancelInvoice(invoice.Id);
         Test.stopTest();
 
         System.assert(result);
