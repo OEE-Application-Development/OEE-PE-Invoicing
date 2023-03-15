@@ -1,6 +1,6 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <lightning-card title="Invoice Fulfillment Stage">
+    <lightning-card title="Invoice Fulfillment Stage" class="slds-show slds-m-bottom_small">
         <lightning-progress-indicator current-step={invoiceStep} has-error={invoiceError}>
             <lightning-progress-step label="Requires Payment" value="1"></lightning-progress-step>
             <lightning-progress-step label="Requires Confirmation" value="2"></lightning-progress-step>
@@ -8,7 +8,7 @@
             <lightning-progress-step label="Invoice Complete" value="4"></lightning-progress-step>
         </lightning-progress-indicator>
     </lightning-card>
-    <lightning-card title="Invoice">
+    <lightning-card title="Invoice" class="slds-show slds-m-bottom_small">
         <lightning-record-form 
             columns="2" 
             object-api-name="csuoee__Noncredit_Invoice__c" 
@@ -16,7 +16,7 @@
             record-id={recordId}
         ></lightning-record-form>
     </lightning-card>
-    <lightning-card title="Line Item Summary">
+    <lightning-card title="Line Item Summary" class="slds-show slds-m-bottom_small">
         <lightning-datatable
             key-field="id"
             columns={lineItemColumns}
@@ -24,7 +24,7 @@
             hide-checkbox-column="true"
         ></lightning-datatable>
     </lightning-card>
-    <lightning-card title="Payment Summary">
+    <lightning-card title="Payment Summary" class="slds-show slds-m-bottom_small">
         <lightning-datatable
             key-field="id"
             columns={paymentColumns}
