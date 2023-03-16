@@ -32,4 +32,12 @@
             hide-checkbox-column="true"
         ></lightning-datatable>
     </lightning-card>
+    <lightning-card title="Communication Summary" class="slds-show slds-m-bottom_small">
+        <lightning-datatable
+            key-field="id"
+            columns={emailColumns}
+            data={emailData}
+            hide-checkbox-column="true"
+        ></lightning-datatable>
+    </lightning-card>
 </template>

@@ -24,6 +24,10 @@ import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
 import PAYMENT_SUCCESS from '@salesforce/schema/Noncredit_Invoice_Payment__c.Successful__c';
 
+/* Email */
+import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
+import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
+
 const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL];
 export default class InvoiceSummary extends LightningElement {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
@@ -87,6 +91,32 @@ export default class InvoiceSummary extends LightningElement {
         }
     }
 
+    /* Emails */
+    emailColumns = [
+        {label: 'Subject', fieldName: EMAIL_SUBJECT.fieldApiName, type: 'text'},
+        {label: 'Has Been Opened', fieldName: EMAIL_HAS_BEEN_OPENED.fieldApiName, type: 'boolean'}
+    ];
+    emailData = [];
+    @wire(getRelatedListRecords, {
+        parentRecordId: '$recordId',
+        relatedListId: 'Emails',
+        fields: ['id', EMAIL_SUBJECT.objectApiName+'.'+EMAIL_SUBJECT.fieldApiName, EMAIL_HAS_BEEN_OPENED.objectApiName+'.'+EMAIL_HAS_BEEN_OPENED.fieldApiName]
+    })
+    relatedEmails({error, data}) {
+        if(data) {
+            var fieldData = new Array();
+            for(var i=0;i<data.records.length;i++) {
+                var recordData = data.records[i];
+                var record = {'id': recordData.id};
+                for(var j=0;j<this.emailColumns.length;j++) {
+                    var fieldName = this.emailColumns[j].fieldName;
+                    record[fieldName] = recordData.fields[fieldName].value;
+                }
+                fieldData.push(record);
+            }
+            this.emailData = emailData;
+        }
+    }
     
     /* Invoice Stage */
     get invoiceStep() {
