@@ -13,8 +13,8 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>force:detailPanel</componentName>
-                <identifier>force_detailPanel</identifier>
+                <componentName>invoiceSummary</componentName>
+                <identifier>csuoee_invoiceSummary</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>

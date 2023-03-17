@@ -23,9 +23,14 @@ private class ButtonHandler_TEST {
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
         csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem(invoice);
         Boolean result = false;
+        
         //Empty Confirm
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        
+        //Sneak the email test in there.
+        List<EmailMessage> msgs = InvoiceEmailMessageHandler.getInvoiceEmails(invoice.Id);
+        System.assert(msgs.isEmpty());
 
         //Confirm 1
         result = InvoiceButtonHandler.confirmInvoice(invoice.Id);
