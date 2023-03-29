@@ -50,6 +50,10 @@
                 <behavior>Readonly</behavior>
                 <field>Is_Fulfilled__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Line_Item_ID__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
