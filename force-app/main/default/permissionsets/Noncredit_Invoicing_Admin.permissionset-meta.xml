@@ -27,6 +27,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Line_Item_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c</field>
         <readable>true</readable>
     </fieldPermissions>
