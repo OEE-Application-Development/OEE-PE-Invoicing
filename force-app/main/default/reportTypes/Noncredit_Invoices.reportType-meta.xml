@@ -126,6 +126,11 @@
             <field>Is_Completely_Confirmed__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Actual_Total__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
         <masterLabel>Noncredit Invoices</masterLabel>
     </sections>
 </ReportType>

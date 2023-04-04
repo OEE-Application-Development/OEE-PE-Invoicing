@@ -130,6 +130,11 @@
             <field>Is_Completely_Confirmed__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Actual_Total__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
         <masterLabel>Noncredit Invoices</masterLabel>
     </sections>
     <sections>
@@ -211,6 +216,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Line_Item_ID__c</field>
+            <table>Noncredit_Invoice__c.Noncredit_Invoice_Line_Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Is_Actual__c</field>
             <table>Noncredit_Invoice__c.Noncredit_Invoice_Line_Items__r</table>
         </columns>
         <masterLabel>Noncredit Invoice Line Items</masterLabel>
