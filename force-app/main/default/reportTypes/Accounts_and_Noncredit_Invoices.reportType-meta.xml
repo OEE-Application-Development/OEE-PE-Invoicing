@@ -280,6 +280,11 @@
             <field>Unpaid_Invoices__c</field>
             <table>Account</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Total_Actual_Paid__c</field>
+            <table>Account</table>
+        </columns>
         <masterLabel>Accounts</masterLabel>
     </sections>
     <sections>
@@ -399,6 +404,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Is_Completely_Confirmed__c</field>
+            <table>Account.Noncredit_Invoices__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Actual_Total__c</field>
             <table>Account.Noncredit_Invoices__r</table>
         </columns>
         <masterLabel>Noncredit Invoices</masterLabel>

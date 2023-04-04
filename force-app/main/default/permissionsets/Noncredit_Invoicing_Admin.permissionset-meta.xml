@@ -16,6 +16,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Actual__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Is_Confirmed__c</field>
         <readable>true</readable>
@@ -52,6 +57,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Noncredit_Invoice_Payment__c.Is_Actual__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Noncredit_Invoice_Payment__c.Processor_Trans_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -68,6 +78,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice__c.Actual_LMS_Fulfilled_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Actual_Paid__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Actual_Total__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

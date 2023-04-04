@@ -74,6 +74,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Is_Actual__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Name</field>
             <value>
                 <stringValue>Credit Transfer (Sponsor)</stringValue>
