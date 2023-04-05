@@ -21,6 +21,7 @@ import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.
 
 /* Payments */
 import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
+import PAYMENT_TYPE from '@salesforce/schema/Noncredit_Invoice_Payment__c.Payment_Type__c';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
 import PAYMENT_SUCCESS from '@salesforce/schema/Noncredit_Invoice_Payment__c.Successful__c';
 
@@ -67,14 +68,15 @@ export default class InvoiceSummary extends LightningElement {
     /* Payments */
     paymentColumns = [
         {label: 'Payment', fieldName: PAYMENT_NAME.fieldApiName, type: 'text'},
+        {label: 'Payment Type', fieldName: PAYMENT_TYPE.fieldApiName, type: 'text'},
         {label: 'Successful', fieldName: PAYMENT_SUCCESS.fieldApiName, type: 'boolean'},
-        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency'}
+        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }}
     ];
     paymentData = [];
     @wire(getRelatedListRecords, {
         parentRecordId: '$recordId',
         relatedListId: 'csuoee__Payments__r',
-        fields: ['id', PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, PAYMENT_SUCCESS.objectApiName+'.'+PAYMENT_SUCCESS.fieldApiName, PAYMENT_AMOUNT.objectApiName+'.'+PAYMENT_AMOUNT.fieldApiName]
+        fields: ['id', PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, PAYMENT_TYPE.objectApiName+'.'+PAYMENT_TYPE.fieldApiName, PAYMENT_SUCCESS.objectApiName+'.'+PAYMENT_SUCCESS.fieldApiName, PAYMENT_AMOUNT.objectApiName+'.'+PAYMENT_AMOUNT.fieldApiName]
     })
     relatedPayments({error, data}) {
         if(data) {
@@ -102,8 +104,6 @@ export default class InvoiceSummary extends LightningElement {
         invoiceId: '$recordId'
     })
     relatedEmails({error, data}) {
-        console.log(error);
-        console.log(data);
         if(data) {
             this.emailData = data;
         }
