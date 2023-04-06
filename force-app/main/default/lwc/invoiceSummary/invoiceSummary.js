@@ -1,4 +1,5 @@
 import { LightningElement, api, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 
@@ -31,7 +32,7 @@ import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
 import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
 
 const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL];
-export default class InvoiceSummary extends LightningElement {
+export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
 
     @api recordId;
@@ -41,7 +42,8 @@ export default class InvoiceSummary extends LightningElement {
     /* Line Items */
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
-        {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'}
+        {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
+        {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
     @wire(getRelatedListRecords, {
@@ -56,12 +58,25 @@ export default class InvoiceSummary extends LightningElement {
                 var recordData = data.records[i];
                 var record = {'id': recordData.id};
                 for(var j=0;j<this.lineItemColumns.length;j++) {
+                    if(this.lineItemColumns[j].type == 'button')continue;
                     var fieldName = this.lineItemColumns[j].fieldName;
                     record[fieldName] = recordData.fields[fieldName].value;
                 }
                 fieldData.push(record);
             }
             this.lineItemData = fieldData;
+        }
+    }
+    handleLineItemAction(event) {
+        if(event.detail.action.name == 'reviewLineItem') {
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: {
+                    objectApiName: 'Noncredit_Invoice_Line_Item__c',
+                    actionName: 'view',
+                    recordId: event.detail.row.id
+                }
+            });
         }
     }
 
