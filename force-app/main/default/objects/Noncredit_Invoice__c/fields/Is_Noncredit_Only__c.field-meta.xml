@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Noncredit_Only__c</fullName>
+    <description>True if only noncredit line items.</description>
+    <externalId>false</externalId>
+    <formula>Credit_Line_Item_Count__c = 0</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>True if only noncredit line items.</inlineHelpText>
+    <label>Is Noncredit Only</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

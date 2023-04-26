@@ -135,6 +135,16 @@
             <field>Actual_Total__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Is_Noncredit_Only__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Has_Open_Entry__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
         <masterLabel>Noncredit Invoices</masterLabel>
     </sections>
     <sections>
@@ -221,6 +231,16 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Is_Actual__c</field>
+            <table>Noncredit_Invoice__c.Noncredit_Invoice_Line_Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Is_Credit_Line_Item__c</field>
+            <table>Noncredit_Invoice__c.Noncredit_Invoice_Line_Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Is_Open_Entry_Line_Item__c</field>
             <table>Noncredit_Invoice__c.Noncredit_Invoice_Line_Items__r</table>
         </columns>
         <masterLabel>Noncredit Invoice Line Items</masterLabel>
