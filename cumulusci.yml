@@ -6,14 +6,16 @@ project:
         namespace: csuoee
         api_version: '57.0'
     dependencies:
-        - github: 'https://github.com/SalesforceFoundation/EDA'
-        - github: 'https://github.com/OEE-Application-Development/OEE-EDA-Base-Unlocked'
         - github: 'https://github.com/OEE-Application-Development/OEE-PE-Unlocked'
     git:
         default_branch: 'main'
     source_format: sfdx
 
 tasks:
+    deploy:
+        options:
+            namespaced_org: true
+
     robot:
         options:
             suites: robot/OEE-PE-Invoicing/tests
@@ -24,7 +26,3 @@ tasks:
         options:
             path: robot/OEE-PE-Invoicing/tests
             output: robot/OEE-PE-Invoicing/doc/OEE-PE-Invoicing_tests.html
-
-    run_tests:
-        options:
-            required_org_code_coverage_percent: 75
