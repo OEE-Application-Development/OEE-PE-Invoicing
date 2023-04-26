@@ -3,6 +3,8 @@ import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 
+import paymentModal from "c/addPaymentModal";
+
 /* Invoice */
 import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
 import REGISTRATION_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Registration_Id__c';
@@ -32,6 +34,7 @@ import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
 import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
 
 const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL];
+const noPayments = ['No Payments'];
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
 
@@ -105,7 +108,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                 }
                 fieldData.push(record);
             }
-            this.paymentData = fieldData;
+            if(fieldData.length == 0)
+                this.paymentData = noPayments;
+            else
+                this.paymentData = fieldData;
         }
     }
 
@@ -156,6 +162,13 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         }
 
         return false;
+    }
+
+    runAddPayment() {
+        paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: (this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
+            .then((result) => {
+                console.log(result);
+            });
     }
 
 }

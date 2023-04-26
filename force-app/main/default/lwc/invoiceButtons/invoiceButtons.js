@@ -1,12 +1,14 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
+import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
+import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
-const fields = [IS_CONFIRMED_FIELD];
+const fields = [IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD];
 
 export default class InvoiceButtons extends LightningElement {
 
@@ -17,6 +19,10 @@ export default class InvoiceButtons extends LightningElement {
 
     get isConfirmed() {
         return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
+    }
+
+    get isUnpaid() {
+        return !getFieldValue(this.lineItem.data, IS_PAID_FIELD);
     }
 
     runConfirm() {
@@ -62,6 +68,15 @@ export default class InvoiceButtons extends LightningElement {
                     });
                 });
             }
+        })
+    }
+
+    runSendEscalation() {
+        modalConfirm.open({
+            title: 'Send Escalation',
+            content: 'Are you sure you want to send a payment escalation email to: '+getFieldValue(this.lineItem.data, CONTACT_EMAIL_FIELD)+'?'
+        }).then((result) => {
+
         })
     }
 }
