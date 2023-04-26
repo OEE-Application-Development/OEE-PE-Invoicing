@@ -21,8 +21,10 @@ import HAS_FAILED_PAYMENTS from '@salesforce/schema/Noncredit_Invoice__c.Has_Fai
 /* Line Items */
 import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Section_Reference__c';
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
+import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.csuoee__Course_Offering__r.csuoee__Canvas_Link__c';
 
 /* Payments */
+import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
 import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
 import PAYMENT_TYPE from '@salesforce/schema/Noncredit_Invoice_Payment__c.Payment_Type__c';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
@@ -34,7 +36,7 @@ import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
 import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
 
 const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL];
-const noPayments = ['No Payments'];
+const noPayments = [{'csuoee__Amount__c' : 'No Payments'}];
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
 
@@ -46,13 +48,14 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
+        {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'text'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
     @wire(getRelatedListRecords, {
         parentRecordId: '$recordId',
         relatedListId: 'csuoee__Noncredit_Invoice_Line_Items__r',
-        fields: ['id', LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName]
+        fields: ['id', LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName, LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName]
     })
     relatedLineItems({error, data}) {
         if(data) {
@@ -112,6 +115,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                 this.paymentData = noPayments;
             else
                 this.paymentData = fieldData;
+        } else {
+            this.paymentData = noPayments;
         }
     }
 
@@ -167,7 +172,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     runAddPayment() {
         paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: (this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
             .then((result) => {
-                console.log(result);
+                if(result.ok)
+                    sendPayment({invoiceId: this.invoice.data.id, paymentType: result.type, amount: result.amount, processorId: result.processorid});
             });
     }
 

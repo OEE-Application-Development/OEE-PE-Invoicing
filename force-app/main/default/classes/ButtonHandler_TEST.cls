@@ -72,6 +72,17 @@ private class ButtonHandler_TEST {
         return generateLineItem(invoice);
     }
 
+    @IsTest
+    private static void addPayment() {
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        Boolean result = InvoiceButtonHandler.addPayment(invoice.Id, 'Credit Card', 120.00, null);
+        Test.stopTest();
+
+        System.assert(result);
+    }
+
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
         csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = invoice.Id, csuoee__Noncredit_Invoice__r = invoice, csuoee__Section_Reference__c = '1111SP-AAA-222-100', csuoee__Line_Item_Amount__c = 120);
         insert lineItem;
