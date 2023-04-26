@@ -141,6 +141,11 @@
             <field>Has_Open_Entry__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Actual_Paid__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
         <masterLabel>Noncredit Invoices</masterLabel>
     </sections>
 </ReportType>
