@@ -1,6 +1,6 @@
 global with sharing class InvoiceButtonHandler {
     private static csuoee__Noncredit_Invoice__c getInvoiceById(Id invoiceId) {
-        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c from csuoee__Noncredit_Invoice_Line_Items__r) from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
+        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c from csuoee__Noncredit_Invoice_Line_Items__r) from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
     }
     
     @AuraEnabled
@@ -59,6 +59,22 @@ global with sharing class InvoiceButtonHandler {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+
+        return true;
+    }
+
+    @AuraEnabled
+    public static boolean sendEscalationEmail(Id invoiceId) {
+        csuoee__Noncredit_Invoice__c invoice = InvoiceButtonHandler.getInvoiceById(invoiceId);
+        if(invoice.csuoee__Escalation_Sent__c) throw new AuraHandledException('An escalation email has already been sent for this invoice!');
+
+        csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, csuoee__Event__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d', csuoee__Key__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d'+invoice.csuoee__Contact__c, csuoee__RelatedToId__c = invoiceId);
+        insert event;
+        
+        if(String.isBlank(event.Id)) throw new AuraHandledException('Could not send email! Possibly a duplicate...');
+
+        invoice.csuoee__Escalation_Sent__c = true;
+        update invoice;
 
         return true;
     }

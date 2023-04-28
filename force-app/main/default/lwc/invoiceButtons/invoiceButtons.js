@@ -5,6 +5,7 @@ import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
+import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscalationEmail';
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
@@ -76,7 +77,14 @@ export default class InvoiceButtons extends LightningElement {
             title: 'Send Escalation',
             content: 'Are you sure you want to send a payment escalation email to: '+getFieldValue(this.lineItem.data, CONTACT_EMAIL_FIELD)+'?'
         }).then((result) => {
+            if(result.ok) {
+                sendEscalationEmail({invoiceId: this.recordId}).then((emailResult) => {
 
+                })
+                .error(() => {
+
+                });
+            }
         })
     }
 }
