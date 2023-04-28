@@ -4,6 +4,8 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 
 import paymentModal from "c/addPaymentModal";
+import datatableHelpers from "c/datatableHelpers";
+import modalAlert from "c/modalAlert";
 
 /* Invoice */
 import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
@@ -21,7 +23,7 @@ import HAS_FAILED_PAYMENTS from '@salesforce/schema/Noncredit_Invoice__c.Has_Fai
 /* Line Items */
 import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Section_Reference__c';
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
-import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.csuoee__Course_Offering__r.csuoee__Canvas_Link__c';
+import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Course_Offering__r.Canvas_Link__c';
 
 /* Payments */
 import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
@@ -48,7 +50,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
-        {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'text'},
+        {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
@@ -59,20 +61,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedLineItems({error, data}) {
         if(data) {
-            var fieldData = new Array();
-            for(var i=0;i<data.records.length;i++) {
-                var recordData = data.records[i];
-                var record = {'id': recordData.id};
-                for(var j=0;j<this.lineItemColumns.length;j++) {
-                    if(this.lineItemColumns[j].type == 'button')continue;
-                    var fieldName = this.lineItemColumns[j].fieldName;
-                    record[fieldName] = recordData.fields[fieldName].value;
-                }
-                fieldData.push(record);
-            }
-            this.lineItemData = fieldData;
+            this.lineItemData = datatableHelpers.parseFieldData(this.lineItemColumns, data);
         }
     }
+
     handleLineItemAction(event) {
         if(event.detail.action.name == 'reviewLineItem') {
             this[NavigationMixin.Navigate]({
@@ -101,20 +93,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedPayments({error, data}) {
         if(data) {
-            var fieldData = new Array();
-            for(var i=0;i<data.records.length;i++) {
-                var recordData = data.records[i];
-                var record = {'id': recordData.id};
-                for(var j=0;j<this.paymentColumns.length;j++) {
-                    var fieldName = this.paymentColumns[j].fieldName;
-                    record[fieldName] = recordData.fields[fieldName].value;
-                }
-                fieldData.push(record);
-            }
-            if(fieldData.length == 0)
-                this.paymentData = noPayments;
-            else
-                this.paymentData = fieldData;
+            this.paymentData = datatableHelpers.parseFieldData(this.paymentColumns, data);
         } else {
             this.paymentData = noPayments;
         }
@@ -172,8 +151,15 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     runAddPayment() {
         paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: (this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
             .then((result) => {
-                if(result.ok)
-                    sendPayment({invoiceId: this.invoice.data.id, paymentType: result.type, amount: result.amount, processorId: result.processorid});
+                if(result.ok) {
+                    sendPayment({invoiceId: this.invoice.data.id, paymentType: result.type, amount: result.amount, processorId: result.processorid})
+                        .then((result) => {        
+                            modalAlert.open({
+                                title: 'Payment Sent',
+                                content: 'Payment Sent! Please close this tab; any updates will come through shortly.'
+                            });
+                        });
+                }
             });
     }
 

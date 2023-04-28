@@ -83,6 +83,22 @@ private class ButtonHandler_TEST {
         System.assert(result);
     }
 
+    @IsTest
+    private static void sendEscalationEmail() {
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+
+        boolean result = InvoiceButtonHandler.sendEscalationEmail(invoice.Id);
+        System.assert(result);
+
+        try {
+            InvoiceButtonHandler.sendEscalationEmail(invoice.Id);
+        } catch(AuraHandledException ae) {
+            result = false;
+        }
+
+        System.assert(!result);
+    }
+
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
         csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = invoice.Id, csuoee__Noncredit_Invoice__r = invoice, csuoee__Section_Reference__c = '1111SP-AAA-222-100', csuoee__Line_Item_Amount__c = 120);
         insert lineItem;

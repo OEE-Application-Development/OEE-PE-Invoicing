@@ -1,14 +1,17 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
 import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
+import IS_ESCALATION_SENT_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Escalation_Sent__c';
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
+import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscalationEmail';
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
-const fields = [IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD];
+const fields = [IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
 
 export default class InvoiceButtons extends LightningElement {
 
@@ -21,8 +24,8 @@ export default class InvoiceButtons extends LightningElement {
         return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
     }
 
-    get isUnpaid() {
-        return !getFieldValue(this.lineItem.data, IS_PAID_FIELD);
+    get isEscalationAvailable() {
+        return !getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD);
     }
 
     runConfirm() {
@@ -76,7 +79,14 @@ export default class InvoiceButtons extends LightningElement {
             title: 'Send Escalation',
             content: 'Are you sure you want to send a payment escalation email to: '+getFieldValue(this.lineItem.data, CONTACT_EMAIL_FIELD)+'?'
         }).then((result) => {
-
+            if(result) {
+                sendEscalationEmail({invoiceId: this.recordId}).then((emailResult) => {
+                    this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Escalation Sent!', variant: 'success'}));
+                })
+                .catch((error) => {
+                    this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Failed to send Escalation: '+error.body.message, variant: 'error'}));
+                });
+            }
         })
     }
 }
