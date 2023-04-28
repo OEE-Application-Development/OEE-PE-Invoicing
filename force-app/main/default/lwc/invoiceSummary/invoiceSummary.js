@@ -2,12 +2,14 @@ import { LightningElement, api, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import paymentModal from "c/addPaymentModal";
 import datatableHelpers from "c/datatableHelpers";
 import modalAlert from "c/modalAlert";
 
 /* Invoice */
+import requestInvoice from '@salesforce/apex/InvoiceButtonHandler.requestInvoice';
 import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
 import REGISTRATION_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Registration_Id__c';
 import NONCREDIT_ID from '@salesforce/schema/Noncredit_Invoice__c.Noncredit_Id__c';
@@ -152,13 +154,29 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: (this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
             .then((result) => {
                 if(result.ok) {
-                    sendPayment({invoiceId: this.invoice.data.id, paymentType: result.type, amount: result.amount, processorId: result.processorid})
-                        .then((result) => {        
-                            modalAlert.open({
-                                title: 'Payment Sent',
-                                content: 'Payment Sent! Please close this tab; any updates will come through shortly.'
+                    if(result.isSponsor) {
+                        requestInvoice({accountId: result.account, invoiceId: this.invoice.data.id, amount: result.amount})
+                            .then((result) => {
+                                modalAlert.open({
+                                    title: 'Sponsor Payment Sent',
+                                    content: 'Sponsor Payment Sent! This will take a moment to complete because we are generating a new Invoice for the sponsor. Hang tight, the invoice should appear soon!'
+                                });
+                            })
+                            .catch((error) => {
+                                this.dispatchEvent(new ShowToastEvent({title: 'Sponsor Payment Add', message: 'Failed to send Sponsor Payment: '+error.body.message, variant: 'error'}));
                             });
-                        });
+                    } else {
+                        sendPayment({invoiceId: this.invoice.data.id, paymentType: result.type, amount: result.amount, processorId: result.processorid})
+                            .then((result) => {        
+                                modalAlert.open({
+                                    title: 'Payment Sent',
+                                    content: 'Payment Sent! Please close this tab; any updates will come through shortly.'
+                                });
+                            })
+                            .catch((error) => {
+                                this.dispatchEvent(new ShowToastEvent({title: 'Payment Add', message: 'Failed to send Payment: '+error.body.message, variant: 'error'}));
+                            });
+                    }
                 }
             });
     }

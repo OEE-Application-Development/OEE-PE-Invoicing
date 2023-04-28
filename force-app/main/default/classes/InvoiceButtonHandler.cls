@@ -64,6 +64,17 @@ global with sharing class InvoiceButtonHandler {
     }
 
     @AuraEnabled
+    public static Boolean requestInvoice(Id accountId, Id invoiceId, Decimal amount){
+        csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
+        Account account = [select Id, hed__School_Code__c from Account where Id = :accountId LIMIT 1];
+
+        if(String.isBlank(account.hed__School_Code__c)) throw new AuraHandledException('User ID is not set on this Account! This user is not in Opus.');
+
+        PEInvoiceRequestEvent.createInvoiceRequest(new List<PEInvoiceRequestEvent.PEInvoiceRequest>{new PEInvoiceRequestEvent.PEInvoiceRequest(invoice.csuoee__Invoice_Number__c, amount, account.hed__School_Code__c)});
+        return true;
+    }
+
+    @AuraEnabled
     public static boolean sendEscalationEmail(Id invoiceId) {
         csuoee__Noncredit_Invoice__c invoice = InvoiceButtonHandler.getInvoiceById(invoiceId);
         if(invoice.csuoee__Escalation_Sent__c) throw new AuraHandledException('An escalation email has already been sent for this invoice!');
