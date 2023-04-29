@@ -14,7 +14,7 @@
           "package": "04tDn000000zHbVIAU"
         },
         {
-          "package": "04t5b000002BQlCAAW"
+          "package": "04t5b000002BQlRAAW"
         },
         {
           "package": "04t5b000002BQjkAAG"
@@ -48,7 +48,10 @@
     "OEE-PE-Invoicing@0.14.0-1": "04t5b000002BQjaAAG",
     "OEE-PE-Invoicing@0.14.0-2": "04t5b000002BQkEAAW",
     "OEE-PE-Invoicing@0.14.0-3": "04t5b000002BQlHAAW",
-    "OEE-PE-Invoicing@0.14.0-4": "04t5b000002BQlMAAW"
+    "OEE-PE-Invoicing@0.14.0-4": "04t5b000002BQlMAAW",
+    "OEE-PE-Invoicing@0.14.0-5": "04t5b000002BQlWAAW",
+    "OEE-PE-Invoicing@0.14.0-6": "04t5b000002BQlbAAG",
+    "OEE-PE-Invoicing@0.14.0-7": "04t5b000002BQlgAAG"
   },
   "sourceApiVersion": "57.0"
 }

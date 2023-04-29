@@ -75,6 +75,7 @@ private class ButtonHandler_TEST {
     @IsTest
     private static void addPayment() {
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        generateLineItem(invoice);
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         Boolean result = InvoiceButtonHandler.addPayment(invoice.Id, 'Credit Card', 120.00, null);
@@ -97,6 +98,19 @@ private class ButtonHandler_TEST {
         }
 
         System.assert(!result);
+    }
+
+    @IsTest
+    private static void requestInvoice() {
+        Account a = new Account(Name = 'test', hed__School_Code__c = 'test');
+        insert a;
+        csuoee__Noncredit_Invoice__c i = generateInvoice();
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        Boolean result = InvoiceButtonHandler.requestInvoice(a.Id, i.Id, 120.00);
+        Test.stopTest();
+
+        System.assert(result);
     }
 
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
