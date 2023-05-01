@@ -24,8 +24,8 @@ export default class InvoiceButtons extends LightningElement {
         return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
     }
 
-    get isEscalationAvailable() {
-        return !getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD);
+    get isEscalationNotAvailable() {
+        return (getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD));
     }
 
     runConfirm() {
