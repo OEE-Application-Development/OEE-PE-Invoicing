@@ -151,7 +151,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     }
 
     runAddPayment() {
-        paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: -1*(this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
+        paymentModal.open({size: 'small', invoiceId: this.invoice.data.id, defaultAmount: Math.abs(this.invoice.data.fields.csuoee__Total_Amount__c.value - this.invoice.data.fields.csuoee__Total_Paid__c.value)})
             .then((result) => {
                 if(result.ok) {
                     if(result.isSponsor) {
