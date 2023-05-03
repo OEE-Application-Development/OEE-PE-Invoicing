@@ -82,6 +82,7 @@ export default class InvoiceButtons extends LightningElement {
             if(result) {
                 sendEscalationEmail({invoiceId: this.recordId}).then((emailResult) => {
                     this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Escalation Sent!', variant: 'success'}));
+                    this.recordId = this.recordId;
                 })
                 .catch((error) => {
                     this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Failed to send Escalation: '+error.body.message, variant: 'error'}));
