@@ -31,7 +31,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Credit_Line_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Open_Entry_Line_Item__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -106,6 +116,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice__c.Credit_Line_Item_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Escalation_Sent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice__c.Failed_Payment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -131,6 +151,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice__c.Is_Noncredit_Only__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice__c.Is_Paid__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -152,6 +177,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice__c.Noncredit_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Open_Entry_Line_Item_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
