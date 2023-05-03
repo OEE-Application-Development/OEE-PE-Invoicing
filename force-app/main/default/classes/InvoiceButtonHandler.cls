@@ -89,7 +89,6 @@ global with sharing class InvoiceButtonHandler {
 
         Map<String, Object> inputMap = new Map<String, Object>();
         inputMap.put('MarkedInvoice', invoice);
-        inputMap.put('DelayConfiguration', csuoee.FlowDelayConfiguration.DayDelay(7));
 
         Flow.Interview.Mark_Invoice_to_Void markInvoiceFlow = new Flow.Interview.Mark_Invoice_to_Void(inputMap);
         markInvoiceFlow.start();
