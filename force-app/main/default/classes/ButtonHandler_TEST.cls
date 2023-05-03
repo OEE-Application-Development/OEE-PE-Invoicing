@@ -79,6 +79,11 @@ private class ButtonHandler_TEST {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         Boolean result = InvoiceButtonHandler.addPayment(invoice.Id, 'Credit Card', 120.00, null);
+        csuoee__Noncredit_Invoice_Payment__c payment = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = 120.00, csuoee__CSU_Trans_Id__c = '12345', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Payment', csuoee__Payment_Type__c = 'Credit Card', csuoee__Successful__c = true);
+        insert payment;
+
+        invoice = [select Id, csuoee__Is_Paid__c from csuoee__Noncredit_Invoice__c where Id = :invoice.Id LIMIT 1];
+        System.assertEquals(true, invoice.csuoee__Is_Paid__c, 'Is was not marked true: '+invoice.csuoee__Is_Paid__c);
         Test.stopTest();
 
         System.assert(result);

@@ -12,7 +12,7 @@ global with sharing class PEPaymentEvent {
     private static AzureEventIntegration.AzureEvent PaymentEvent(String invoiceNumber, String transactionType, Decimal amount, String processorTransId) {
         return new AzureEventIntegration.AzureEvent(
             'payment', 
-            'PaymentReceived', 
+            'PaymentSent', 
             'csuoee/noncredit/payment', 
             new Map<String, Object>{'provider' => (processorTransId==null)?'Opus':'Authorize.net', 'invoiceNumber' => invoiceNumber, 'typeCode' => transactionType, 'amount' => amount, 'processorTransId' => processorTransId}
         );

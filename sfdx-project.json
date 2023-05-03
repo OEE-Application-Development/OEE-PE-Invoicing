@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "package": "OEE-PE-Invoicing",
-      "versionNumber": "0.15.0.NEXT",
+      "versionNumber": "0.16.0.NEXT",
       "path": "force-app",
       "definitionFile": "orgs/release.json",
       "default": true,
@@ -14,10 +14,10 @@
           "package": "04tDn000000zHbVIAU"
         },
         {
-          "package": "04t5b000002BQlRAAW"
+          "package": "04t5b000002BQnNAAW"
         },
         {
-          "package": "04t5b000002BQjkAAG"
+          "package": "04t5b000002BQmZAAW"
         }
       ]
     }
@@ -53,7 +53,8 @@
     "OEE-PE-Invoicing@0.14.0-6": "04t5b000002BQlbAAG",
     "OEE-PE-Invoicing@0.14.0-7": "04t5b000002BQlgAAG",
     "OEE-PE-Invoicing@0.15.0-1": "04t5b000002BQlqAAG",
-    "OEE-PE-Invoicing@0.15.0-2": "04t5b000002BQlvAAG"
+    "OEE-PE-Invoicing@0.15.0-2": "04t5b000002BQlvAAG",
+    "OEE-PE-Invoicing@0.16.0-1": "04t5b000002BQnmAAG"
   },
   "sourceApiVersion": "57.0"
 }
