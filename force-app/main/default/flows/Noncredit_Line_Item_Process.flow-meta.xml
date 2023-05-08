@@ -62,7 +62,7 @@
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Start_Wait_Flow_for_Fulfillment_Timeout</targetReference>
+            <targetReference>Set_Delay_Configuration</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -103,6 +103,29 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Set_Delay_Configuration</name>
+        <label>Set Delay Configuration</label>
+        <locationX>864</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>FulfillmentDelayTimeout.delayIncrement</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Days</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>FulfillmentDelayTimeout.delayAmount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Await_Fulfillment</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <name>CanvasLMSName</name>
         <dataType>String</dataType>
@@ -337,28 +360,6 @@
         </connector>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Start_Wait_Flow_for_Fulfillment_Timeout</name>
-        <label>Start Wait Flow for Fulfillment Timeout</label>
-        <locationX>864</locationX>
-        <locationY>782</locationY>
-        <connector>
-            <targetReference>Await_Fulfillment</targetReference>
-        </connector>
-        <flowName>Wait_One_Day_Before_Cancel</flowName>
-        <inputAssignments>
-            <name>CancelIdentifier</name>
-            <value>
-                <elementReference>LineItemInProgress.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>CancelType</name>
-            <value>
-                <stringValue>Line Item Fulfillment Timeout</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>DeserializedLmsCourseEnrollment</name>
         <dataType>SObject</dataType>
@@ -366,6 +367,24 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>lms_hed__LMS_Course_Enrollment__c</objectType>
+    </variables>
+    <variables>
+        <name>FulfillmentDelayTimeout</name>
+        <apexClass>csuoee__FlowDelayConfiguration</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FulfillmentWaitStartTime</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDateTime</elementReference>
+        </value>
     </variables>
     <variables>
         <name>LineItemInProgress</name>
@@ -615,17 +634,23 @@
             <connector>
                 <targetReference>Send_Fulfillment_Missing_Error</targetReference>
             </connector>
-            <eventType>csuoee__Flow_Cancel__e</eventType>
+            <eventType>AlarmEvent</eventType>
             <inputParameters>
-                <name>csuoee__Cancel_Type__c</name>
+                <name>AlarmTime</name>
                 <value>
-                    <stringValue>Line Item Fulfillment Timeout</stringValue>
+                    <elementReference>FulfillmentWaitStartTime</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>csuoee__Cancel_Identifier__c</name>
+                <name>TimeOffset</name>
                 <value>
-                    <elementReference>LineItemInProgress.Id</elementReference>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Days</stringValue>
                 </value>
             </inputParameters>
             <label>1 Day Passed</label>
