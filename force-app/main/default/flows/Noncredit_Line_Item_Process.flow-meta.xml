@@ -26,7 +26,7 @@
         <name>Deserialize_Course_Enrollment</name>
         <label>Deserialize Course Enrollment</label>
         <locationX>446</locationX>
-        <locationY>998</locationY>
+        <locationY>890</locationY>
         <actionName>JsonDecode</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -62,7 +62,7 @@
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Set_Delay_Configuration</targetReference>
+            <targetReference>Await_Fulfillment</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -80,7 +80,7 @@
         <name>Send_Fulfillment_Missing_Error</name>
         <label>Send Fulfillment Missing Error</label>
         <locationX>1018</locationX>
-        <locationY>998</locationY>
+        <locationY>890</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -103,29 +103,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
-    <assignments>
-        <name>Set_Delay_Configuration</name>
-        <label>Set Delay Configuration</label>
-        <locationX>864</locationX>
-        <locationY>782</locationY>
-        <assignmentItems>
-            <assignToReference>FulfillmentDelayTimeout.delayIncrement</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Days</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>FulfillmentDelayTimeout.delayAmount</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Await_Fulfillment</targetReference>
-        </connector>
-    </assignments>
     <constants>
         <name>CanvasLMSName</name>
         <dataType>String</dataType>
@@ -151,7 +128,7 @@
         <name>Applies_to_this_Line_Item</name>
         <label>Applies to this Line Item?</label>
         <locationX>446</locationX>
-        <locationY>1106</locationY>
+        <locationY>998</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Await_Fulfillment</targetReference>
@@ -190,7 +167,7 @@
     <decisions>
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
-        <locationX>1161</locationX>
+        <locationX>1205</locationX>
         <locationY>566</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
@@ -212,7 +189,7 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>1656</locationX>
+        <locationX>1766</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -242,7 +219,7 @@
         <dataType>String</dataType>
         <expression>{!LineItemInProgress.Noncredit_Invoice__r.Invoice_Number__c}&amp;&apos; has a line item that requires fulfillment but has been idle for a day: &apos;&amp;{!LineItemInProgress.Section_Reference__c}</expression>
     </formulas>
-    <interviewLabel>Noncredit Line Item Process {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>Line Item for [Invoice: {!LineItemInProgress.Noncredit_Invoice__r.Invoice_Number__c}, Section: {!LineItemInProgress.Section_Reference__c}]</interviewLabel>
     <label>Noncredit Line Item Process</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -266,7 +243,7 @@
     <recordLookups>
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
-        <locationX>1161</locationX>
+        <locationX>1205</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -280,17 +257,26 @@
                 <elementReference>LineItemInProgress.Id</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Noncredit_Invoice_Line_Item__c</object>
-        <outputReference>LineItemInProgress</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Is_Fulfilled__c</queriedFields>
         <queriedFields>Requires_LMS_Fulfillment__c</queriedFields>
+        <queriedFields>Canvas_Enrollment__c</queriedFields>
+        <queriedFields>Course_Offering__c</queriedFields>
+        <queriedFields>Is_Actual__c</queriedFields>
+        <queriedFields>Is_Confirmed__c</queriedFields>
+        <queriedFields>Is_Credit_Line_Item__c</queriedFields>
+        <queriedFields>Line_Item_Amount__c</queriedFields>
+        <queriedFields>Noncredit_Invoice__c</queriedFields>
+        <queriedFields>Section_Reference__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>1062</locationX>
-        <locationY>1766</locationY>
+        <locationX>1106</locationX>
+        <locationY>1658</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -310,7 +296,7 @@
     <recordUpdates>
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
-        <locationX>1161</locationX>
+        <locationX>1205</locationX>
         <locationY>350</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
@@ -335,7 +321,7 @@
         <name>Set_Fulfilled</name>
         <label>Set Fulfilled</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1106</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -353,7 +339,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>1530</locationX>
+        <locationX>1640</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -367,14 +353,6 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>lms_hed__LMS_Course_Enrollment__c</objectType>
-    </variables>
-    <variables>
-        <name>FulfillmentDelayTimeout</name>
-        <apexClass>csuoee__FlowDelayConfiguration</apexClass>
-        <dataType>Apex</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>FulfillmentWaitStartTime</name>
@@ -419,12 +397,14 @@
         <objectType>Record_Create__e</objectType>
     </variables>
     <waits>
+        <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>1062</locationX>
+        <locationX>1106</locationX>
         <locationY>242</locationY>
         <defaultConnector>
-            <targetReference>Cancel_Line_Item</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
@@ -559,13 +539,11 @@
         </waitEvents>
     </waits>
     <waits>
+        <description>Waiting for Canvas Enrollment.</description>
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
         <locationX>864</locationX>
-        <locationY>890</locationY>
-        <defaultConnector>
-            <targetReference>Cancel_Line_Item</targetReference>
-        </defaultConnector>
+        <locationY>782</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
             <name>Fulfillment_Received</name>
@@ -585,6 +563,18 @@
                 <name>csuoee__Object_Type__c</name>
                 <value>
                     <elementReference>NoncreditLineItemType</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__IdOrExternalId1__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Noncredit_Invoice__r.Noncredit_ID__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__IdOrExternalId2__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Section_Reference__c</elementReference>
                 </value>
             </inputParameters>
             <label>Fulfillment Received</label>
