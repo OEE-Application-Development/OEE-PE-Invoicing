@@ -136,4 +136,39 @@ private class ButtonHandler_TEST {
         return invoice;
     }
 
+    @IsTest
+    private static void insertEnrollment() {
+        RecordType lmsType = [select Id from RecordType where DeveloperName = 'LMS' LIMIT 1];
+        Account canvas = new Account(RecordTypeId = lmsType.Id, Name = 'Canvas', hed__School_Code__c = 'Canvas');
+        insert canvas;
+
+        Account admin = new Account(Name = 'Administrative');
+        insert admin;
+
+        Contact c = new Contact(LastName = 'Winterrowd', AccountId = admin.Id, csuoee__Noncredit_ID__c = 'learn.1');
+        insert c;
+
+        lms_hed__LMS_Account__c acct = new lms_hed__LMS_Account__c(Name = 'Test', lms_hed__LMS__c = canvas.Id, lms_hed__Account_Owner__c = c.Id, lms_hed__LMS_External_ID__c = '12345', lms_hed__Primary_Login__c = 'testlogin');
+        insert acct;
+
+        hed__Course__c course = new hed__Course__c(Name = 'Test Course', hed__Course_ID__c = 'Test 101', hed__Account__c = admin.Id, csuoee__Course_Code__c = 'TST 101');
+        insert course;
+
+        hed__Term__c term = new hed__Term__c(Name = 'Test Term', hed__Account__c = admin.Id);
+        insert term;
+
+        lms_hed__LMS_Course_Term__c ct = new lms_hed__LMS_Course_Term__c(Name = 'TestCourse', lms_hed__Course__c = course.Id, lms_hed__LMS_Course_ID__c = '12345', lms_hed__LMS__c = canvas.Id, lms_hed__Term__c = term.Id);
+        insert ct;
+
+        hed__Course_Offering__c offering = new hed__Course_Offering__c(Name = 'Test Section', hed__Course__c = course.Id, hed__Term__c = term.Id, lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100');
+        insert offering;
+
+        Test.startTest();
+        lms_hed__LMS_Course_Enrollment__c enrollment = new lms_hed__LMS_Course_Enrollment__c(lms_hed__LMS_Account__c = acct.Id, lms_hed__LMS_Course_Term__c = ct.Id, lms_hed__Course_Offering__c = offering.Id, lms_hed__LMS_External_ID__c = '12345');
+        insert enrollment;
+        Test.stopTest();
+
+        System.assert(enrollment.Id != null);
+    }
+
 }
