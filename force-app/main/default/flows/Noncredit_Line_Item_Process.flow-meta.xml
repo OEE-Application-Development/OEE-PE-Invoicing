@@ -4,7 +4,7 @@
         <name>Aging_Invoice_Warning</name>
         <label>Aging Invoice Warning</label>
         <locationX>50</locationX>
-        <locationY>350</locationY>
+        <locationY>398</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -26,7 +26,7 @@
         <name>Deserialize_Course_Enrollment</name>
         <label>Deserialize Course Enrollment</label>
         <locationX>446</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <actionName>JsonDecode</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -58,7 +58,7 @@
         <name>Get_Canvas_Account</name>
         <label>Get Canvas Account</label>
         <locationX>864</locationX>
-        <locationY>674</locationY>
+        <locationY>758</locationY>
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -80,7 +80,7 @@
         <name>Send_Fulfillment_Missing_Error</name>
         <label>Send Fulfillment Missing Error</label>
         <locationX>1018</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -128,7 +128,7 @@
         <name>Applies_to_this_Line_Item</name>
         <label>Applies to this Line Item?</label>
         <locationX>446</locationX>
-        <locationY>998</locationY>
+        <locationY>1118</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Await_Fulfillment</targetReference>
@@ -168,7 +168,7 @@
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
         <locationX>1205</locationX>
-        <locationY>566</locationY>
+        <locationY>638</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
             <name>Fulfillment_Required</name>
@@ -190,7 +190,7 @@
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
         <locationX>1766</locationX>
-        <locationY>134</locationY>
+        <locationY>158</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
             <name>Line_Item_Available</name>
@@ -244,7 +244,7 @@
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
         <locationX>1205</locationX>
-        <locationY>458</locationY>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
@@ -276,7 +276,7 @@
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
         <locationX>1106</locationX>
-        <locationY>1658</locationY>
+        <locationY>1862</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -297,7 +297,7 @@
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
         <locationX>1205</locationX>
-        <locationY>350</locationY>
+        <locationY>398</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
         </connector>
@@ -321,7 +321,7 @@
         <name>Set_Fulfilled</name>
         <label>Set Fulfilled</label>
         <locationX>314</locationX>
-        <locationY>1106</locationY>
+        <locationY>1238</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -401,7 +401,7 @@
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
         <locationX>1106</locationX>
-        <locationY>242</locationY>
+        <locationY>278</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
@@ -543,7 +543,7 @@
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
         <locationX>864</locationX>
-        <locationY>782</locationY>
+        <locationY>878</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
             <name>Fulfillment_Received</name>
