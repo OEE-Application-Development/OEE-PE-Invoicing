@@ -3,6 +3,7 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
 import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineItem";
 import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
+import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
@@ -64,6 +65,29 @@ export default class LineItemButtons extends LightningElement {
                         title: 'Void Error',
                         content: 'Send failure! If this issue persists, please contact IT.'
                     });
+                });
+            }
+        })
+    }
+
+    runTrackLineItem() {
+        modalConfirm.open({
+            title: 'Restart Tracking',
+            content: 'If the Offering isn\'t set on this line item, restart tracking to attempt setting it and starting the tracking process.'
+        }).then((result) => {
+            if(result) {
+                trackLineItem({lineItemId: this.recordId})
+                .then((trackResult) => {
+                    modalAlert.open({
+                        title: 'Tracking Started',
+                        content: 'Previous tracking for this line item was cancelled. If a course connection was found, then this should now be confirmed... otherwise tracking restarted!'
+                    })
+                })
+                .catch((error) => {
+                    modalAlert.open({
+                        title: 'Tracking Failed',
+                        content: error.body.message
+                    })
                 });
             }
         })

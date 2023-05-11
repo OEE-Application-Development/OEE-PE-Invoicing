@@ -1,5 +1,6 @@
 <template>
     <lightning-card title="Line Item Actions">
+        <lightning-button label="Track Line Item" onclick={runTrackLineItem} disabled={isConfirmed} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Confirm Line Item" onclick={runConfirm} disabled={isConfirmed} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Void Confirmation" onclick={runVoid} disabled={isNotConfirmed} class="slds-m-left_x-small"></lightning-button>
     </lightning-card>

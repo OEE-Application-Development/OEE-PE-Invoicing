@@ -103,6 +103,19 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>NOOP</name>
+        <label>NOOP</label>
+        <locationX>2162</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>LineItemInProgress.Is_Confirmed__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
     <constants>
         <name>CanvasLMSName</name>
         <dataType>String</dataType>
@@ -189,7 +202,7 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>1766</locationX>
+        <locationX>1964</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -275,7 +288,7 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>1862</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -339,7 +352,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>1640</locationX>
+        <locationX>1838</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -400,13 +413,41 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>1106</locationX>
+        <locationX>1238</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
+        <waitEvents>
+            <name>Cancel_Tracking</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Confirmed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NOOP</targetReference>
+            </connector>
+            <eventType>csuoee__Flow_Cancel__e</eventType>
+            <inputParameters>
+                <name>csuoee__Cancel_Type__c</name>
+                <value>
+                    <stringValue>Line Item Tracking</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__Cancel_Identifier__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Id</elementReference>
+                </value>
+            </inputParameters>
+            <label>Cancel Tracking</label>
+        </waitEvents>
         <waitEvents>
             <name>Confirmation_Expired</name>
             <conditionLogic>and</conditionLogic>
