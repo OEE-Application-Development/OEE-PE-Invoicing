@@ -1,7 +1,7 @@
 global with sharing class LineItemButtonHandler {
 
     private static csuoee__Noncredit_Invoice_Line_Item__c getLineItemById(Id lineItemId) {
-        return [select Id, csuoee__Section_Reference__c, csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Actual__c, csuoee__Is_Credit_Line_Item__c, csuoee__Is_Confirmed__c, csuoee__Requires_LMS_Fulfillment__c, csuoee__Is_Fulfilled__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
+        return [select Id, csuoee__Section_Reference__c, csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Actual__c, csuoee__Is_Credit_Line_Item__c, csuoee__Is_Confirmed__c, csuoee__Requires_LMS_Fulfillment__c, csuoee__Is_Fulfilled__c, csuoee__Course_Offering__r.hed__Course__c, csuoee__Course_Offering__r.hed__Term__c, csuoee__Course_Offering__r.lms_hed__LMS_Course_Term__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
     }
 
     @AuraEnabled
@@ -84,6 +84,31 @@ global with sharing class LineItemButtonHandler {
         Map<String, Object> inputMap = new Map<String, Object>();
         inputMap.put('LineItemInProgress', li);
         Flow.Interview.createInterview('csuoee', 'Noncredit_Line_Item_Process', inputMap).start();
+    }
+
+    @AuraEnabled(cacheable = true)
+    public static Map<String, Object> getLineItemData(Id recordId){
+        if(recordId == null) return new Map<String, Object>();
+
+        csuoee__Noncredit_Invoice_Line_Item__c li = getLineItemById(recordId);
+        if(li.csuoee__Course_Offering__c == null) throw new AuraHandledException('Line Item does not have Course Offering set!');
+        if(li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c == null) throw new AuraHandledException('Invoice does not have Contact set!');
+        
+        lms_hed__LMS_Account__c lmsAccount;
+        try {
+            lmsAccount = [select Id from lms_hed__LMS_Account__c where lms_hed__Account_Owner__c = :li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c LIMIT 1];
+        } catch(Exception e) {
+            return new Map<String, Object>{'offeringId' => li.csuoee__Course_Offering__c};// No point continuing.
+        }
+
+        lms_hed__LMS_Course_Term__c lmsCourseTerm;
+            try {
+                lmsCourseTerm = [select Id from lms_hed__LMS_Course_Term__c where (Id = :li.csuoee__Course_Offering__r.lms_hed__LMS_Course_Term__c) or (lms_hed__Course__c = :li.csuoee__Course_Offering__r.hed__Course__c and lms_hed__Term__c = :li.csuoee__Course_Offering__r.hed__Term__c) LIMIT 1];
+            } catch(Exception e) {
+                return new Map<String, Object>{'offeringId' => li.csuoee__Course_Offering__c, 'lmsAccountId' => lmsAccount.Id};// No point continuing.
+            }
+
+        return new Map<String, Object>{'offeringId' => li.csuoee__Course_Offering__c, 'lmsAccountId' => lmsAccount.Id, 'lmsCourseTermId' => lmsCourseTerm.Id};
     }
     
 }

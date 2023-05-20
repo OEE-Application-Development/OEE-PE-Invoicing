@@ -1,20 +1,36 @@
 import { LightningElement, api, wire } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+
 import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineItem";
 import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
 import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
+import getLineItemData from "@salesforce/apex/LineItemButtonHandler.getLineItemData";
+
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
 const fields = [IS_CONFIRMED_FIELD];
-
 export default class LineItemButtons extends LightningElement {
 
     @api recordId;
 
     @wire(getRecord, { recordId: '$recordId', fields })
     lineItem;
+
+    @wire(getLineItemData, { recordId: '$recordId' })
+    setFields({error, data}) {
+        console.log(data);
+        if(data) {
+            if(data.offeringId)this.offeringId = data.offeringId;
+            if(data.lmsAccountId)this.lmsAccountId = data.lmsAccountId;
+            if(data.lmsCourseTermId)this.lmsCourseTermId = data.lmsCourseTermId;
+        }
+        if(error) {
+
+        }
+    }
 
     get isConfirmed() {
         return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
@@ -92,5 +108,10 @@ export default class LineItemButtons extends LightningElement {
             }
         })
     }
+
+    lmsAccountId;
+    lmsCourseTermId;
+    offeringId
+    enrollmentId;
 
 }
