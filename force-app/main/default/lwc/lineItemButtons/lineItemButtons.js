@@ -1,6 +1,9 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
+import INVOICE_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Noncredit_Invoice__c';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
 
 import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineItem";
@@ -11,8 +14,9 @@ import getLineItemData from "@salesforce/apex/LineItemButtonHandler.getLineItemD
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
-const fields = [IS_CONFIRMED_FIELD];
-export default class LineItemButtons extends LightningElement {
+const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! Line item is complete!', variant: 'success'});
+const fields = [INVOICE_FIELD, IS_CONFIRMED_FIELD];
+export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
     @api recordId;
 
@@ -112,6 +116,20 @@ export default class LineItemButtons extends LightningElement {
     lmsAccountId;
     lmsCourseTermId;
     offeringId
-    enrollmentId;
+    enrollmentId(event) {
+        console.log(event);
+        if(false) {
+            let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
+            this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: {
+                    objectApiName: 'Noncredit_Invoice__c',
+                    actionName: 'view',
+                    recordId: invoiceId
+                }
+            });
+        }
+    }
 
 }

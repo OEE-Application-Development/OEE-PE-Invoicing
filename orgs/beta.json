@@ -16,11 +16,11 @@
       "sessionSettings": {
         "forceRelogin": false
       }
-    },
-    "objectSettings": {
-      "account": {
-        "defaultRecordType": "Administrative"
-      }
+    }
+  },
+  "objectSettings": {
+    "account": {
+      "defaultRecordType": "Administrative"
     }
   }
 }
