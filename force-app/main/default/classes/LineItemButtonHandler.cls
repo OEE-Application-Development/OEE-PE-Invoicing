@@ -119,7 +119,13 @@ global with sharing class LineItemButtonHandler {
         } catch(Exception e) {
             throw new AuraHandledException('Could not find LMS Enrollment for the provided Id.');
         }
+        // Send Enrollment to Grid
         PELmsEnrollmentCompleteEvent.lmsEnrollmentComplete(new List<PELmsEnrollmentCompleteEvent.PELmsEnrollmentCompleteRequest>{new PELmsEnrollmentCompleteEvent.PELmsEnrollmentCompleteRequest(enrollment.lms_hed__LMS_External_ID__c, enrollment.lms_hed__LMS_Account__r.lms_hed__Primary_Login__c, enrollment.lms_hed__Course_Offering__r.lms_hed__LMS_Reference_Code__c, enrollment.lms_hed__Enrollment_Link__c)});
+    }
+
+    @AuraEnabled
+    public static void setLineItemEnrollment(Id lmsEnrollmentId, Id lineItemId){
+        update new csuoee__Noncredit_Invoice_Line_Item__c(Id = lineItemId, csuoee__Canvas_Enrollment__c = lmsEnrollmentId);
     }
     
 }
