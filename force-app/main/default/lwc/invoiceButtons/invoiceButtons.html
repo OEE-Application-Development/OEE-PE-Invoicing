@@ -1,5 +1,6 @@
 <template>
     <lightning-card title="Invoice Actions">
+        <lightning-button label="Send Escalation Email" onclick={runSendEscalation} disabled={isEscalationNotAvailable} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Confirm Entire Invoice" onclick={runConfirm} disabled={isConfirmed} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Cancel Invoice" onclick={runCancel} class="slds-m-left_x-small"></lightning-button>
     </lightning-card>

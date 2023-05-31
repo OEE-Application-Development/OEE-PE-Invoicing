@@ -1,0 +1,17 @@
+<template>
+    <lightning-modal-header label="Add Payment"></lightning-modal-header>    
+    <lightning-modal-body>
+        <lightning-record-edit-form object-api-name="csuoee__Noncredit_Invoice_Payment__c">
+            <lightning-input-field lwc:ref="paytype" field-name="csuoee__Payment_Type__c" onchange={updatePaymentType}></lightning-input-field>
+            <lightning-input-field lwc:ref="payamount" field-name="csuoee__Amount__c" value={defaultAmount}></lightning-input-field>
+            <lightning-input-field lwc:ref="payprocessorid" field-name="csuoee__Processor_Trans_Id__c"></lightning-input-field>
+        </lightning-record-edit-form>
+        <lightning-record-edit-form class={sponsorPaymentClass} object-api-name="csuoee__Noncredit_Invoice__c">
+            <lightning-input-field lwc:ref="paysponsor" field-name="csuoee__Payer_Account__c"></lightning-input-field>
+        </lightning-record-edit-form>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Add" onclick={handleAdd}></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-modal-footer>
+</template>

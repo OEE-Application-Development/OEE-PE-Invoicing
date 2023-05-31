@@ -1,6 +1,6 @@
 {
   "orgName": "OEE-PE-Invoicing - Beta Test Org",
-  "edition": "Developer",
+  "sourceOrg": "00D6g000002hydVEAQ",
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
@@ -16,5 +16,11 @@
       "sessionSettings": {
         "forceRelogin": false
       }
-    }  }
+    }
+  },
+  "objectSettings": {
+    "account": {
+      "defaultRecordType": "Administrative"
+    }
+  }
 }

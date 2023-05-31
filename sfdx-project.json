@@ -2,22 +2,34 @@
   "packageDirectories": [
     {
       "package": "OEE-PE-Invoicing",
-      "versionNumber": "0.14.0.NEXT",
+      "versionNumber": "0.22.0.NEXT",
       "path": "force-app",
       "definitionFile": "orgs/release.json",
       "default": true,
       "dependencies": [
         {
-          "package": "04t1R0000016bHcQAI"
+          "package": "04tHq0000016bsrIAA"
         },
         {
-          "package": "04tDn000000zHbVIAU"
+          "package": "04t4J000001tqJTQAY"
         },
         {
-          "package": "04t5b000002BQj6AAG"
+          "package": "04tDo000000tCNjIAM"
         },
         {
-          "package": "04t5b000002BQjGAAW"
+          "package": "04tDo0000008w4HIAQ"
+        },
+        {
+          "package": "04tDn000000zHxjIAE"
+        },
+        {
+          "package": "04tDn000000iY6nIAE"
+        },
+        {
+          "package": "04t5b000002BQu9AAG"
+        },
+        {
+          "package": "04t5b000002BQt1AAG"
         }
       ]
     }
@@ -45,7 +57,26 @@
     "OEE-PE-Invoicing@0.11.0-1": "04t5b000002BQgHAAW",
     "OEE-PE-Invoicing@0.12.0-1": "04t5b000002BQglAAG",
     "OEE-PE-Invoicing@0.13.0-1": "04t5b000002BQgqAAG",
-    "OEE-PE-Invoicing@0.14.0-1": "04t5b000002BQjaAAG"
+    "OEE-PE-Invoicing@0.14.0-1": "04t5b000002BQjaAAG",
+    "OEE-PE-Invoicing@0.14.0-2": "04t5b000002BQkEAAW",
+    "OEE-PE-Invoicing@0.14.0-3": "04t5b000002BQlHAAW",
+    "OEE-PE-Invoicing@0.14.0-4": "04t5b000002BQlMAAW",
+    "OEE-PE-Invoicing@0.14.0-5": "04t5b000002BQlWAAW",
+    "OEE-PE-Invoicing@0.14.0-6": "04t5b000002BQlbAAG",
+    "OEE-PE-Invoicing@0.14.0-7": "04t5b000002BQlgAAG",
+    "OEE-PE-Invoicing@0.15.0-1": "04t5b000002BQlqAAG",
+    "OEE-PE-Invoicing@0.15.0-2": "04t5b000002BQlvAAG",
+    "OEE-PE-Invoicing@0.16.0-1": "04t5b000002BQnmAAG",
+    "OEE-PE-Invoicing@0.17.0-1": "04t5b000002BQo1AAG",
+    "OEE-PE-Invoicing@0.18.0-1": "04t5b000002BQpJAAW",
+    "OEE-PE-Invoicing@0.19.0-2": "04t5b000002BQpiAAG",
+    "OEE-PE-Invoicing@0.20.0-1": "04t5b000002BQq7AAG",
+    "OEE-PE-Invoicing@0.20.0-2": "04t5b000002BQr0AAG",
+    "OEE-PE-Invoicing@0.20.0-3": "04t5b000002BQr5AAG",
+    "OEE-PE-Invoicing@0.21.0-1": "04t5b000002BQrjAAG",
+    "OEE-PE-Invoicing@0.22.0-1": "04t5b000002BQroAAG",
+    "OEE-PE-Invoicing@0.22.0-2": "04t5b000002BQrtAAG",
+    "OEE-PE-Invoicing@0.22.0-3": "04t5b000002BQuEAAW"
   },
   "sourceApiVersion": "57.0"
 }
