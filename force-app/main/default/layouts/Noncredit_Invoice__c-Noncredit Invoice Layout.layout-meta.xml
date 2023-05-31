@@ -107,6 +107,10 @@
                 <behavior>Edit</behavior>
                 <field>Escalation_Sent__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Fulfilled_Email_Sent__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

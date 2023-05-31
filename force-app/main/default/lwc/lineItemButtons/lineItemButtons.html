@@ -3,7 +3,7 @@
         <lightning-button label="Track Line Item" onclick={runTrackLineItem} disabled={isConfirmed} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Confirm Line Item" onclick={runConfirm} disabled={isConfirmed} class="slds-m-left_x-small"></lightning-button>
         <lightning-button label="Void Confirmation" onclick={runVoid} disabled={isNotConfirmed} class="slds-m-left_x-small"></lightning-button>
-        <can_hed-canvas-check-enrollment-button lms-account-id={lmsAccountId} lms-course-term-id={lmsCourseTermId} offering-id={offeringId} enrollment-id={enrollmentId} class="slds-m-left_x-small"></can_hed-canvas-check-enrollment-button>
-        <!--<lightning-button label="Test Enrollment Track" onclick={enrollmentId} class="slds-m-left_x-small"></lightning-button>-->
+        <can_hed-canvas-check-enrollment-button onenrollmentfound={handleFoundEnrollmentId} lms-account-id={lmsAccountId} lms-course-term-id={lmsCourseTermId} offering-id={offeringId} enrollment-id={enrollmentId} class="slds-m-left_x-small"></can_hed-canvas-check-enrollment-button>
+        <lightning-button label="TEST" onclick={handleRunTest} class="slds-m-left_x-small"></lightning-button>
     </lightning-card>
 </template>

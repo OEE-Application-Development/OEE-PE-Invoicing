@@ -10,11 +10,12 @@ import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineI
 import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
 import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
 import getLineItemData from "@salesforce/apex/LineItemButtonHandler.getLineItemData";
+import emitEnrollmentComplete from "@salesforce/apex/LineItemButtonHandler.emitEnrollmentComplete";
 
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
-const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! Line item is complete!', variant: 'success'});
+const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! We\'re marking this enrollment... returning to Invoice view while awaiting completion.', variant: 'success'});
 const fields = [INVOICE_FIELD, IS_CONFIRMED_FIELD];
 export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
@@ -115,20 +116,36 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
     lmsAccountId;
     lmsCourseTermId;
-    offeringId
-    enrollmentId(event) {
-        console.log(event);
-        if(false) {
+    offeringId;
+    @api enrollmentId;
+
+    handleRunTest(event) {
+        console.log(this.enrollmentId);
+        modalAlert.open({title: 'TEST', content: this.enrollmentId});
+    }
+
+    handleFoundEnrollmentId(event) {
+        this.enrollmentId = event.detail.foundId;
+        if(this.enrollmentId) {
             let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
-            this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
-            this[NavigationMixin.Navigate]({
-                type: 'standard__recordPage',
-                attributes: {
-                    objectApiName: 'Noncredit_Invoice__c',
-                    actionName: 'view',
-                    recordId: invoiceId
-                }
-            });
+            emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId})
+                .then(() => {
+                    this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
+                    this[NavigationMixin.Navigate]({
+                        type: 'standard__recordPage',
+                        attributes: {
+                            objectApiName: 'Noncredit_Invoice__c',
+                            actionName: 'view',
+                            recordId: invoiceId
+                        }
+                    });
+                })
+                .catch((error) => {
+                    modalAlert.open({
+                        title: 'Enrollment Check Failed',
+                        content: 'We found an LMS Enrollment for this line item, but could not send to grid. If this issue persists, please contact IT support.'
+                    })
+                });
         }
     }
 

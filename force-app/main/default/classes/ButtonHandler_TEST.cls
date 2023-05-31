@@ -3,6 +3,7 @@ private class ButtonHandler_TEST {
 
     @IsTest
     private static void confirmAndCancelInvoiceEmpty() {
+        generateJourneySettings();
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
         Boolean result = false;
         //Empty Confirm
@@ -139,9 +140,16 @@ private class ButtonHandler_TEST {
     }
 
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
+        generateJourneySettings();
         csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = invoice.Id, csuoee__Noncredit_Invoice__r = invoice, csuoee__Section_Reference__c = '1111SP-AAA-222-100', csuoee__Line_Item_Amount__c = 120);
         insert lineItem;
         return lineItem;
+    }
+
+    @IsTest
+    private static void generateJourneySettings() {
+        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Invoicing_Journey_API_Key__c = 'bananas', csuoee__Invoicing_Journey_Confirmation_Type__c = 'Confirmation');
+        insert settings;
     }
 
     @IsTest
@@ -169,6 +177,28 @@ private class ButtonHandler_TEST {
         Test.stopTest();
 
         System.assert(enrollment.Id != null);
+    }
+
+    @IsTest
+    private static void emitEnrollmentComplete() {
+        Account canvas = generateCanvasAccount();
+        hed__Course_Offering__c offering = generateOffering();
+        Contact c = generateContact();
+        lms_hed__LMS_Account__c acct = generateLmsAccount(c, canvas);
+        lms_hed__LMS_Course_Term__c ct = generateCourseTerm(canvas, offering.hed__Course__r, offering.hed__Term__r);
+        lms_hed__LMS_Course_Enrollment__c enrollment = new lms_hed__LMS_Course_Enrollment__c(lms_hed__LMS_Account__c = acct.Id, lms_hed__LMS_Course_Term__c = ct.Id, lms_hed__Course_Offering__c = offering.Id, lms_hed__LMS_External_ID__c = '12345');
+        insert enrollment;
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        try {
+            LineItemButtonHandler.emitEnrollmentComplete(ct.Id);
+            System.assert(false);
+        } catch(AuraHandledException e) {
+            System.assert(true);
+        }
+        LineItemButtonHandler.emitEnrollmentComplete(enrollment.Id);
+        Test.stopTest();
+        System.assert(true);
     }
 
     @IsTest
