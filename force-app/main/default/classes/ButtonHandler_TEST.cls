@@ -188,6 +188,7 @@ private class ButtonHandler_TEST {
         lms_hed__LMS_Course_Term__c ct = generateCourseTerm(canvas, offering.hed__Course__r, offering.hed__Term__r);
         lms_hed__LMS_Course_Enrollment__c enrollment = new lms_hed__LMS_Course_Enrollment__c(lms_hed__LMS_Account__c = acct.Id, lms_hed__LMS_Course_Term__c = ct.Id, lms_hed__Course_Offering__c = offering.Id, lms_hed__LMS_External_ID__c = '12345');
         insert enrollment;
+        csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem();
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         try {
@@ -197,6 +198,8 @@ private class ButtonHandler_TEST {
             System.assert(true);
         }
         LineItemButtonHandler.emitEnrollmentComplete(enrollment.Id);
+
+        LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
         Test.stopTest();
         System.assert(true);
     }

@@ -11,6 +11,7 @@ import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
 import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
 import getLineItemData from "@salesforce/apex/LineItemButtonHandler.getLineItemData";
 import emitEnrollmentComplete from "@salesforce/apex/LineItemButtonHandler.emitEnrollmentComplete";
+import setLineItemEnrollment from "@salesforce/apex/LineItemButtonHandler.setLineItemEnrollment";
 
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
@@ -123,7 +124,8 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
         this.enrollmentId = event.detail.foundId;
         if(this.enrollmentId) {
             let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
-            emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId, lineItemId: this.recordId})
+            setLineItemEnrollment({lmsEnrollmentId: this.enrollmentId, lineItemId: this.recordId});
+            emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId})
                 .then(() => {
                     this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
                     this[NavigationMixin.Navigate]({
