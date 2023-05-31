@@ -112,14 +112,20 @@ global with sharing class LineItemButtonHandler {
     }
 
     @AuraEnabled
-    public static void emitEnrollmentComplete(Id lmsEnrollmentId){
+    public static void emitEnrollmentComplete(Id lmsEnrollmentId, Id lineItemId){
         lms_hed__LMS_Course_Enrollment__c enrollment;
         try {
             enrollment = [select Id, lms_hed__LMS_Account__r.lms_hed__Primary_Login__c, lms_hed__Course_Offering__r.lms_hed__LMS_Reference_Code__c, lms_hed__LMS_External_ID__c, lms_hed__Enrollment_Link__c from lms_hed__LMS_Course_Enrollment__c where Id = :lmsEnrollmentId LIMIT 1];
         } catch(Exception e) {
             throw new AuraHandledException('Could not find LMS Enrollment for the provided Id.');
         }
+        // Send Enrollment to Grid
         PELmsEnrollmentCompleteEvent.lmsEnrollmentComplete(new List<PELmsEnrollmentCompleteEvent.PELmsEnrollmentCompleteRequest>{new PELmsEnrollmentCompleteEvent.PELmsEnrollmentCompleteRequest(enrollment.lms_hed__LMS_External_ID__c, enrollment.lms_hed__LMS_Account__r.lms_hed__Primary_Login__c, enrollment.lms_hed__Course_Offering__r.lms_hed__LMS_Reference_Code__c, enrollment.lms_hed__Enrollment_Link__c)});
+
+        // Since we already have it (by Id even!) just set it via Patch
+        if(lineItemId != null) {
+            update new csuoee__Noncredit_Invoice_Line_Item__c(Id = lineItemId, csuoee__Canvas_Enrollment__c = lmsEnrollmentId);
+        }
     }
     
 }

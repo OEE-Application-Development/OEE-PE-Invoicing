@@ -119,16 +119,11 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
     offeringId;
     @api enrollmentId;
 
-    handleRunTest(event) {
-        console.log(this.enrollmentId);
-        modalAlert.open({title: 'TEST', content: this.enrollmentId});
-    }
-
     handleFoundEnrollmentId(event) {
         this.enrollmentId = event.detail.foundId;
         if(this.enrollmentId) {
             let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
-            emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId})
+            emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId, lineItemId: this.recordId})
                 .then(() => {
                     this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
                     this[NavigationMixin.Navigate]({
