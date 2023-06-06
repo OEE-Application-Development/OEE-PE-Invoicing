@@ -3,15 +3,27 @@
     <actionCalls>
         <name>Aging_Invoice_Warning</name>
         <label>Aging Invoice Warning</label>
-        <locationX>50</locationX>
+        <locationX>314</locationX>
         <locationY>398</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
+            <name>data</name>
+            <value>
+                <elementReference>InvoiceIdDataMap</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>errorSubType</name>
+            <value>
+                <stringValue>Expiration</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>errorType</name>
             <value>
-                <stringValue>Invoice Expiring</stringValue>
+                <stringValue>Invoice</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -25,7 +37,7 @@
     <actionCalls>
         <name>Deserialize_Course_Enrollment</name>
         <label>Deserialize Course Enrollment</label>
-        <locationX>446</locationX>
+        <locationX>710</locationX>
         <locationY>998</locationY>
         <actionName>JsonDecode</actionName>
         <actionType>apex</actionType>
@@ -57,7 +69,7 @@
     <actionCalls>
         <name>Get_Canvas_Account</name>
         <label>Get Canvas Account</label>
-        <locationX>864</locationX>
+        <locationX>1128</locationX>
         <locationY>758</locationY>
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
@@ -79,7 +91,7 @@
     <actionCalls>
         <name>Send_Fulfillment_Missing_Error</name>
         <label>Send Fulfillment Missing Error</label>
-        <locationX>1018</locationX>
+        <locationX>1282</locationX>
         <locationY>998</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
@@ -89,9 +101,21 @@
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
+            <name>data</name>
+            <value>
+                <elementReference>InvoiceIdDataMap</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>errorSubType</name>
+            <value>
+                <stringValue>Fulfillment</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>errorType</name>
             <value>
-                <stringValue>Invoice Requires Fulfillment</stringValue>
+                <stringValue>Invoice</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -106,7 +130,7 @@
     <assignments>
         <name>NOOP</name>
         <label>NOOP</label>
-        <locationX>2162</locationX>
+        <locationX>50</locationX>
         <locationY>398</locationY>
         <assignmentItems>
             <assignToReference>LineItemInProgress.Is_Confirmed__c</assignToReference>
@@ -140,7 +164,7 @@
     <decisions>
         <name>Applies_to_this_Line_Item</name>
         <label>Applies to this Line Item?</label>
-        <locationX>446</locationX>
+        <locationX>710</locationX>
         <locationY>1118</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -180,7 +204,7 @@
     <decisions>
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
-        <locationX>1205</locationX>
+        <locationX>1469</locationX>
         <locationY>638</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
@@ -202,7 +226,7 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>1964</locationX>
+        <locationX>2162</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -232,6 +256,11 @@
         <dataType>String</dataType>
         <expression>{!LineItemInProgress.Noncredit_Invoice__r.Invoice_Number__c}&amp;&apos; has a line item that requires fulfillment but has been idle for a day: &apos;&amp;{!LineItemInProgress.Section_Reference__c}&amp;&apos;. Link here: &apos;&amp;LEFT({!$Api.Partner_Server_URL_570}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_570}))&amp;&apos;/lightning/r/csuoee__Noncredit_Invoice__c/&apos;&amp;{!LineItemInProgress.Noncredit_Invoice__c}&amp;&apos;/view&apos;</expression>
     </formulas>
+    <formulas>
+        <name>InvoiceIdDataMap</name>
+        <dataType>String</dataType>
+        <expression>&apos;{&quot;id&quot;: &quot;&apos;&amp;{!LineItemInProgress.Noncredit_Invoice__r.Id}&amp;&apos;&quot;, &quot;invoiceNumber&quot;: &quot;&apos;&amp;{!Refresh_Line_Item.Noncredit_Invoice__r.Invoice_Number__c}&amp;&apos;&quot;}&apos;</expression>
+    </formulas>
     <interviewLabel>Line Item for [Invoice: {!LineItemInProgress.Noncredit_Invoice__r.Invoice_Number__c}, Section: {!LineItemInProgress.Section_Reference__c}]</interviewLabel>
     <label>Noncredit Line Item Process</label>
     <processMetadataValues>
@@ -256,7 +285,7 @@
     <recordLookups>
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
-        <locationX>1205</locationX>
+        <locationX>1469</locationX>
         <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -288,7 +317,7 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>1862</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -309,7 +338,7 @@
     <recordUpdates>
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
-        <locationX>1205</locationX>
+        <locationX>1469</locationX>
         <locationY>398</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
@@ -333,7 +362,7 @@
     <recordUpdates>
         <name>Set_Fulfilled</name>
         <label>Set Fulfilled</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>1238</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -352,7 +381,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>1838</locationX>
+        <locationX>2036</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -413,7 +442,7 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -578,12 +607,41 @@
             </inputParameters>
             <label>Invoice Cancelled</label>
         </waitEvents>
+        <waitEvents>
+            <name>Step_Cancel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Confirmed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Confirm_Line_Item</targetReference>
+            </connector>
+            <eventType>csuoee__Flow_Cancel__e</eventType>
+            <inputParameters>
+                <name>csuoee__Cancel_Type__c</name>
+                <value>
+                    <stringValue>Skip Await Confirmation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__Cancel_Identifier__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Id</elementReference>
+                </value>
+            </inputParameters>
+            <label>Step Cancel</label>
+        </waitEvents>
     </waits>
     <waits>
         <description>Waiting for Canvas Enrollment.</description>
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
-        <locationX>864</locationX>
+        <locationX>1128</locationX>
         <locationY>878</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
