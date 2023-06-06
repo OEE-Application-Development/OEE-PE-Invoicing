@@ -226,7 +226,7 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>1964</locationX>
+        <locationX>2162</locationX>
         <locationY>158</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -317,7 +317,7 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>1862</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -381,7 +381,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>1838</locationX>
+        <locationX>2036</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -442,7 +442,7 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -606,6 +606,35 @@
                 </value>
             </inputParameters>
             <label>Invoice Cancelled</label>
+        </waitEvents>
+        <waitEvents>
+            <name>Step_Cancel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Confirmed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Confirm_Line_Item</targetReference>
+            </connector>
+            <eventType>csuoee__Flow_Cancel__e</eventType>
+            <inputParameters>
+                <name>csuoee__Cancel_Type__c</name>
+                <value>
+                    <stringValue>Skip Await Confirmation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__Cancel_Identifier__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Id</elementReference>
+                </value>
+            </inputParameters>
+            <label>Step Cancel</label>
         </waitEvents>
     </waits>
     <waits>

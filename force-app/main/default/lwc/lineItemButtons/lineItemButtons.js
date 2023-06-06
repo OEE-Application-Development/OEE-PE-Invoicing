@@ -18,7 +18,7 @@ import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
 const CONFIRM_NOT_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation not found!', variant: 'error'});
-const CONFIRM_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation found. We\'re marking this line item... returning to Invoice view while awaiting completion.', variant: 'success'});
+const CONFIRM_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation found. We\'re marking this line item... returning to Invoice - reload tab to see the change.', variant: 'success'});
 const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! We\'re marking this enrollment... returning to Invoice view while awaiting completion.', variant: 'success'});
 const fields = [INVOICE_FIELD, IS_CONFIRMED_FIELD];
 export default class LineItemButtons extends NavigationMixin(LightningElement) {

@@ -130,14 +130,30 @@ global with sharing class LineItemButtonHandler {
 
     @AuraEnabled
     public static boolean checkLineItemEnrollmentExists(Id lineItemId){
-        csuoee__Noncredit_Invoice_Line_Item__c li = [select Id, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Confirmed__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
+        csuoee__Noncredit_Invoice_Line_Item__c li = [select Id, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Confirmed__c, csuoee__Requires_LMS_Fulfillment__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
         hed__Course_Enrollment__c enrollment = [select Id, hed__Status__c from hed__Course_Enrollment__c where hed__Contact__c = :li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c and hed__Course_Offering__c = :li.csuoee__Course_Offering__c LIMIT 1];
         if(enrollment == null) return false;
 
         boolean isConfirmed = !('Former'.equals(enrollment.hed__Status__c));
         li.csuoee__Is_Confirmed__c = isConfirmed;
 
+        // Emit Enrollment in case Process Flow is still running.
+        if(isConfirmed) {
+            // Since it was confirmed... let's check if the line item is also enrolled!
+            if(li.csuoee__Requires_LMS_Fulfillment__c) {
+                hed__Course_Offering__c offering = [select Id, hed__Term__c, hed__Course__c from hed__Course_Offering__c where Id = :li.csuoee__Course_Offering__c LIMIT 1];
+                try {
+                    lms_hed__LMS_Course_Enrollment__c lmsEnrollment = [select Id from lms_hed__LMS_Course_Enrollment__c where lms_hed__LMS_Course_Term__r.lms_hed__Term__c = :offering.hed__Term__c and lms_hed__LMS_Course_Term__r.lms_hed__Course__c = :offering.hed__Course__c and lms_hed__LMS_Account__r.lms_hed__Account_Owner__c = :li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c LIMIT 1];
+                    li.csuoee__Canvas_Enrollment__c = lmsEnrollment.Id;
+                } catch(Exception e) {
+
+                }
+            }
+            csuoee__Flow_Cancel__e confirmSkip = new csuoee__Flow_Cancel__e(csuoee__Cancel_Type__c = 'Skip Await Confirmation', csuoee__Cancel_Identifier__c = lineItemId);
+            EventBus.publish(confirmSkip);
+        }
         update li;
+
         return isConfirmed;
     }
     
