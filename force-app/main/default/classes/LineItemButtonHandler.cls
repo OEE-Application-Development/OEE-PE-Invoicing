@@ -127,5 +127,18 @@ global with sharing class LineItemButtonHandler {
     public static void setLineItemEnrollment(Id lmsEnrollmentId, Id lineItemId){
         update new csuoee__Noncredit_Invoice_Line_Item__c(Id = lineItemId, csuoee__Canvas_Enrollment__c = lmsEnrollmentId);
     }
+
+    @AuraEnabled
+    public static boolean checkLineItemEnrollmentExists(Id lineItemId){
+        csuoee__Noncredit_Invoice_Line_Item__c li = [select Id, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Confirmed__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
+        hed__Course_Enrollment__c enrollment = [select Id, hed__Status__c from hed__Course_Enrollment__c where hed__Contact__c = :li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c and hed__Course_Offering__c = :li.csuoee__Course_Offering__c LIMIT 1];
+        if(enrollment == null) return false;
+
+        boolean isConfirmed = !('Former'.equals(enrollment.hed__Status__c));
+        li.csuoee__Is_Confirmed__c = isConfirmed;
+
+        update li;
+        return isConfirmed;
+    }
     
 }

@@ -12,10 +12,13 @@ import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem"
 import getLineItemData from "@salesforce/apex/LineItemButtonHandler.getLineItemData";
 import emitEnrollmentComplete from "@salesforce/apex/LineItemButtonHandler.emitEnrollmentComplete";
 import setLineItemEnrollment from "@salesforce/apex/LineItemButtonHandler.setLineItemEnrollment";
+import checkLineItemEnrollmentExists from "@salesforce/apex/LineItemButtonHandler.checkLineItemEnrollmentExists";
 
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
+const CONFIRM_NOT_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation not found!', variant: 'error'});
+const CONFIRM_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation found. We\'re marking this line item... returning to Invoice view while awaiting completion.', variant: 'success'});
 const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! We\'re marking this enrollment... returning to Invoice view while awaiting completion.', variant: 'success'});
 const fields = [INVOICE_FIELD, IS_CONFIRMED_FIELD];
 export default class LineItemButtons extends NavigationMixin(LightningElement) {
@@ -113,6 +116,26 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
                 });
             }
         })
+    }
+
+    handleConfirmCheck(event) {
+        checkLineItemEnrollmentExists({lineItemId: this.recordId})
+            .then((result) => {
+                if(result) {
+                    let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
+                    this.dispatchEvent(CONFIRM_FOUND_TOAST);
+                    this[NavigationMixin.Navigate]({
+                        type: 'standard__recordPage',
+                        attributes: {
+                            objectApiName: 'Noncredit_Invoice__c',
+                            actionName: 'view',
+                            recordId: invoiceId
+                        }
+                    });
+                } else {
+                    this.dispatchEvent(CONFIRM_NOT_FOUND_TOAST);
+                }
+            })
     }
 
     lmsAccountId;
