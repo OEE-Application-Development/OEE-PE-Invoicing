@@ -1,4 +1,5 @@
 trigger CSUOEE_StartLineItemProcessFlow on csuoee__Noncredit_Invoice_Line_Item__c (after insert) {
+    List<PEConfirmedEvent.PEConfirmedRequest> autoCompletedRequests = new List<PEConfirmedEvent.PEConfirmedRequest>();
     for(csuoee__Noncredit_Invoice_Line_Item__c li : (List<csuoee__Noncredit_Invoice_Line_Item__c>)Trigger.new) {
 
         if(!li.csuoee__Is_Actual__c)continue;//Don't track sponsor invoices the same way.
@@ -7,6 +8,15 @@ trigger CSUOEE_StartLineItemProcessFlow on csuoee__Noncredit_Invoice_Line_Item__
         
         Map<String, Object> inputMap = new Map<String, Object>();
         inputMap.put('LineItemInProgress', li);
+        // Start tracking it!
         Flow.Interview.createInterview('csuoee', 'Noncredit_Line_Item_Process', inputMap).start();
+
+        if(!li.csuoee__Is_Confirmed__c && li.csuoee__Is_Actual__c && li.csuoee__Line_Item_Amount__c == 0) {
+            autoCompletedRequests.add(new PEConfirmedEvent.PEConfirmedRequest(li.csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c));
+        }
+    }
+
+    if(!autoCompletedRequests.isEmpty()) {
+        PEConfirmedEvent.enrollStudent(autoCompletedRequests);
     }
 }
