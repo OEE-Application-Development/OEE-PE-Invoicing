@@ -205,6 +205,35 @@ private class ButtonHandler_TEST {
     }
 
     @IsTest
+    private static void checkLineItemEnrollmentExists() {
+        Account canvas = generateCanvasAccount();
+        hed__Course_Offering__c offering = generateOffering();
+        Contact c = generateContact();
+        lms_hed__LMS_Account__c acct = generateLmsAccount(c, canvas);
+        lms_hed__LMS_Course_Term__c ct = generateCourseTerm(canvas, offering.hed__Course__r, offering.hed__Term__r);
+        lms_hed__LMS_Course_Enrollment__c enrollment = new lms_hed__LMS_Course_Enrollment__c(lms_hed__LMS_Account__c = acct.Id, lms_hed__LMS_Course_Term__c = ct.Id, lms_hed__Course_Offering__c = offering.Id, lms_hed__LMS_External_ID__c = '12345');
+        insert enrollment;
+        csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem();
+        Test.startTest();
+        boolean result = LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
+        System.assert(!result);
+
+        csuoee__Noncredit_Invoice__c invoice = [select Id, csuoee__Contact__c from csuoee__Noncredit_Invoice__c where Id = :li.csuoee__Noncredit_Invoice__c LIMIT 1];
+        invoice.csuoee__Contact__c = c.Id;
+        update invoice;
+
+        hed__Course_Enrollment__c offeringEnrollment = new hed__Course_Enrollment__c(hed__Contact__c = c.Id, hed__Course_Offering__c = offering.Id);
+        insert offeringEnrollment;
+
+        li.csuoee__Course_Offering__c = offering.Id;
+        update li;
+
+        result = LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
+        System.assert(result);
+        Test.stopTest();
+    }
+
+    @IsTest
     private static Account generateCanvasAccount() {
         RecordType lmsType = [select Id from RecordType where DeveloperName = 'LMS' LIMIT 1];
         Account canvas = new Account(RecordTypeId = lmsType.Id, Name = 'Canvas', hed__School_Code__c = 'Canvas');
