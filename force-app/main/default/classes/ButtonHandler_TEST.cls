@@ -144,9 +144,10 @@ private class ButtonHandler_TEST {
         Account a = new Account(Name = 'test', hed__School_Code__c = 'test');
         insert a;
         csuoee__Noncredit_Invoice__c i = generateInvoice();
+        hed__Course_Offering__c offering = generateOffering();
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
-        csuoee__Noncredit_Invoice_Line_Item__c li = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = i.Id, csuoee__Line_Item_Amount__c = 0, csuoee__Section_Reference__c = '2023SP-CO-333-100', csuoee__Is_Confirmed__c = false);
+        csuoee__Noncredit_Invoice_Line_Item__c li = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = i.Id, csuoee__Line_Item_Amount__c = 0, csuoee__Section_Reference__c = offering.lms_hed__LMS_Reference_Code__c, csuoee__Course_Offering__c = offering.Id, csuoee__Is_Confirmed__c = false);
         insert li;
         Test.stopTest();
         System.assert(true);
