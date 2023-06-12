@@ -1,6 +1,8 @@
 import { LightningElement, api, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import REG_ID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Registration_Id__c';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
 import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
@@ -11,9 +13,8 @@ import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscal
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
-const fields = [IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
-
-export default class InvoiceButtons extends LightningElement {
+const fields = [REG_ID_FIELD, IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
+export default class InvoiceButtons extends NavigationMixin(LightningElement) {
 
     @api recordId;
 
@@ -90,4 +91,15 @@ export default class InvoiceButtons extends LightningElement {
             }
         })
     }
+
+    runViewInOpus() {
+        let regId = getFieldValue(this.lineItem.data, REG_ID_FIELD);
+        this[NavigationMixin.Navigate]({
+            type: 'standard__webPage',
+            attributes: {
+                url: 'https://online.colostate.edu/c/portal/layout?p_l_id=28.3&p_p_id=EXT_REGISTRATIONS&p_p_action=1&p_p_state=maximized&p_p_mode=view&_EXT_REGISTRATIONS_struts_action=%2Fcsu%2Fregistrations%2Fedit_registration&inode='+regId
+            }
+        });
+    }
+    
 }

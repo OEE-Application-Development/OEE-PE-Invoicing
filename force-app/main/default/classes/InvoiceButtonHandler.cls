@@ -96,4 +96,19 @@ global with sharing class InvoiceButtonHandler {
         return true;
     }
 
+    @AuraEnabled(cacheable = true)
+    public static Map<String, String> getTrackingInterviewsForInvoice(Id invoiceId) {
+        csuoee__Noncredit_Invoice__c invoice = [select Id, csuoee__Invoice_Number__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
+        String labelString = 'Line Item for [Invoice: '+invoice.csuoee__Invoice_Number__c+'%';
+        Map<String, String> statusMap = new Map<String, String>();
+        for(FlowInterview interview : [select Id, InterviewLabel, CurrentElement from FlowInterview where InterviewStatus = 'Paused' and InterviewLabel LIKE :labelString]) {
+            String labelEnd = interview.InterviewLabel.split('Section: ')[1];
+            labelEnd = labelEnd.substring(0, labelEnd.length()-1);
+
+            statusMap.put(labelEnd, interview.CurrentElement);
+        }
+
+        return statusMap;
+    }
+
 }
