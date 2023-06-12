@@ -23,9 +23,15 @@ import IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_
 import HAS_FAILED_PAYMENTS from '@salesforce/schema/Noncredit_Invoice__c.Has_Failed_Payments__c';
 
 /* Line Items */
+import getTrackingInterviewsForInvoice from '@salesforce/apex/InvoiceButtonHandler.getTrackingInterviewsForInvoice';
+
 import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Section_Reference__c';
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
 import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Course_Offering__r.Canvas_Link__c';
+import LINE_ITEM_IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+import LINE_ITEM_IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c';
+import LINE_ITEM_REQUIRES_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c';
+
 
 /* Payments */
 import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
@@ -49,21 +55,68 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoice;
 
     /* Line Items */
+    dataLineItemColumns = [
+        {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
+        {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
+        {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
+        {label: '', fieldName: LINE_ITEM_IS_CONFIRMED.fieldApiName, type: 'boolean', cellAttributes: {class: 'slds-hidden'}},
+        {label: '', fieldName: LINE_ITEM_IS_FULFILLED.fieldApiName, type: 'boolean'},
+        {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'},
+        {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
+    ];
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
         {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
+        {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
     @wire(getRelatedListRecords, {
         parentRecordId: '$recordId',
         relatedListId: 'csuoee__Noncredit_Invoice_Line_Items__r',
-        fields: ['id', LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName, LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName]
+        fields: ['id', 
+            LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, 
+            LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName, 
+            LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName,
+            LINE_ITEM_IS_CONFIRMED.objectApiName+'.'+LINE_ITEM_IS_CONFIRMED.fieldApiName,
+            LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
+            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName
+        ]
     })
     relatedLineItems({error, data}) {
         if(data) {
-            this.lineItemData = datatableHelpers.parseFieldData(this.lineItemColumns, data);
+            getTrackingInterviewsForInvoice({invoiceId: this.recordId})
+                .then((result) => {
+                    console.log(result);
+                    let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
+                    for(var i=0;i<formattedData.length;i++) {
+                        console.log(formattedData[i]);
+                        let status = result[formattedData[i].csuoee__Section_Reference__c];
+                        console.log(status);
+                        if(status == null){
+                            if(formattedData[i].csuoee__Is_Confirmed__c) {
+                                if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
+                                    formattedData[i].LineItemTracked = 'Complete';
+                                } else {
+                                    formattedData[i].LineItemTracked = 'Error - Fulfillment';
+                                }
+                            } else {
+                                formattedData[i].LineItemTracked = 'Error - Confirmation';
+                            }
+                        } else {
+                            if(status == 'Await_Confirmation') {
+                                formattedData[i].LineItemTracked = 'Awaiting Confirmation';
+                            } else if(status == 'Await_Fulfillment') {
+                                formattedData[i].LineItemTracked = 'Awaiting LMS Enrollment';
+                            } else {
+                                formattedData[i].LineItemTracked = 'Status Unknown';
+                            }
+                        }
+                    }
+                    this.lineItemData = formattedData;
+                });
         }
     }
 
