@@ -1,6 +1,6 @@
 import { LightningElement, api, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { getRecord, getFieldValue, getFieldDisplayValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -10,12 +10,15 @@ import modalAlert from "c/modalAlert";
 
 /* Invoice */
 import requestInvoice from '@salesforce/apex/InvoiceButtonHandler.requestInvoice';
+
 import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
 import REGISTRATION_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Registration_Id__c';
 import NONCREDIT_ID from '@salesforce/schema/Noncredit_Invoice__c.Noncredit_Id__c';
 import PAYER_ACCOUNT from '@salesforce/schema/Noncredit_Invoice__c.Payer_Account__c';
 import COST_TOTAL from '@salesforce/schema/Noncredit_Invoice__c.Total_Amount__c';
 import PAYMENT_TOTAL from '@salesforce/schema/Noncredit_Invoice__c.Total_Paid__c';
+import CANCEL_IN_PROGRESS from '@salesforce/schema/Noncredit_Invoice__c.Cancel_in_Progress__c';
+import CANCEL_AT from '@salesforce/schema/Noncredit_Invoice__c.Cancel_At__c';
 
 import IS_PAID from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
@@ -45,7 +48,7 @@ import getInvoiceEmails from '@salesforce/apex/InvoiceEmailMessageHandler.getInv
 import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
 import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL];
+const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT];
 const noPayments = [{'csuoee__Amount__c' : 'No Payments'}];
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
@@ -53,6 +56,19 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     @api recordId;
     @wire(getRecord, { recordId: '$recordId', fields: allFields })
     invoice;
+
+    get pendingCancelMessageClass() {
+        if(getFieldValue(this.invoice.data, CANCEL_IN_PROGRESS)) {
+            return "slds-button_neutral slds-card__body slds-theme--error slds-notify--toast slds-show slds-m-bottom_small";
+        } else {
+            return "slds-hide";
+        }
+    }
+
+    get cancelMessage() {
+        console.log(this.invoice.data);
+        return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
+    }
 
     /* Line Items */
     dataLineItemColumns = [
