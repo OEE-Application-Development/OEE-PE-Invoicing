@@ -7,6 +7,7 @@
             <lightning-progress-step label="Requires Fulfillment" value="3"></lightning-progress-step>
             <lightning-progress-step label="Invoice Complete" value="4"></lightning-progress-step>
         </lightning-progress-indicator>
+        <lightning-formatted-text style="text-align:center;" class={pendingCancelMessageClass} value={cancelMessage}></lightning-formatted-text>
     </lightning-card>
     <lightning-card title="Invoice Details" class="slds-show slds-m-bottom_small">
         <lightning-record-form 

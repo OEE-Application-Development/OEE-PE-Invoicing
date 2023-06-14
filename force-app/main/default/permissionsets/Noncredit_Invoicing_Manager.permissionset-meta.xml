@@ -106,6 +106,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice__c.Cancel_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Cancel_in_Progress__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice__c.Confirmed_Line_Item_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -131,7 +141,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice__c.Fulfilled_Email_Sent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice__c.Has_Failed_Payments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Has_Open_Entry__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

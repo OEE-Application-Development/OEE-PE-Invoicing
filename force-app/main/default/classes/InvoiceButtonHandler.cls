@@ -85,13 +85,10 @@ global with sharing class InvoiceButtonHandler {
         if(String.isBlank(event.Id)) throw new AuraHandledException('Could not send email! Possibly a duplicate...');
 
         invoice.csuoee__Escalation_Sent__c = true;
+        //Set for cancel
+        invoice.csuoee__Cancel_At__c = Date.today().addDays(8);
+        
         update invoice;
-
-        Map<String, Object> inputMap = new Map<String, Object>();
-        inputMap.put('MarkedInvoice', invoice);
-
-        Flow.Interview.Mark_Invoice_to_Void markInvoiceFlow = new Flow.Interview.Mark_Invoice_to_Void(inputMap);
-        markInvoiceFlow.start();
 
         return true;
     }

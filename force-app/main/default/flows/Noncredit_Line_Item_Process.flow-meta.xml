@@ -4,7 +4,7 @@
         <name>Aging_Invoice_Warning</name>
         <label>Aging Invoice Warning</label>
         <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationY>458</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -70,7 +70,7 @@
         <name>Get_Canvas_Account</name>
         <label>Get Canvas Account</label>
         <locationX>1128</locationX>
-        <locationY>758</locationY>
+        <locationY>782</locationY>
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -126,12 +126,47 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <actionCalls>
+        <name>Send_Invoice_Escalation</name>
+        <label>Send Invoice Escalation</label>
+        <locationX>2426</locationX>
+        <locationY>458</locationY>
+        <actionName>InvoiceEscalationInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Flip_Escalated_True</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>invoiceId</name>
+            <value>
+                <elementReference>LineItemInProgress.Noncredit_Invoice__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Flip_Escalated_True</name>
+        <label>Flip Escalated True</label>
+        <locationX>2426</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>IsEscalated</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Await_Confirmation</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>NOOP</name>
         <label>NOOP</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>LineItemInProgress.Is_Confirmed__c</assignToReference>
             <operator>Assign</operator>
@@ -139,6 +174,22 @@
                 <booleanValue>false</booleanValue>
             </value>
         </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_IsEscalated_Variable</name>
+        <label>Set IsEscalated Variable</label>
+        <locationX>1634</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>IsEscalated</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LineItemInProgress.Noncredit_Invoice__r.Escalation_Sent__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Await_Confirmation</targetReference>
+        </connector>
     </assignments>
     <constants>
         <name>CanvasLMSName</name>
@@ -165,7 +216,7 @@
         <name>Applies_to_this_Line_Item</name>
         <label>Applies to this Line Item?</label>
         <locationX>710</locationX>
-        <locationY>1118</locationY>
+        <locationY>1106</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Await_Fulfillment</targetReference>
@@ -205,7 +256,7 @@
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
         <locationX>1469</locationX>
-        <locationY>638</locationY>
+        <locationY>674</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
             <name>Fulfillment_Required</name>
@@ -226,8 +277,8 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>2162</locationX>
-        <locationY>158</locationY>
+        <locationX>2558</locationX>
+        <locationY>134</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
             <name>Line_Item_Available</name>
@@ -240,7 +291,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Await_Confirmation</targetReference>
+                <targetReference>Set_IsEscalated_Variable</targetReference>
             </connector>
             <label>Line Item Available</label>
         </rules>
@@ -286,7 +337,7 @@
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
         <locationX>1469</locationX>
-        <locationY>518</locationY>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
@@ -317,8 +368,8 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>1370</locationX>
-        <locationY>1862</locationY>
+        <locationX>1634</locationX>
+        <locationY>1766</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -339,7 +390,7 @@
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
         <locationX>1469</locationX>
-        <locationY>398</locationY>
+        <locationY>458</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
         </connector>
@@ -363,7 +414,7 @@
         <name>Set_Fulfilled</name>
         <label>Set Fulfilled</label>
         <locationX>578</locationX>
-        <locationY>1238</locationY>
+        <locationY>1214</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -381,7 +432,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>2036</locationX>
+        <locationX>2432</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -405,6 +456,13 @@
         <value>
             <elementReference>$Flow.CurrentDateTime</elementReference>
         </value>
+    </variables>
+    <variables>
+        <name>IsEscalated</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>LineItemInProgress</name>
@@ -442,8 +500,8 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>1370</locationX>
-        <locationY>278</locationY>
+        <locationX>1634</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Does_Line_Item_Require_Fulfillment</targetReference>
@@ -608,6 +666,103 @@
             <label>Invoice Cancelled</label>
         </waitEvents>
         <waitEvents>
+            <name>Non_Open_Entry_Escalation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Noncredit_Invoice__r.Has_Open_Entry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Confirmed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsEscalated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Invoice_Escalation</targetReference>
+            </connector>
+            <eventType>AlarmEvent</eventType>
+            <inputParameters>
+                <name>AlarmTime</name>
+                <value>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>2.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Days</stringValue>
+                </value>
+            </inputParameters>
+            <label>Non-Open Entry Escalation</label>
+        </waitEvents>
+        <waitEvents>
+            <name>Open_Entry_Escalation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Noncredit_Invoice__r.Has_Open_Entry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Confirmed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsEscalated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Send_Invoice_Escalation</targetReference>
+            </connector>
+            <eventType>AlarmEvent</eventType>
+            <inputParameters>
+                <name>AlarmTime</name>
+                <value>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>7.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Days</stringValue>
+                </value>
+            </inputParameters>
+            <label>Open Entry Escalation</label>
+        </waitEvents>
+        <waitEvents>
             <name>Step_Cancel</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -642,7 +797,7 @@
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
         <locationX>1128</locationX>
-        <locationY>878</locationY>
+        <locationY>890</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
             <name>Fulfillment_Received</name>
