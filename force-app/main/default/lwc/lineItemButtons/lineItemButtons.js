@@ -5,6 +5,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import INVOICE_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Noncredit_Invoice__c';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+import IS_FULFILLED_FIELD from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c';
 
 import confirmLineItem from "@salesforce/apex/LineItemButtonHandler.confirmLineItem";
 import voidLineItem from "@salesforce/apex/LineItemButtonHandler.voidLineItem";
@@ -49,6 +50,10 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
     get isNotConfirmed() {
         return !getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
+    }
+
+    get isFulfilled() {
+        return !getFieldValue(this.lineItem.data, IS_FULFILLED_FIELD);
     }
 
     runConfirm() {
@@ -147,6 +152,8 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
     @api enrollmentId;
 
     handleFoundEnrollmentId(event) {
+        let isAlreadyFulfilled = getFieldValue(this.lineItem.data, IS_FULFILLED_FIELD);
+        if(isAlreadyFulfilled) return;
         this.enrollmentId = event.detail.foundId;
         if(this.enrollmentId) {
             let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);

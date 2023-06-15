@@ -48,6 +48,8 @@ import getInvoiceEmails from '@salesforce/apex/InvoiceEmailMessageHandler.getInv
 import EMAIL_SUBJECT from '@salesforce/schema/EmailMessage.Subject';
 import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Opened__c';
 
+import workspaceAPI from "c/workspaceAPI";
+
 const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT];
 const noPayments = [{'csuoee__Amount__c' : 'No Payments'}];
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
@@ -229,6 +231,9 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                                 modalAlert.open({
                                     title: 'Sponsor Payment Sent',
                                     content: 'Sponsor Payment Sent! This will take a moment to complete because we are generating a new Invoice for the sponsor. Hang tight, the invoice should appear soon!'
+                                })
+                                .then((result) => {
+                                    workspaceAPI.refreshCurrentTab();
                                 });
                             })
                             .catch((error) => {
@@ -239,7 +244,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                             .then((result) => {        
                                 modalAlert.open({
                                     title: 'Payment Sent',
-                                    content: 'Payment Sent! Please close this tab; any updates will come through shortly.'
+                                    content: 'Payment Sent! Refreshing page... if you don\'t see the change, give it a minute. If it does not appear within a minute, please contact IT support.'
                                 });
                             })
                             .catch((error) => {
