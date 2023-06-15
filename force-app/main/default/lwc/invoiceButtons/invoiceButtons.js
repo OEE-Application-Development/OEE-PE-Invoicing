@@ -13,7 +13,10 @@ import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscal
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
+import workspaceAPI from "c/workspaceAPI";
+
 const fields = [REG_ID_FIELD, IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
+const NULL_EMAIL_TOAST = new ShowToastEvent({title: 'Escalation Email', message: 'This contact does not have an email! Please add an email for this person before sending an escalation.', variant: 'error'});
 export default class InvoiceButtons extends NavigationMixin(LightningElement) {
 
     @api recordId;
@@ -39,7 +42,9 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
                 .then((result) => {
                     modalAlert.open({
                         title: 'Confirmation Sent',
-                        content: 'Confirmation Sent! Please close this tab; any updates will come through shortly.'
+                        content: 'Confirmation Sent! Closing this tab while processing your request...'
+                    }).then((result) => {
+                        workspaceAPI.closeCurrentTab();
                     });
                 })
                 .catch((error) => {
@@ -62,7 +67,9 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
                 .then((result) => {
                     modalAlert.open({
                         title: 'Invoice Cancelled',
-                        content: 'Cancel Sent! Please close this tab; any updates will come through shortly.'
+                        content: 'Cancel Sent! Closing this tab while processing your request...'
+                    }).then((result) => {
+                        workspaceAPI.closeCurrentTab();
                     });
                 })
                 .catch((error) => {
@@ -76,6 +83,10 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
     }
 
     runSendEscalation() {
+        if(getFieldValue(this.lineItem.data, CONTACT_EMAIL_FIELD) == null) {
+            this.dispatchEvent(NULL_EMAIL_TOAST);
+            return;
+        }
         modalConfirm.open({
             title: 'Send Escalation',
             content: 'Are you sure you want to send a payment escalation email to: '+getFieldValue(this.lineItem.data, CONTACT_EMAIL_FIELD)+'?'
@@ -83,7 +94,7 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
             if(result) {
                 sendEscalationEmail({invoiceId: this.recordId}).then((emailResult) => {
                     this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Escalation Sent!', variant: 'success'}));
-                    this.recordId = this.recordId;
+                    workspaceAPI.refreshCurrentTab();
                 })
                 .catch((error) => {
                     this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Failed to send Escalation: '+error.body.message, variant: 'error'}));

@@ -1,7 +1,7 @@
 global with sharing class LineItemButtonHandler {
 
     private static csuoee__Noncredit_Invoice_Line_Item__c getLineItemById(Id lineItemId) {
-        return [select Id, csuoee__Section_Reference__c, csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Actual__c, csuoee__Is_Credit_Line_Item__c, csuoee__Is_Confirmed__c, csuoee__Requires_LMS_Fulfillment__c, csuoee__Is_Fulfilled__c, csuoee__Course_Offering__r.hed__Course__c, csuoee__Course_Offering__r.hed__Term__c, csuoee__Course_Offering__r.lms_hed__LMS_Course_Term__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
+        return [select Id, csuoee__Section_Reference__c, csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, csuoee__Noncredit_Invoice__r.csuoee__Contact__c, csuoee__Course_Offering__c, csuoee__Is_Actual__c, csuoee__Is_Credit_Line_Item__c, csuoee__Is_Confirmed__c, csuoee__Requires_LMS_Fulfillment__c, csuoee__Is_Fulfilled__c, csuoee__Course_Offering__r.hed__Course__c, csuoee__Course_Offering__r.hed__Term__c, csuoee__Course_Offering__r.lms_hed__LMS_Course_Term__c, csuoee__Noncredit_Invoice__r.csuoee__Escalation_Sent__c, csuoee__Noncredit_Invoice__r.csuoee__Has_Open_Entry__c from csuoee__Noncredit_Invoice_Line_Item__c where Id = :lineItemId LIMIT 1];
     }
 
     @AuraEnabled

@@ -1,7 +1,11 @@
 {
   "orgName": "OEE-PE-Invoicing - Dev Org",
-  "sourceOrg": "00D6g000002hydVEAQ",
+  "edition": "Enterprise",
+  "features": ["SharedActivities"],
   "settings": {
+    "accountSettings": {
+      "enableAccountHistoryTracking": true
+    },
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
     },
