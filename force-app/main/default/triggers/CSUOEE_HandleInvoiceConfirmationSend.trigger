@@ -1,7 +1,7 @@
 trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_Item__c (after insert, after update ) {
     Set<Id> invoiceIds = new Set<Id>();
     for(csuoee__Noncredit_Invoice_Line_Item__c li : (List<csuoee__Noncredit_Invoice_Line_Item__c>) Trigger.new) {
-        if(li.csuoee__Is_Fulfilled__c)invoiceIds.add(li.csuoee__Noncredit_Invoice__c); // Only lookup invoices to complete if this li is fulfilled.
+        if(li.csuoee__Canvas_Enrollment__c != null)invoiceIds.add(li.csuoee__Noncredit_Invoice__c); // Only lookup invoices to complete if this li is fulfilled.
     }
     
     List<csuoee__Marketing_Cloud_Journey_Event__c> journeyEvents = new List<csuoee__Marketing_Cloud_Journey_Event__c>();

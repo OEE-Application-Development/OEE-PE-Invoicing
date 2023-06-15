@@ -96,6 +96,9 @@ private class ButtonHandler_TEST {
     @IsTest
     private static void addPayment() {
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        invoice.csuoee__Is_Cancelled__c = true;
+        update invoice;
+
         generateLineItem(invoice);
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
@@ -213,6 +216,9 @@ private class ButtonHandler_TEST {
         }
         LineItemButtonHandler.emitEnrollmentComplete(enrollment.Id);
 
+        li.csuoee__Is_Confirmed__c = true;
+        update li;
+        
         LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
         Test.stopTest();
         System.assert(true);
@@ -245,6 +251,8 @@ private class ButtonHandler_TEST {
 
         result = LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
         System.assert(result);
+
+        System.assert(InvoiceButtonHandler.getTrackingInterviewsForInvoice(invoice.Id) != null);
 
         li.csuoee__Is_Confirmed__c = true;
         li.csuoee__Canvas_Enrollment__c = enrollment.Id;
