@@ -111,6 +111,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Noncredit_Invoice__c.Cancel_Requested__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Noncredit_Invoice__c.Cancel_in_Progress__c</field>
         <readable>true</readable>
     </fieldPermissions>
