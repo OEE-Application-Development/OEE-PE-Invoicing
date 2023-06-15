@@ -102,6 +102,7 @@ private class ButtonHandler_TEST {
         generateLineItem(invoice);
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+
         Boolean result = InvoiceButtonHandler.addPayment(invoice.Id, 'Credit Card', 120.00, null);
         csuoee__Noncredit_Invoice_Payment__c payment = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = 120.00, csuoee__CSU_Trans_Id__c = '12345', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Payment', csuoee__Payment_Type__c = 'Credit Card', csuoee__Successful__c = true);
         insert payment;
@@ -218,6 +219,8 @@ private class ButtonHandler_TEST {
 
         li.csuoee__Is_Confirmed__c = true;
         update li;
+        
+        LineItemButtonHandler.getLineItemData(li.Id);
         
         LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
         Test.stopTest();
