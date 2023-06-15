@@ -17,9 +17,11 @@ import checkLineItemEnrollmentExists from "@salesforce/apex/LineItemButtonHandle
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
+import workspaceAPI from "c/workspaceAPI";
+
 const CONFIRM_NOT_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation not found!', variant: 'error'});
-const CONFIRM_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation found. We\'re marking this line item... returning to Invoice - reload tab to see the change.', variant: 'success'});
-const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! We\'re marking this enrollment... returning to Invoice view while awaiting completion.', variant: 'success'});
+const CONFIRM_FOUND_TOAST = new ShowToastEvent({title: 'Confirmation', message: 'Confirmation found. Refreshing...', variant: 'success'});
+const ENROLLMENT_FOUND_TOAST = new ShowToastEvent({title: 'Canvas Enrollment', message: 'Canvas Enrollment Found! Refreshing...', variant: 'success'});
 const fields = [INVOICE_FIELD, IS_CONFIRMED_FIELD];
 export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
@@ -59,7 +61,10 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
                 .then((result) => {
                     modalAlert.open({
                         title: 'Confirmation Sent',
-                        content: 'Confirmation Sent! Please close this tab; the update will come through shortly.'
+                        content: 'Confirmation Sent! This tab will now close; the update will come through shortly.'
+                    }).then((result) => {
+                        workspaceAPI.refreshCurrentTab();
+                        workspaceAPI.closeCurrentTab();
                     });
                 })
                 .catch((error) => {
@@ -82,7 +87,10 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
                 .then((result) => {
                     modalAlert.open({
                         title: 'Void Sent',
-                        content: 'Void Sent! Please close this tab; the update will come through shortly.'
+                        content: 'Void Sent! This tab will now close; the update will come through shortly.'
+                    }).then((result) => {
+                        workspaceAPI.refreshCurrentTab();
+                        workspaceAPI.closeCurrentTab();
                     });
                 })
                 .catch((error) => {
@@ -106,7 +114,9 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
                     modalAlert.open({
                         title: 'Tracking Started',
                         content: 'Previous tracking for this line item was cancelled. If a course connection was found, then this should now be confirmed... otherwise tracking restarted!'
-                    })
+                    }).then((result) => {
+                        workspaceAPI.refreshCurrentTab();
+                    });
                 })
                 .catch((error) => {
                     modalAlert.open({
@@ -124,14 +134,7 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
                 if(result) {
                     let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
                     this.dispatchEvent(CONFIRM_FOUND_TOAST);
-                    this[NavigationMixin.Navigate]({
-                        type: 'standard__recordPage',
-                        attributes: {
-                            objectApiName: 'Noncredit_Invoice__c',
-                            actionName: 'view',
-                            recordId: invoiceId
-                        }
-                    });
+                    workspaceAPI.refreshCurrentTab();
                 } else {
                     this.dispatchEvent(CONFIRM_NOT_FOUND_TOAST);
                 }
@@ -151,14 +154,7 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
             emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId})
                 .then(() => {
                     this.dispatchEvent(ENROLLMENT_FOUND_TOAST);
-                    this[NavigationMixin.Navigate]({
-                        type: 'standard__recordPage',
-                        attributes: {
-                            objectApiName: 'Noncredit_Invoice__c',
-                            actionName: 'view',
-                            recordId: invoiceId
-                        }
-                    });
+                    workspaceAPI.refreshCurrentTab();
                 })
                 .catch((error) => {
                     modalAlert.open({
