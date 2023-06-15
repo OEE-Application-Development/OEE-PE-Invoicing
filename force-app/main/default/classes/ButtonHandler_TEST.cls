@@ -229,6 +229,7 @@ private class ButtonHandler_TEST {
         insert enrollment;
         csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem();
         Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         boolean result = LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
         System.assert(!result);
 
@@ -244,6 +245,26 @@ private class ButtonHandler_TEST {
 
         result = LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
         System.assert(result);
+
+        li.csuoee__Is_Confirmed__c = true;
+        li.csuoee__Canvas_Enrollment__c = enrollment.Id;
+        update li;
+        System.assert(true);
+
+        InvoiceButtonHandler.cancelInvoice(li.csuoee__Noncredit_Invoice__c);
+
+        Test.stopTest();
+    }
+
+    @IsTest
+    private static void escalateInvoice() {
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+
+        Test.startTest();
+        InvoiceEscalationInvocable.InvoiceEscalationRequest request = new InvoiceEscalationInvocable.InvoiceEscalationRequest();
+        request.invoiceId = invoice.Id;
+
+        InvoiceEscalationInvocable.escalateInvoice(new List<InvoiceEscalationInvocable.InvoiceEscalationRequest>{request});
         Test.stopTest();
     }
 
