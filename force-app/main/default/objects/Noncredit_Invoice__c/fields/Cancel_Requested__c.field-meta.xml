@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancel_Requested__c</fullName>
+    <description>If this is checked, invoice will be cancelled at midnight.</description>
+    <externalId>false</externalId>
+    <formula>NOT(ISBLANK(Cancel_At__c))&amp;&amp;TODAY()&gt;=Cancel_At__c&amp;&amp;Total_Paid__c==0&amp;&amp;NOT( Is_Cancelled__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>If this is checked, invoice will be cancelled at midnight.</inlineHelpText>
+    <label>Cancel Requested</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

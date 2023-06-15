@@ -3,7 +3,7 @@
     <fullName>Cancel_in_Progress__c</fullName>
     <description>True if cancel date is set but has not passed.</description>
     <externalId>false</externalId>
-    <formula>NOT(ISBLANK(Cancel_At__c))&amp;&amp;TODAY()&lt;Cancel_At__c</formula>
+    <formula>NOT(ISBLANK(Cancel_At__c))&amp;&amp;TODAY()&lt;Cancel_At__c&amp;&amp;Total_Paid__c==0&amp;&amp;NOT( Is_Cancelled__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <inlineHelpText>True if cancel date is set but has not passed.</inlineHelpText>
     <label>Cancel in Progress</label>
