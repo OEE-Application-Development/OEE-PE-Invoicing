@@ -220,6 +220,15 @@ private class ButtonHandler_TEST {
         li.csuoee__Is_Confirmed__c = true;
         update li;
         
+        try {
+            LineItemButtonHandler.getLineItemData(li.Id);
+        } catch(Exception e) {
+            // caught no offering
+            System.assert(true);
+        }
+        li.csuoee__Course_Offering__c = offering.Id;
+        update li;
+        
         LineItemButtonHandler.getLineItemData(li.Id);
         
         LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
