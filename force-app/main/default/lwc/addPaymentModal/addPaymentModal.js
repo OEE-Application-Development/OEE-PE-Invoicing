@@ -31,4 +31,12 @@ export default class AddPaymentModal extends LightningModal {
     get sponsorPaymentClass() {
         return this.sponsorPayment;
     }
+
+    get oppositeSponsorPaymentClass() {
+        if(this.sponsorPayment == "sponsor-closed") {
+            return "sponsor-open";
+        } else {
+            return "sponsor-closed";
+        }
+    }
 }
