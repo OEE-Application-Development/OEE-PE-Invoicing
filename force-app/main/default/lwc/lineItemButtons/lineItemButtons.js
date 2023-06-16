@@ -33,7 +33,6 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
 
     @wire(getLineItemData, { recordId: '$recordId' })
     setFields({error, data}) {
-        console.log(data);
         if(data) {
             if(data.offeringId)this.offeringId = data.offeringId;
             if(data.lmsAccountId)this.lmsAccountId = data.lmsAccountId;

@@ -19,6 +19,8 @@ import COST_TOTAL from '@salesforce/schema/Noncredit_Invoice__c.Total_Amount__c'
 import PAYMENT_TOTAL from '@salesforce/schema/Noncredit_Invoice__c.Total_Paid__c';
 import CANCEL_IN_PROGRESS from '@salesforce/schema/Noncredit_Invoice__c.Cancel_in_Progress__c';
 import CANCEL_AT from '@salesforce/schema/Noncredit_Invoice__c.Cancel_At__c';
+import NOTES from '@salesforce/schema/Noncredit_Invoice__c.Notes__c';
+import INVOICE_CREATED_AT from '@salesforce/schema/Noncredit_Invoice__c.CreatedDate';
 
 import IS_PAID from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
@@ -32,6 +34,7 @@ import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Li
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
 import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Course_Offering__r.Canvas_Link__c';
 import LINE_ITEM_IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+import LINE_ITEM_CONFIRMED_AT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Confirmed_At__c';
 import LINE_ITEM_IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c';
 import LINE_ITEM_REQUIRES_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c';
 
@@ -42,6 +45,7 @@ import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
 import PAYMENT_TYPE from '@salesforce/schema/Noncredit_Invoice_Payment__c.Payment_Type__c';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
 import PAYMENT_SUCCESS from '@salesforce/schema/Noncredit_Invoice_Payment__c.Successful__c';
+import PAYMENT_CREATED_AT from '@salesforce/schema/Noncredit_Invoice_Payment__c.CreatedDate';
 
 /* Email */
 import getInvoiceEmails from '@salesforce/apex/InvoiceEmailMessageHandler.getInvoiceEmails';
@@ -50,10 +54,20 @@ import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Open
 
 import workspaceAPI from "c/workspaceAPI";
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT];
-const noPayments = [{'csuoee__Amount__c' : 'No Payments'}];
+const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT];
+const noPayments = [
+    {
+        "id": "fakeid",
+        "Name": "No Payments",
+        "csuoee__Payment_Type__c": "",
+        "csuoee__Successful__c": false,
+        "CreatedDate": "",
+        "csuoee__Amount__c": null
+    }
+];
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
+    notesOnly = [ NOTES ];
 
     @api recordId;
     @wire(getRecord, { recordId: '$recordId', fields: allFields })
@@ -68,7 +82,6 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     }
 
     get cancelMessage() {
-        console.log(this.invoice.data);
         return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
     }
 
@@ -80,6 +93,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: '', fieldName: LINE_ITEM_IS_CONFIRMED.fieldApiName, type: 'boolean', cellAttributes: {class: 'slds-hidden'}},
         {label: '', fieldName: LINE_ITEM_IS_FULFILLED.fieldApiName, type: 'boolean'},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
         {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
@@ -88,6 +102,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
         {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
@@ -100,19 +115,17 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
             LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName,
             LINE_ITEM_IS_CONFIRMED.objectApiName+'.'+LINE_ITEM_IS_CONFIRMED.fieldApiName,
             LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
-            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName
+            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName,
+            LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName
         ]
     })
     relatedLineItems({error, data}) {
         if(data) {
             getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                 .then((result) => {
-                    console.log(result);
                     let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
                     for(var i=0;i<formattedData.length;i++) {
-                        console.log(formattedData[i]);
                         let status = result[formattedData[i].csuoee__Section_Reference__c];
-                        console.log(status);
                         if(status == null){
                             if(formattedData[i].csuoee__Is_Confirmed__c) {
                                 if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
@@ -156,6 +169,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: 'Payment', fieldName: PAYMENT_NAME.fieldApiName, type: 'text'},
         {label: 'Payment Type', fieldName: PAYMENT_TYPE.fieldApiName, type: 'text'},
         {label: 'Successful', fieldName: PAYMENT_SUCCESS.fieldApiName, type: 'boolean'},
+        {label: 'Paid At', fieldName: PAYMENT_CREATED_AT.fieldApiName, type: 'date'},
         {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }}
     ];
     paymentData = [];
@@ -166,7 +180,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedPayments({error, data}) {
         if(data) {
-            this.paymentData = datatableHelpers.parseFieldData(this.paymentColumns, data);
+            if(data.count == 0)
+                this.paymentData = noPayments;
+            else
+                this.paymentData = datatableHelpers.parseFieldData(this.paymentColumns, data);
         } else {
             this.paymentData = noPayments;
         }
