@@ -21,6 +21,7 @@ import CANCEL_IN_PROGRESS from '@salesforce/schema/Noncredit_Invoice__c.Cancel_i
 import CANCEL_AT from '@salesforce/schema/Noncredit_Invoice__c.Cancel_At__c';
 import NOTES from '@salesforce/schema/Noncredit_Invoice__c.Notes__c';
 import INVOICE_CREATED_AT from '@salesforce/schema/Noncredit_Invoice__c.CreatedDate';
+import INVOICE_CANCELLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Cancelled__c';
 
 import IS_PAID from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
@@ -54,7 +55,7 @@ import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Open
 
 import workspaceAPI from "c/workspaceAPI";
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT];
+const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED];
 const noPayments = [
     {
         "id": "fakeid",
@@ -74,15 +75,19 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoice;
 
     get pendingCancelMessageClass() {
-        if(getFieldValue(this.invoice.data, CANCEL_IN_PROGRESS)) {
-            return "slds-button_neutral slds-card__body slds-theme--error slds-notify--toast slds-show slds-m-bottom_small";
+        if(getFieldValue(this.invoice.data, CANCEL_IN_PROGRESS) || getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
+            return "slds-button_neutral slds-card__body slds-theme_error slds-notify--toast slds-show slds-var-m-bottom_small";
         } else {
             return "slds-hide";
         }
     }
 
     get cancelMessage() {
-        return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
+        if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
+            return "This invoice is cancelled & no longer appears in Opus. If you need to recreate it, contact IT support.";
+        } else {
+            return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
+        }
     }
 
     /* Line Items */
