@@ -34,6 +34,7 @@ import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Li
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
 import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Course_Offering__r.Canvas_Link__c';
 import LINE_ITEM_IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+import LINE_ITEM_CONFIRMED_AT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Confirmed_At__c';
 import LINE_ITEM_IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c';
 import LINE_ITEM_REQUIRES_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c';
 
@@ -92,6 +93,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: '', fieldName: LINE_ITEM_IS_CONFIRMED.fieldApiName, type: 'boolean', cellAttributes: {class: 'slds-hidden'}},
         {label: '', fieldName: LINE_ITEM_IS_FULFILLED.fieldApiName, type: 'boolean'},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
         {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
@@ -100,6 +102,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
         {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
         {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
@@ -112,7 +115,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
             LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName,
             LINE_ITEM_IS_CONFIRMED.objectApiName+'.'+LINE_ITEM_IS_CONFIRMED.fieldApiName,
             LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
-            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName
+            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName,
+            LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName
         ]
     })
     relatedLineItems({error, data}) {

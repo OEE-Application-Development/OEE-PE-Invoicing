@@ -24,6 +24,7 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
     @wire(getRecord, { recordId: '$recordId', fields })
     lineItem;
 
+
     get isConfirmed() {
         return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
     }
@@ -31,6 +32,7 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
     get isEscalationNotAvailable() {
         return (getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD));
     }
+    
 
     runConfirm() {
         modalConfirm.open({
@@ -42,9 +44,9 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
                 .then((result) => {
                     modalAlert.open({
                         title: 'Confirmation Sent',
-                        content: 'Confirmation Sent! Closing this tab while processing your request...'
+                        content: 'Confirmation Sent! Please wait a moment while we process your request... if you do not see an update immediately, please refresh your browser.'
                     }).then((result) => {
-                        workspaceAPI.closeCurrentTab();
+                        workspaceAPI.refreshCurrentTab();
                     });
                 })
                 .catch((error) => {
