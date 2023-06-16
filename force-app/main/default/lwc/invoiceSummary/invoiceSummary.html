@@ -16,6 +16,12 @@
             fields={invoiceFields}
             record-id={recordId}
         ></lightning-record-form>
+        <lightning-record-form 
+            columns="1" 
+            object-api-name="csuoee__Noncredit_Invoice__c" 
+            fields={notesOnly}
+            record-id={recordId}
+        ></lightning-record-form>
     </lightning-card>
     <lightning-card title="Line Item Summary" class="slds-show slds-m-bottom_small">
         <lightning-datatable
