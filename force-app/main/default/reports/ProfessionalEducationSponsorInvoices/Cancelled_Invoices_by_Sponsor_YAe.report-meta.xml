@@ -17,6 +17,9 @@
     <columns>
         <field>Account.Noncredit_Invoices__r$Registration_Id__c</field>
     </columns>
+    <columns>
+        <field>Account.Noncredit_Invoices__r$LastModifiedDate</field>
+    </columns>
     <filter>
         <criteriaItems>
             <column>Account.Noncredit_Invoices__r$Is_Sponsor_Invoice__c</column>
@@ -39,9 +42,20 @@
             <operator>equals</operator>
             <value>0</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Account.Noncredit_Invoices__r$Is_Noncredit_Only__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
+    <groupingsDown>
+        <field>Account$CreatedDate</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Account$Name</field>

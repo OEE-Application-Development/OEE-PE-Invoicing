@@ -18,7 +18,7 @@
         <field>Noncredit_Invoice__c$Registration_Id__c</field>
     </columns>
     <columns>
-        <field>Noncredit_Invoice__c$CreatedDate</field>
+        <field>Noncredit_Invoice__c$LastModifiedDate</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -42,9 +42,20 @@
             <operator>equals</operator>
             <value>0</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Is_Noncredit_Only__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
+    <groupingsDown>
+        <field>Noncredit_Invoice__c$CreatedDate</field>
+        <sortOrder>Desc</sortOrder>
+    </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Noncredit_Invoice__c$Contact__c</field>
