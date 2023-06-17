@@ -7,12 +7,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Confirmed_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Course_Offering__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Debit_Trans_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Fulfilled_At__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43,6 +53,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Line_Item_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -198,6 +213,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice__c.Noncredit_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
