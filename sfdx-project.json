@@ -88,7 +88,8 @@
     "OEE-PE-Invoicing@0.28.0-1": "04t5b000002BQwyAAG",
     "OEE-PE-Invoicing@0.28.0-2": "04t5b000002BQx3AAG",
     "OEE-PE-Invoicing@0.29.0-1": "04t5b000002BQxDAAW",
-    "OEE-PE-Invoicing@0.30.0-1": "04t5b000002BQxSAAW"
+    "OEE-PE-Invoicing@0.30.0-1": "04t5b000002BQxSAAW",
+    "OEE-PE-Invoicing@0.31.0-1": "04t5b000002BQxXAAW"
   },
   "sourceApiVersion": "57.0"
 }
