@@ -155,7 +155,6 @@ export default class LineItemButtons extends NavigationMixin(LightningElement) {
         if(isAlreadyFulfilled) return;
         this.enrollmentId = event.detail.foundId;
         if(this.enrollmentId) {
-            let invoiceId = getFieldValue(this.lineItem.data, INVOICE_FIELD);
             setLineItemEnrollment({lmsEnrollmentId: this.enrollmentId, lineItemId: this.recordId});
             emitEnrollmentComplete({lmsEnrollmentId: this.enrollmentId})
                 .then(() => {
