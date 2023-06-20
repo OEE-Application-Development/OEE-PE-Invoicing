@@ -40,6 +40,9 @@ private class ButtonHandler_TEST {
         
         //Cancel 1
         result = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+
+        invoice.csuoee__Is_Cancelled__c = true;
+        update invoice;
         Test.stopTest();
 
         System.assert(result);
