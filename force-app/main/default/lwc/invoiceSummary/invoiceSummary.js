@@ -291,6 +291,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
 
     spliceTrackingStatus(formattedData, trackingResult) {
         for(var i=0;i<formattedData.length;i++) {
+            formattedData[0].id = formattedData.Id;
             try{
                 if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
                     formattedData[i].LineItemTracked = 'Invoice Cancelled';
