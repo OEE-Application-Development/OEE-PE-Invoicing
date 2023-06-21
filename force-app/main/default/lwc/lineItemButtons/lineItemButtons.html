@@ -1,9 +1,9 @@
 <template>
     <lightning-card title="Line Item Actions">
-        <label><button aria-label="Track Line Item" onclick={runTrackLineItem} disabled={isConfirmed} class="slds-var-m-left_x-small">Track Line Item</button></label>
-        <label><button aria-label="Confirm Line Item" onclick={runConfirm} disabled={isConfirmed} class="slds-var-m-left_x-small">Confirm Line Item</button></label>
-        <label><button aria-label="Void Confirmation" onclick={runVoid} disabled={isNotConfirmed} class="slds-var-m-left_x-small">Void Confirmation</button></label>
-        <label><button aria-label="Check Confirmation Exists" onclick={handleConfirmCheck} disabled={isConfirmed} class="slds-var-m-left_x-small">Check Confirmation Exists</button></label>
+        <label><button aria-label="Track Line Item" onclick={runTrackLineItem} disabled={isConfirmed} class="slds-button slds-button_neutral slds-var-m-left_x-small">Track Line Item</button></label>
+        <label><button aria-label="Confirm Line Item" onclick={runConfirm} disabled={isConfirmed} class="slds-button slds-button_neutral slds-var-m-left_x-small">Confirm Line Item</button></label>
+        <label><button aria-label="Void Confirmation" onclick={runVoid} disabled={isNotConfirmed} class="slds-button slds-button_neutral slds-var-m-left_x-small">Void Confirmation</button></label>
+        <label><button aria-label="Check for Confirmation" onclick={handleConfirmCheck} disabled={isConfirmed} class="slds-button slds-button_neutral slds-var-m-left_x-small">Check for Confirmation</button></label>
         <can_hed-canvas-check-enrollment-button onenrollmentfound={handleFoundEnrollmentId} lms-account-id={lmsAccountId} lms-course-term-id={lmsCourseTermId} offering-id={offeringId} enrollment-id={enrollmentId} class="slds-var-m-left_x-small" disabled={isFulfilled}></can_hed-canvas-check-enrollment-button>
     </lightning-card>
 </template>

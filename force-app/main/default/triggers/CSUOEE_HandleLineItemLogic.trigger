@@ -6,11 +6,15 @@ trigger CSUOEE_HandleLineItemLogic on csuoee__Noncredit_Invoice_Line_Item__c (be
             if(li.csuoee__Confirmed_At__c == null) {
                 li.csuoee__Confirmed_At__c = Datetime.now();
             }
+        } else {
+            li.csuoee__Confirmed_At__c = null;
         }
         if(li.csuoee__Canvas_Enrollment__c != null) {
             if(li.csuoee__Fulfilled_At__c == null) {
                 li.csuoee__Fulfilled_At__c = Datetime.now();
             }
+        } else {
+            li.csuoee__Fulfilled_At__c = null;
         }
     }
 }

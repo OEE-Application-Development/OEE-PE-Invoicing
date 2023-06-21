@@ -28,8 +28,11 @@ import IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_
 import IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Fulfilled__c';
 import HAS_FAILED_PAYMENTS from '@salesforce/schema/Noncredit_Invoice__c.Has_Failed_Payments__c';
 
+import refreshChildren from '@salesforce/apex/CombinedFunctions.refreshChildren';
+
 /* Line Items */
 import getTrackingInterviewsForInvoice from '@salesforce/apex/InvoiceButtonHandler.getTrackingInterviewsForInvoice';
+import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
 
 import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Section_Reference__c';
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
@@ -66,6 +69,23 @@ const noPayments = [
         "csuoee__Amount__c": null
     }
 ];
+const TRACKING_RESTART_TOAST = new ShowToastEvent({title: 'Line Item Tracking', message: 'Previous tracking for this line item was cancelled. If a course connection was found, then this should now be confirmed... otherwise tracking restarted!', variant: 'success'});
+
+const LINE_ITEM_FIELDS = ['id', 
+    LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, 
+    LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName, 
+    LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName,
+    LINE_ITEM_IS_CONFIRMED.objectApiName+'.'+LINE_ITEM_IS_CONFIRMED.fieldApiName,
+    LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
+    LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName,
+    LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName];
+const PAYMENT_FIELDS = ['id', 
+    PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, 
+    PAYMENT_TYPE.objectApiName+'.'+PAYMENT_TYPE.fieldApiName, 
+    PAYMENT_SUCCESS.objectApiName+'.'+PAYMENT_SUCCESS.fieldApiName, 
+    PAYMENT_AMOUNT.objectApiName+'.'+PAYMENT_AMOUNT.fieldApiName,
+    PAYMENT_CREATED_AT.objectApiName+'.'+PAYMENT_CREATED_AT.fieldApiName];
+
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
     notesOnly = [ NOTES ];
@@ -91,6 +111,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     }
 
     /* Line Items */
+    lineItemRefreshHandlerID;
     dataLineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
@@ -99,59 +120,29 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: '', fieldName: LINE_ITEM_IS_FULFILLED.fieldApiName, type: 'boolean'},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
         {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
-        {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'},
-        {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
+        {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'}
     ];
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
         {label: 'Amount', fieldName: LINE_ITEM_AMOUNT.fieldApiName, type: 'currency'},
         {label: 'Canvas Link', fieldName: LINE_ITEM_CANVAS_LINK.fieldApiName, type: 'url'},
-        {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
+        {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text', ignoreRefresh: true},
         {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
-        {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}}
+        {label: '', type: 'button', typeAttributes: {label: 'Review Line Item', name: 'reviewLineItem'}, cellAttributes: {alignment: 'center'}},
+        {label: '', type: 'button', typeAttributes: {label: 'Restart Tracking', name: 'trackLineItem'}, cellAttributes: {alignment: 'center'}}
     ];
     lineItemData = [];
     @wire(getRelatedListRecords, {
         parentRecordId: '$recordId',
         relatedListId: 'csuoee__Noncredit_Invoice_Line_Items__r',
-        fields: ['id', 
-            LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, 
-            LINE_ITEM_AMOUNT.objectApiName+'.'+LINE_ITEM_AMOUNT.fieldApiName, 
-            LINE_ITEM_CANVAS_LINK.objectApiName+'.'+LINE_ITEM_CANVAS_LINK.fieldApiName,
-            LINE_ITEM_IS_CONFIRMED.objectApiName+'.'+LINE_ITEM_IS_CONFIRMED.fieldApiName,
-            LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
-            LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName,
-            LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName
-        ]
+        fields: LINE_ITEM_FIELDS
     })
     relatedLineItems({error, data}) {
         if(data) {
             getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                 .then((result) => {
                     let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
-                    for(var i=0;i<formattedData.length;i++) {
-                        let status = result[formattedData[i].csuoee__Section_Reference__c];
-                        if(status == null){
-                            if(formattedData[i].csuoee__Is_Confirmed__c) {
-                                if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
-                                    formattedData[i].LineItemTracked = 'Complete';
-                                } else {
-                                    formattedData[i].LineItemTracked = 'Error - Fulfillment';
-                                }
-                            } else {
-                                formattedData[i].LineItemTracked = 'Error - Confirmation';
-                            }
-                        } else {
-                            if(status == 'Await_Confirmation') {
-                                formattedData[i].LineItemTracked = 'Awaiting Confirmation';
-                            } else if(status == 'Await_Fulfillment') {
-                                formattedData[i].LineItemTracked = 'Awaiting LMS Enrollment';
-                            } else {
-                                formattedData[i].LineItemTracked = 'Status Unknown';
-                            }
-                        }
-                    }
-                    this.lineItemData = formattedData;
+                    this.lineItemData = this.spliceTrackingStatus(formattedData, result);
                 });
         }
     }
@@ -166,6 +157,22 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                     recordId: event.detail.row.id
                 }
             });
+            return;
+        }
+        if(event.detail.action.name == 'trackLineItem') {
+            trackLineItem({lineItemId: event.detail.row.id})
+                .then((trackResult) => {
+                    this.dispatchEvent(TRACKING_RESTART_TOAST);
+                    this.refreshLineItemData();
+                    workspaceAPI.refreshCurrentTab();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    modalAlert.open({
+                        title: 'Tracking Failed',
+                        content: error.body.message
+                    })
+                });
         }
     }
 
@@ -181,7 +188,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     @wire(getRelatedListRecords, {
         parentRecordId: '$recordId',
         relatedListId: 'csuoee__Payments__r',
-        fields: ['id', PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, PAYMENT_TYPE.objectApiName+'.'+PAYMENT_TYPE.fieldApiName, PAYMENT_SUCCESS.objectApiName+'.'+PAYMENT_SUCCESS.fieldApiName, PAYMENT_AMOUNT.objectApiName+'.'+PAYMENT_AMOUNT.fieldApiName]
+        fields: PAYMENT_FIELDS
     })
     relatedPayments({error, data}) {
         if(data) {
@@ -254,7 +261,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                                     title: 'Sponsor Payment Sent',
                                     content: 'Sponsor Payment Sent! This will take a moment to complete because we are generating a new Invoice for the sponsor. Hang tight, the invoice should appear soon!'
                                 })
-                                .then((result) => {
+                                .then((ok) => {
+                                    this.refreshPaymentData();
                                     workspaceAPI.refreshCurrentTab();
                                 });
                             })
@@ -267,6 +275,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                                 modalAlert.open({
                                     title: 'Payment Sent',
                                     content: 'Payment Sent! Refreshing page... if you don\'t see the change, give it a minute. If it does not appear within a minute, please contact IT support.'
+                                })
+                                .then((ok) => {
+                                    this.refreshPaymentData();
+                                    workspaceAPI.refreshCurrentTab();
                                 });
                             })
                             .catch((error) => {
@@ -274,6 +286,58 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                             });
                     }
                 }
+            });
+    }
+
+    spliceTrackingStatus(formattedData, trackingResult) {
+        for(var i=0;i<formattedData.length;i++) {
+            try{
+                if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
+                    formattedData[i].LineItemTracked = 'Invoice Cancelled';
+                    continue;
+                }
+                let status = trackingResult[formattedData[i].csuoee__Section_Reference__c];
+                if(status == null){
+                    if(formattedData[i].csuoee__Is_Confirmed__c) {
+                        if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
+                            formattedData[i].LineItemTracked = 'Complete';
+                        } else {
+                            formattedData[i].LineItemTracked = 'Error - Fulfillment';
+                        }
+                    } else {
+                        formattedData[i].LineItemTracked = 'Error - Confirmation';
+                    }
+                } else {
+                    if(status == 'Await_Confirmation') {
+                        formattedData[i].LineItemTracked = 'Awaiting Confirmation';
+                    } else if(status == 'Await_Fulfillment') {
+                        formattedData[i].LineItemTracked = 'Awaiting LMS Enrollment';
+                    } else {
+                        formattedData[i].LineItemTracked = 'Status Unknown';
+                    }
+                }
+            }catch(e) {
+                //Not sure what's happening
+            }
+        }
+        return formattedData;
+    }
+
+    refreshLineItemData() {
+        refreshChildren({parentId: this.recordId, childObjectName: 'csuoee__Noncredit_Invoice_Line_Item__c', parentFieldName: 'csuoee__Noncredit_Invoice__c', fieldsToRefresh: LINE_ITEM_FIELDS})
+            .then((data) => {
+                console.log(data);
+                getTrackingInterviewsForInvoice({invoiceId: this.recordId})
+                    .then((result) => {
+                        this.lineItemData = this.spliceTrackingStatus(data, result);
+                    });
+            });
+    }
+
+    refreshPaymentData() {
+        refreshChildren({parentId: this.recordId, childObjectName: 'csuoee__Noncredit_Invoice_Payment__c', parentFieldName: 'csuoee__Noncredit_Invoice__c', fieldsToRefresh: PAYMENT_FIELDS})
+            .then((result) => {
+                this.paymentData = result;
             });
     }
 
