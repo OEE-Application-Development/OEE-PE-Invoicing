@@ -327,7 +327,6 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     refreshLineItemData() {
         refreshChildren({parentId: this.recordId, childObjectName: 'csuoee__Noncredit_Invoice_Line_Item__c', parentFieldName: 'csuoee__Noncredit_Invoice__c', fieldsToRefresh: LINE_ITEM_FIELDS})
             .then((data) => {
-                console.log(data);
                 getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                     .then((result) => {
                         this.lineItemData = this.spliceTrackingStatus(data, result);
@@ -338,7 +337,11 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     refreshPaymentData() {
         refreshChildren({parentId: this.recordId, childObjectName: 'csuoee__Noncredit_Invoice_Payment__c', parentFieldName: 'csuoee__Noncredit_Invoice__c', fieldsToRefresh: PAYMENT_FIELDS})
             .then((result) => {
-                this.paymentData = result;
+                if(result.length == 0) {
+                    this.paymentData = noPayments;
+                } else {
+                    this.paymentData = result;
+                }
             });
     }
 
