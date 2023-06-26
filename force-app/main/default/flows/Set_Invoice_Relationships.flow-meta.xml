@@ -9,10 +9,32 @@
         </value>
     </constants>
     <decisions>
+        <name>Is_Account_Already_Set</name>
+        <label>Is Account Already Set?</label>
+        <locationX>380</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Payer Account Already Set</defaultConnectorLabel>
+        <rules>
+            <name>Payer_Account_Empty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.csuoee__Payer_Account__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Attempt_Contact_Lookup</targetReference>
+            </connector>
+            <label>Payer Account Empty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Was_NoncreditId_a_Contact</name>
         <label>Was NoncreditId a Contact?</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>503</locationY>
         <defaultConnectorLabel>Contact Is Set</defaultConnectorLabel>
         <rules>
             <name>Contact_Not_Set</name>
@@ -56,7 +78,7 @@
         <name>Attempt_Account_Lookup</name>
         <label>Attempt Account Lookup</label>
         <locationX>50</locationX>
-        <locationY>671</locationY>
+        <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <filterLogic>and</filterLogic>
         <filters>
@@ -83,7 +105,7 @@
         <name>Attempt_Contact_Lookup</name>
         <label>Attempt Contact Lookup</label>
         <locationX>182</locationX>
-        <locationY>311</locationY>
+        <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Was_NoncreditId_a_Contact</targetReference>
@@ -110,7 +132,7 @@
         <name>Get_Business_Organization_Record_Type_Id</name>
         <label>Get Business Organization Record Type Id</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Attempt_Account_Lookup</targetReference>
@@ -135,10 +157,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Attempt_Contact_Lookup</targetReference>
+            <targetReference>Is_Account_Already_Set</targetReference>
         </connector>
         <object>Noncredit_Invoice__c</object>
         <recordTriggerType>Create</recordTriggerType>

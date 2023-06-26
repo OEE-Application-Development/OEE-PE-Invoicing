@@ -5,7 +5,7 @@ private class ButtonHandler_TEST {
     private static void confirmAndCancelInvoiceEmpty() {
         generateJourneySettings();
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
-        Boolean result = false;
+        Boolean result;
         //Empty Confirm
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
@@ -14,16 +14,22 @@ private class ButtonHandler_TEST {
         System.assert(result);
         
         //Empty cancel
-        result = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
         Test.stopTest();
-        System.assert(result);
+        System.assert(result != null);
     }
 
     @IsTest
     private static void confirmAndCancelInvoice() {
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
         csuoee__Noncredit_Invoice_Line_Item__c li = generateLineItem(invoice);
+        csuoee__Noncredit_Invoice_Payment__c payment = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = 120.00, csuoee__CSU_Trans_Id__c = '12345', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Payment', csuoee__Payment_Type__c = 'Credit Card', csuoee__Successful__c = true, csuoee__Processor_Trans_Id__c = '12345');
+        insert payment;
+        csuoee__Noncredit_Invoice_Payment__c manualPayment = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = 120.00, csuoee__CSU_Trans_Id__c = '12345', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Payment', csuoee__Payment_Type__c = 'Credit Card', csuoee__Successful__c = true);
+        insert manualPayment;
         Boolean result = false;
+
+        generateSponsorPayment(invoice);
         
         //Empty Confirm
         Test.startTest();
@@ -38,14 +44,30 @@ private class ButtonHandler_TEST {
         
         System.assert(result);
         
+        li.csuoee__Confirmed_At__c = Datetime.now();
+        update li;
+
         //Cancel 1
-        result = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
 
         invoice.csuoee__Is_Cancelled__c = true;
         update invoice;
+
+        String messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id);
+        System.assert('Refund Request Sent'.equals(messageResult));
+
+        payment.csuoee__Successful__c = false;
+        update payment;
+
+        try {
+            messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id);
+            System.assert(false);
+        } catch(Exception e) {
+            System.assert(true);
+        }
         Test.stopTest();
 
-        System.assert(result);
+        System.assert(msg != null);
     }
 
     @IsTest
@@ -87,6 +109,19 @@ private class ButtonHandler_TEST {
         
         LineItemButtonHandler.trackLineItem(li.Id);
 
+        Account canvas = generateCanvasAccount();
+        lms_hed__LMS_Account__c acct = generateLmsAccount(new Contact(Id = li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c), canvas);
+        lms_hed__LMS_Course_Term__c ct = generateCourseTerm(canvas, offering.hed__Course__r, offering.hed__Term__r);
+        hed__Course_Enrollment__c connection = new hed__Course_Enrollment__c(hed__Contact__c = li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c, hed__Course_Offering__c = offering.Id);
+        insert connection;
+        lms_hed__LMS_Course_Enrollment__c enrollment = new lms_hed__LMS_Course_Enrollment__c(lms_hed__LMS_Account__c = acct.Id, lms_hed__LMS_Course_Term__c = ct.Id, lms_hed__Course_Offering__c = offering.Id, lms_hed__LMS_External_ID__c = '12345');
+        li.csuoee__Canvas_Enrollment__c = enrollment.Id;
+        li.csuoee__Requires_LMS_Fulfillment__c = true;
+        update li;
+        LineItemButtonHandler.trackLineItem(li.Id);
+        LineItemButtonHandler.checkLineItemEnrollmentExists(li.Id);
+
+        LineItemButtonHandler.getLineItemData(li.Id);
         Test.stopTest();
     }
 
@@ -169,7 +204,7 @@ private class ButtonHandler_TEST {
 
     @IsTest
     private static void generateJourneySettings() {
-        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Invoicing_Journey_API_Key__c = 'bananas', csuoee__Invoicing_Journey_Confirmation_Type__c = 'Confirmation');
+        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Invoicing_Journey_API_Key__c = 'bananas', csuoee__Invoicing_Journey_Confirmation_Type__c = 'Confirmation', csuoee__PE_Manual_Refund_Mailbox__c = 'test@csu.edu');
         insert settings;
     }
 
@@ -342,6 +377,32 @@ private class ButtonHandler_TEST {
         insert ct;
 
         return ct;
+    }
+
+    private static csuoee__Noncredit_Invoice__c generateSponsorPayment(csuoee__Noncredit_Invoice__c studentInvoice) {
+        csuoee__Noncredit_Invoice__c sponsorInvoice = new csuoee__Noncredit_Invoice__c(csuoee__Invoice_Number__c = '123456', csuoee__Registration_Id__c = '123456', csuoee__Payer_Account__c = studentInvoice.csuoee__Payer_Account__c);
+        insert sponsorInvoice;
+
+        csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(
+                csuoee__Noncredit_Invoice__c = sponsorInvoice.Id, 
+                csuoee__Noncredit_Invoice__r = sponsorInvoice,
+                csuoee__Section_Reference__c = '1111SP-AAA-222-100', 
+                csuoee__Line_Item_Amount__c = 2.00,
+                csuoee__Is_Credit_Line_Item__c = false,
+                csuoee__Sponsor_Payment_Invoice__c = studentInvoice.Id);
+        insert lineItem;
+
+        csuoee__Noncredit_Invoice_Payment__c payment = new csuoee__Noncredit_Invoice_Payment__c(
+            csuoee__Amount__c = 2.00, 
+            csuoee__CSU_Trans_Id__c = '12346', 
+            csuoee__Is_Actual__c = false, 
+            csuoee__Noncredit_Invoice__c = sponsorInvoice.Id, 
+            Name = 'Test Sponsor Payment', 
+            csuoee__Payment_Type__c = 'Sponsor', 
+            csuoee__Successful__c = true);
+        insert payment;
+
+        return sponsorInvoice;
     }
 
 }

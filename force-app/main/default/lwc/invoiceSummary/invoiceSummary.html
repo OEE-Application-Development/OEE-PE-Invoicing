@@ -38,6 +38,7 @@
             columns={paymentColumns}
             data={paymentData}
             hide-checkbox-column="true"
+            onrowaction={handlePayItemAction}
         ></lightning-datatable>
         <label><button aria-label="Add Payment" onclick={runAddPayment} class="slds-button slds-button_neutral slds-var-m-left_x-small">Add Payment</button></label>
     </lightning-card>
