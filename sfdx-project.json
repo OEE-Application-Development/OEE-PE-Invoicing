@@ -26,10 +26,10 @@
           "package": "04tDo0000008w4HIAQ"
         },
         {
-          "package": "04t5b000002BQy1AAG"
+          "package": "04t5b000002BR40AAG"
         },
         {
-          "package": "04t5b000002BQvHAAW"
+          "package": "04t5b000002BQypAAG"
         }
       ]
     }
@@ -93,7 +93,10 @@
     "OEE-PE-Invoicing@0.31.0-2": "04t5b000002BQxcAAG",
     "OEE-PE-Invoicing@0.32.0-1": "04t5b000002BQxmAAG",
     "OEE-PE-Invoicing@0.33.0-1": "04t5b000002BQyGAAW",
-    "OEE-PE-Invoicing@0.34.0-1": "04t5b000002BQyQAAW"
+    "OEE-PE-Invoicing@0.34.0-1": "04t5b000002BQyQAAW",
+    "OEE-PE-Invoicing@0.35.0-1": "04t5b000002BQz4AAG",
+    "OEE-PE-Invoicing@0.35.0-2": "04t5b000002BQzEAAW",
+    "OEE-PE-Invoicing@0.35.0-3": "04t5b000002BR4AAAW"
   },
   "sourceApiVersion": "57.0"
 }

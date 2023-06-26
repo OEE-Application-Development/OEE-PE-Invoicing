@@ -1,7 +1,11 @@
 {
-  "orgName": "OEE-PE-Invoicing - Beta Test Org",
-  "sourceOrg": "00D6g000002hydVEAQ",
+  "orgName": "OEE-PE-Invoicing - Beta Org",
+  "edition": "Enterprise",
+  "features": ["SharedActivities"],
   "settings": {
+    "accountSettings": {
+      "enableAccountHistoryTracking": true
+    },
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
     },
@@ -16,6 +20,9 @@
       "sessionSettings": {
         "forceRelogin": false
       }
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
     }
   },
   "objectSettings": {
