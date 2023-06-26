@@ -3,18 +3,18 @@ global with sharing class PEPaymentEvent {
     global static List<AzureEventIntegration.AzureResponse> createPayment(List<PEPaymentRequest> requests) {
         List<AzureEventIntegration.AzureEvent> events = new List<AzureEventIntegration.AzureEvent>();
         for(PEPaymentRequest request : requests) {
-            events.add(PaymentEvent(request.invoiceNumber, request.transactionType, request.amount, request.processorId));
+            events.add(PaymentEvent(request.invoiceNumber, request.transactionType, request.amount, request.processorId, request.transId));
         }
 
         return new List<AzureEventIntegration.AzureResponse>{AzureEventIntegration.sendEvents(events, false)};
     }
 
-    private static AzureEventIntegration.AzureEvent PaymentEvent(String invoiceNumber, String transactionType, Decimal amount, String processorTransId) {
+    private static AzureEventIntegration.AzureEvent PaymentEvent(String invoiceNumber, String transactionType, Decimal amount, String processorTransId, String transId) {
         return new AzureEventIntegration.AzureEvent(
             'payment', 
             'PaymentSent', 
             'csuoee/noncredit/payment', 
-            new Map<String, Object>{'provider' => (processorTransId==null)?'Opus':'Authorize.net', 'invoiceNumber' => invoiceNumber, 'typeCode' => transactionType, 'amount' => amount, 'processorTransId' => processorTransId}
+            new Map<String, Object>{'provider' => (processorTransId==null)?'Opus':'Authorize.net', 'invoiceNumber' => invoiceNumber, 'typeCode' => transactionType, 'amount' => amount, 'processorTransId' => processorTransId, 'transId' => transId}
         );
     }
 
@@ -31,12 +31,24 @@ global with sharing class PEPaymentEvent {
         @InvocableVariable(Required=false Description='Processor Trans Id')
         global String processorId;
 
+        @InvocableVariable(Required=false Description='CSU Trans Id')
+        global String transId;
+
+        global PEPaymentRequest(){super(false);}
         global PEPaymentRequest(String invoiceNumber, String transactionType, Decimal amount, String processorId) {
             super(false);
             this.invoiceNumber = invoiceNumber;
             this.transactionType = transactionType;
             this.amount = amount;
             this.processorId = processorId;
+        }
+        global PEPaymentRequest(String invoiceNumber, String transactionType, Decimal amount, String processorId, String transId) {
+            super(false);
+            this.invoiceNumber = invoiceNumber;
+            this.transactionType = transactionType;
+            this.amount = amount;
+            this.processorId = processorId;
+            this.transId = transId;
         }
 
     }

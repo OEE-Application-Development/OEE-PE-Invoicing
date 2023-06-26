@@ -7,6 +7,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import paymentModal from "c/addPaymentModal";
 import datatableHelpers from "c/datatableHelpers";
 import modalAlert from "c/modalAlert";
+import modalConfirm from "c/modalConfirm";
 
 /* Invoice */
 import requestInvoice from '@salesforce/apex/InvoiceButtonHandler.requestInvoice';
@@ -45,6 +46,8 @@ import LINE_ITEM_REQUIRES_FULFILLED from '@salesforce/schema/Noncredit_Invoice_L
 
 /* Payments */
 import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
+import cancelPayment from '@salesforce/apex/InvoiceButtonHandler.initiatePaymentRefund';
+
 import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
 import PAYMENT_TYPE from '@salesforce/schema/Noncredit_Invoice_Payment__c.Payment_Type__c';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
@@ -70,6 +73,8 @@ const noPayments = [
     }
 ];
 const TRACKING_RESTART_TOAST = new ShowToastEvent({title: 'Line Item Tracking', message: 'Previous tracking for this line item was cancelled. If a course connection was found, then this should now be confirmed... otherwise tracking restarted!', variant: 'success'});
+const REFUND_SENT_TOAST = new ShowToastEvent({title: 'Payment Refund/Void', message: 'Refund Request Sent!', variant: 'success'});
+
 
 const LINE_ITEM_FIELDS = ['id', 
     LINE_ITEM_SECTION_REFERENCE.objectApiName+'.'+LINE_ITEM_SECTION_REFERENCE.fieldApiName, 
@@ -182,7 +187,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: 'Payment Type', fieldName: PAYMENT_TYPE.fieldApiName, type: 'text'},
         {label: 'Successful', fieldName: PAYMENT_SUCCESS.fieldApiName, type: 'boolean'},
         {label: 'Paid At', fieldName: PAYMENT_CREATED_AT.fieldApiName, type: 'date'},
-        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }}
+        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }},
+        {label: '', type: 'button', typeAttributes: {label: 'Refund/Void Payment', name: 'cancelPayment'}, cellAttributes: {alignment: 'center'}}
     ];
     paymentData = [];
     @wire(getRelatedListRecords, {
@@ -198,6 +204,36 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                 this.paymentData = datatableHelpers.parseFieldData(this.paymentColumns, data);
         } else {
             this.paymentData = noPayments;
+        }
+    }
+
+    handlePayItemAction(event) {
+        if(event.detail.action.name == 'cancelPayment') {
+            modalConfirm.open({
+                title: 'Refund/Void Payment',
+                content: 'Are you sure you want refund/void this payment?'
+            }).then((check1) => {
+                if(check1) {
+                    modalConfirm.open({
+                        title: 'WARNING',
+                        content: 'This will IMMEDIATELY refund/void this payment. If it came from Authorize.Net, then we will send a request to return the student\'s money & deactivate enrollments in Canvas.'
+                    }).then((check2) => {
+                        if(check2) {
+                            //Do it.
+                            cancelPayment({paymentId: event.detail.row.id})
+                                .then((refundMessage) => {
+                                    let customResponse = REFUND_SENT_TOAST;
+                                    customResponse.message = refundMessage;
+                                    this.dispatchEvent(customResponse);
+                                })
+                                .catch((error) => {
+                                    this.dispatchEvent(new ShowToastEvent({title: 'Payment Refund', message: error.body.message, variant: 'error'}));
+                                });
+                        }
+                    });
+                }
+            });
+            return;
         }
     }
 
@@ -290,8 +326,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     }
 
     spliceTrackingStatus(formattedData, trackingResult) {
+        console.log(formattedData);
         for(var i=0;i<formattedData.length;i++) {
-            formattedData[0].id = formattedData.Id;
+            if(!formattedData[i].id)
+                formattedData[i].id = formattedData[i].Id;
             try{
                 if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
                     formattedData[i].LineItemTracked = 'Invoice Cancelled';

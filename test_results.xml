@@ -1,32 +1,40 @@
-<testsuite tests="28">
-  <testcase classname="AzureEventIntegration_TEST" name="constructorCoverage" time="49" />
-  <testcase classname="AzureEventIntegration_TEST" name="getAccount" time="360">
-    <failure type="failed" message="System.AssertException: Assertion Failed"><![CDATA[Class.csuoee.AzureEventIntegration_TEST.getAccount: line 27, column 1]]></failure>
-  </testcase>
-  <testcase classname="AzureEventIntegration_TEST" name="sendEvents" time="18" />
-  <testcase classname="ButtonHandler_TEST" name="addPayment" time="3521" />
-  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoice" time="903" />
-  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoiceEmpty" time="543" />
-  <testcase classname="ButtonHandler_TEST" name="confirmLineItem" time="712" />
-  <testcase classname="ButtonHandler_TEST" name="emitEnrollmentComplete" time="922" />
-  <testcase classname="ButtonHandler_TEST" name="generateCanvasAccount" time="152" />
-  <testcase classname="ButtonHandler_TEST" name="generateContact" time="1129" />
-  <testcase classname="ButtonHandler_TEST" name="generateInvoice" time="708" />
-  <testcase classname="ButtonHandler_TEST" name="generateLineItem" time="763" />
-  <testcase classname="ButtonHandler_TEST" name="generateOffering" time="261" />
-  <testcase classname="ButtonHandler_TEST" name="insertEnrollment" time="1814" />
-  <testcase classname="ButtonHandler_TEST" name="requestInvoice" time="764" />
-  <testcase classname="ButtonHandler_TEST" name="sendEscalationEmail" time="1060" />
-  <testcase classname="ButtonHandler_TEST" name="trackLineItem" time="1557" />
-  <testcase classname="ButtonHandler_TEST" name="voidLineItem" time="656" />
-  <testcase classname="HandleEnrollments_TEST" name="handleStudentEnrollment" time="5133" />
-  <testcase classname="JsonTest_TEST" name="decode" time="27" />
-  <testcase classname="JsonTest_TEST" name="encode" time="9" />
-  <testcase classname="PEEvent_TEST" name="cancelRegistration" time="76" />
-  <testcase classname="PEEvent_TEST" name="enrollStudent" time="22" />
-  <testcase classname="PEEvent_TEST" name="lmsEnrollmentComplete" time="17" />
-  <testcase classname="PEEvent_TEST" name="lmsEnrollmentRequest" time="17" />
-  <testcase classname="PEEvent_TEST" name="sendHumanRequired" time="15" />
-  <testcase classname="PEEvent_TEST" name="unenrollStudent" time="17" />
-  <testcase classname="PEHelpers_TEST" name="recordTypeTest" time="160" />
+<testsuite tests="38">
+  <testcase classname="AzureEventIntegration_TEST" name="constructorCoverage" time="62" />
+  <testcase classname="AzureEventIntegration_TEST" name="getAccount" time="1122" />
+  <testcase classname="AzureEventIntegration_TEST" name="sendEvents" time="15" />
+  <testcase classname="ButtonHandler_TEST" name="addPayment" time="5502" />
+  <testcase classname="ButtonHandler_TEST" name="autocompleteInvoiceLineItem" time="1989" />
+  <testcase classname="ButtonHandler_TEST" name="checkLineItemEnrollmentExists" time="2018" />
+  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoice" time="2107" />
+  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoiceEmpty" time="625" />
+  <testcase classname="ButtonHandler_TEST" name="confirmLineItem" time="727" />
+  <testcase classname="ButtonHandler_TEST" name="emitEnrollmentComplete" time="1606" />
+  <testcase classname="ButtonHandler_TEST" name="escalateInvoice" time="632" />
+  <testcase classname="ButtonHandler_TEST" name="generateCanvasAccount" time="137" />
+  <testcase classname="ButtonHandler_TEST" name="generateContact" time="376" />
+  <testcase classname="ButtonHandler_TEST" name="generateInvoice" time="612" />
+  <testcase classname="ButtonHandler_TEST" name="generateJourneySettings" time="27" />
+  <testcase classname="ButtonHandler_TEST" name="generateLineItem" time="839" />
+  <testcase classname="ButtonHandler_TEST" name="generateOffering" time="284" />
+  <testcase classname="ButtonHandler_TEST" name="insertEnrollment" time="762" />
+  <testcase classname="ButtonHandler_TEST" name="requestInvoice" time="666" />
+  <testcase classname="ButtonHandler_TEST" name="sendEscalationEmail" time="629" />
+  <testcase classname="ButtonHandler_TEST" name="trackLineItem" time="2269" />
+  <testcase classname="ButtonHandler_TEST" name="voidLineItem" time="952" />
+  <testcase classname="CombinedFunctions_TEST" name="createEventsForSection" time="4681" />
+  <testcase classname="CombinedFunctions_TEST" name="handleEnrollments" time="1100" />
+  <testcase classname="CombinedFunctions_TEST" name="midpointTriggers" time="2622" />
+  <testcase classname="CombinedFunctions_TEST" name="overloadEvent" time="2858" />
+  <testcase classname="CombinedFunctions_TEST" name="refreshData" time="242" />
+  <testcase classname="CombinedFunctions_TEST" name="simpleEmail" time="129" />
+  <testcase classname="JsonTest_TEST" name="decode" time="34" />
+  <testcase classname="JsonTest_TEST" name="encode" time="10" />
+  <testcase classname="PEEvent_TEST" name="cancelRegistration" time="89" />
+  <testcase classname="PEEvent_TEST" name="enrollStudent" time="17" />
+  <testcase classname="PEEvent_TEST" name="lmsEnrollmentComplete" time="9" />
+  <testcase classname="PEEvent_TEST" name="lmsEnrollmentRequest" time="8" />
+  <testcase classname="PEEvent_TEST" name="sendHumanRequired" time="9" />
+  <testcase classname="PEEvent_TEST" name="unenrollStudent" time="8" />
+  <testcase classname="PEHandleEnrollments_TEST" name="handleStudentEnrollment" time="3824" />
+  <testcase classname="PEHelpers_TEST" name="recordTypeTest" time="120" />
 </testsuite>

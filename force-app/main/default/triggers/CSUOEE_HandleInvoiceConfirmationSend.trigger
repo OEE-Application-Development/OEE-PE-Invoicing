@@ -18,7 +18,7 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
                     csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, 
                     csuoee__Event_Type__c = journeySettings.csuoee__Invoicing_Journey_Confirmation_Type__c, 
                     csuoee__Event__c = journeySettings.csuoee__Invoicing_Journey_API_Key__c,
-                    csuoee__Key__c = journeySettings.csuoee__Invoicing_Journey_API_Key__c+'-'+invoice.Id,
+                    csuoee__Key__c = journeySettings.csuoee__Invoicing_Journey_API_Key__c+'-'+invoice.Id+'-Confirmation',
                     csuoee__RelatedToId__c = invoice.Id)
             );
             invoice.csuoee__Fulfilled_Email_Sent__c = true;

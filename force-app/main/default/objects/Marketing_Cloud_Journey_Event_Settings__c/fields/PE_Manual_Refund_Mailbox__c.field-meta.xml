@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PE_Manual_Refund_Mailbox__c</fullName>
+    <description>Mailbox to send Manual Refund requests to.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Mailbox to send Manual Refund requests to.</inlineHelpText>
+    <label>PE Manual Refund Mailbox</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>

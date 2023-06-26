@@ -27,6 +27,16 @@
                 <default>false</default>
                 <label>Check</label>
             </value>
+            <value>
+                <fullName>Refund</fullName>
+                <default>false</default>
+                <label>Refund</label>
+            </value>
+            <value>
+                <fullName>Void</fullName>
+                <default>false</default>
+                <label>Void</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

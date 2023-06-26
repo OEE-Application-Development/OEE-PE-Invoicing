@@ -66,10 +66,10 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
         }).then((result) => {
             if(result) {
                 cancelInvoice({invoiceId: this.recordId})
-                .then((result) => {
+                .then((invoiceMessage) => {
                     modalAlert.open({
                         title: 'Invoice Cancelled',
-                        content: 'Cancel Sent! Closing this tab while processing your request...'
+                        content: invoiceMessage
                     }).then((result) => {
                         workspaceAPI.closeCurrentTab();
                     });
@@ -113,6 +113,14 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
                 url: 'https://online.colostate.edu/c/portal/layout?p_l_id=28.3&p_p_id=EXT_REGISTRATIONS&p_p_action=1&p_p_state=maximized&p_p_mode=view&_EXT_REGISTRATIONS_struts_action=%2Fcsu%2Fregistrations%2Fedit_registration&inode='+regId
             }
         });
+    }
+
+    get cancelLabel() {
+        if(getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD)) {
+            return "Drop & Refund";
+        } else {
+            return "Void Invoice";
+        }
     }
     
 }
