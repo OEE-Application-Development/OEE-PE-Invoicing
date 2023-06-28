@@ -5,7 +5,7 @@
         <name>Is_This_A_Credit_Transfer</name>
         <label>Is This A Credit Transfer?</label>
         <locationX>182</locationX>
-        <locationY>314</locationY>
+        <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Lookup_Related_Invoice</targetReference>
         </defaultConnector>
@@ -60,7 +60,7 @@
         <name>Create_Credit_Payment</name>
         <label>Create Credit Payment</label>
         <locationX>50</locationX>
-        <locationY>434</locationY>
+        <locationY>386</locationY>
         <inputAssignments>
             <field>Amount__c</field>
             <value>
@@ -92,6 +92,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Payment_Type__c</field>
+            <value>
+                <stringValue>Sponsor</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Successful__c</field>
             <value>
                 <booleanValue>true</booleanValue>
@@ -104,7 +110,7 @@
         <name>Create_Transfer_Line_Item</name>
         <label>Create Transfer Line Item</label>
         <locationX>314</locationX>
-        <locationY>554</locationY>
+        <locationY>494</locationY>
         <inputAssignments>
             <field>Debit_Trans_Id__c</field>
             <value>
@@ -142,7 +148,7 @@
         <name>Lookup_Invoice</name>
         <label>Lookup Invoice</label>
         <locationX>182</locationX>
-        <locationY>194</locationY>
+        <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_This_A_Credit_Transfer</targetReference>
@@ -163,7 +169,7 @@
         <name>Lookup_Related_Invoice</name>
         <label>Lookup Related Invoice</label>
         <locationX>314</locationX>
-        <locationY>434</locationY>
+        <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Transfer_Line_Item</targetReference>
