@@ -302,11 +302,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                             .then((result) => {
                                 modalAlert.open({
                                     title: 'Sponsor Payment Sent',
-                                    content: 'Sponsor Payment Sent! This will take a moment to complete because we are generating a new Invoice for the sponsor. Hang tight, the invoice should appear soon!'
+                                    content: 'Sponsor Payment Sent! This will take a moment to complete because we are generating a new Invoice for the sponsor. Closing this window - please wait until the sponsor invoice appears. Hang tight, the invoice should appear soon!'
                                 })
                                 .then((ok) => {
-                                    this.refreshPaymentData();
-                                    workspaceAPI.refreshCurrentTab();
+                                    workspaceAPI.closeCurrentTab();
                                 });
                             })
                             .catch((error) => {
