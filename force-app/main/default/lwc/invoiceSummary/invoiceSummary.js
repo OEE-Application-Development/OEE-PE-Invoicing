@@ -24,6 +24,8 @@ import NOTES from '@salesforce/schema/Noncredit_Invoice__c.Notes__c';
 import INVOICE_CREATED_AT from '@salesforce/schema/Noncredit_Invoice__c.CreatedDate';
 import INVOICE_CANCELLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Cancelled__c';
 
+import IS_SPONSOR_INVOICE from '@salesforce/schema/Noncredit_Invoice__c.Is_Sponsor_Invoice__c';
+
 import IS_PAID from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
 import IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Fulfilled__c';
@@ -61,7 +63,7 @@ import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Open
 
 import workspaceAPI from "c/workspaceAPI";
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED];
+const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED, IS_SPONSOR_INVOICE];
 const noPayments = [
     {
         "id": "fakeid",
@@ -144,11 +146,16 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedLineItems({error, data}) {
         if(data) {
-            getTrackingInterviewsForInvoice({invoiceId: this.recordId})
-                .then((result) => {
-                    let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
-                    this.lineItemData = this.spliceTrackingStatus(formattedData, result);
-                });
+            if(getFieldValue(this.invoice.data, IS_SPONSOR_INVOICE)) {
+                let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
+                this.lineItemData = this.spliceTrackingStatus(formattedData, result);
+            } else {
+                getTrackingInterviewsForInvoice({invoiceId: this.recordId})
+                    .then((result) => {
+                        let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
+                        this.lineItemData = this.spliceTrackingStatus(formattedData, result);
+                    });
+            }
         }
     }
 
@@ -326,13 +333,18 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     }
 
     spliceTrackingStatus(formattedData, trackingResult) {
-        console.log(formattedData);
+        let isSponsor = getFieldValue(this.invoice.data, IS_SPONSOR_INVOICE);
+        let isCancelled = getFieldValue(this.invoice.data, INVOICE_CANCELLED);
         for(var i=0;i<formattedData.length;i++) {
             if(!formattedData[i].id)
                 formattedData[i].id = formattedData[i].Id;
             try{
-                if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
+                if(isCancelled) {
                     formattedData[i].LineItemTracked = 'Invoice Cancelled';
+                    continue;
+                }
+                if(isSponsor) {
+                    formattedData[i].LineItemTracked = 'Sponsor Invoice';
                     continue;
                 }
                 let status = trackingResult[formattedData[i].csuoee__Section_Reference__c];
