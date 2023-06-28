@@ -1,6 +1,6 @@
 global with sharing class InvoiceButtonHandler {
     private static csuoee__Noncredit_Invoice__c getInvoiceById(Id invoiceId) {
-        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
+        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c, csuoee__Line_Item_Amount__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
     }
     
     @AuraEnabled
@@ -106,7 +106,14 @@ global with sharing class InvoiceButtonHandler {
             csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
             List<PEPaymentEvent.PEPaymentRequest> payRequests = new List<PEPaymentEvent.PEPaymentRequest>();
             for(csuoee__Noncredit_Invoice_Line_Item__c li : invoice.csuoee__Noncredit_Invoice_Line_Items__r) {
-                payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, amount, processorId));
+                if(amount <= 0) break;
+                if(amount >= li.csuoee__Line_Item_Amount__c) {
+                    payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, li.csuoee__Line_Item_Amount__c, processorId));
+                    amount-=li.csuoee__Line_Item_Amount__c;
+                } else {
+                    payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, amount, processorId));
+                    amount = 0;
+                }
             }
             if(payRequests.isEmpty()) return true;
 
