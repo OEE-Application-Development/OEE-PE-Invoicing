@@ -35,6 +35,11 @@
         <expression>-1*ABS({!$Record.csuoee__Amount__c})</expression>
         <scale>2</scale>
     </formulas>
+    <formulas>
+        <name>NiceTransferPaymentName</name>
+        <dataType>String</dataType>
+        <expression>&apos;Credit Transfer (Sponsor - Invoice#&apos;&amp;{!$Record.csuoee__Related_Invoice__c}&amp;&apos;)&apos;</expression>
+    </formulas>
     <interviewLabel>Handle Payment Transfer {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Handle Payment Transfer</label>
     <processMetadataValues>
@@ -82,7 +87,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Credit Transfer (Sponsor)</stringValue>
+                <elementReference>NiceTransferPaymentName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
