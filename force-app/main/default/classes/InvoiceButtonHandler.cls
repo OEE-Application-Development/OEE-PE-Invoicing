@@ -106,7 +106,14 @@ global with sharing class InvoiceButtonHandler {
             csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
             List<PEPaymentEvent.PEPaymentRequest> payRequests = new List<PEPaymentEvent.PEPaymentRequest>();
             for(csuoee__Noncredit_Invoice_Line_Item__c li : invoice.csuoee__Noncredit_Invoice_Line_Items__r) {
-                payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, amount, processorId));
+                if(amount <= 0) break;
+                if(amount >= li.csuoee__Line_Item_Amount__c) {
+                    payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, li.csuoee__Line_Item_Amount__c, processorId));
+                    amount-=li.csuoee__Line_Item_Amount__c;
+                } else {
+                    payRequests.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, paymentType, amount, processorId));
+                    amount = 0;
+                }
             }
             if(payRequests.isEmpty()) return true;
 
