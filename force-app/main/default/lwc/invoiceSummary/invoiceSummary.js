@@ -216,6 +216,27 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
 
     handlePayItemAction(event) {
         if(event.detail.action.name == 'cancelPayment') {
+            console.log(event.detail.row);
+            if(event.detail.row.csuoee__Payment_Type__c == "") return;
+            if(event.detail.row.csuoee__Payment_Type__c == "Sponsor") {
+                modalConfirm.open({
+                    title: 'Cancel Sponsor Payment',
+                    content: 'This is a sponsor payment, cancelling it will remove this credit & return it to the sponsor\'s invoice.'
+                }).then((confirmSponsorRefund) => {
+                    if(confirmSponsorRefund) {
+                        cancelPayment({paymentId: event.detail.row.id})
+                                .then((refundMessage) => {
+                                    let customResponse = REFUND_SENT_TOAST;
+                                    customResponse.message = refundMessage;
+                                    this.dispatchEvent(customResponse);
+                                })
+                                .catch((error) => {
+                                    this.dispatchEvent(new ShowToastEvent({title: 'Payment Refund', message: error.body.message, variant: 'error'}));
+                                });
+                    }
+                });
+                return;
+            }
             modalConfirm.open({
                 title: 'Refund/Void Payment',
                 content: 'Are you sure you want refund/void this payment?'
