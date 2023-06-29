@@ -144,7 +144,7 @@ global with sharing class InvoiceButtonHandler {
         csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, csuoee__Event__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d', csuoee__Key__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d'+invoice.Id, csuoee__Event_Type__c = 'PaymentEscalation', csuoee__RelatedToId__c = invoiceId);
         insert event;
         
-        if(String.isBlank(event.Id)) throw new AuraHandledException('Could not send email! Possibly a duplicate...');
+        if(String.isBlank(event.Id)) return false;
 
         invoice.csuoee__Escalation_Sent__c = true;
         //Set for cancel
