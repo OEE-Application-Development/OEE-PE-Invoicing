@@ -5,6 +5,7 @@ import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import paymentModal from "c/addPaymentModal";
+import refundModal from "c/refundPaymentModal";
 import datatableHelpers from "c/datatableHelpers";
 import modalAlert from "c/modalAlert";
 import modalConfirm from "c/modalConfirm";
@@ -216,39 +217,49 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
 
     handlePayItemAction(event) {
         if(event.detail.action.name == 'cancelPayment') {
-            console.log(event.detail.row);
             if(event.detail.row.csuoee__Payment_Type__c == "") return;
             if(event.detail.row.csuoee__Payment_Type__c == "Sponsor") {
-                modalConfirm.open({
+                refundModal.open({
+                    size: 'small',
                     title: 'Cancel Sponsor Payment',
-                    content: 'This is a sponsor payment, cancelling it will remove this credit & return it to the sponsor\'s invoice.'
+                    content: 'This is a sponsor payment, cancelling it will remove this credit & return it to the sponsor\'s invoice.',
+                    defaultAmount: event.detail.row.csuoee__Amount__c
                 }).then((confirmSponsorRefund) => {
-                    if(confirmSponsorRefund) {
-                        cancelPayment({paymentId: event.detail.row.id})
-                                .then((refundMessage) => {
-                                    let customResponse = REFUND_SENT_TOAST;
-                                    customResponse.message = refundMessage;
-                                    this.dispatchEvent(customResponse);
+                    if(confirmSponsorRefund.ok) {
+                        modalConfirm.open({
+                            title: 'Sponsor Refund',
+                            content: 'This will return ($'+confirmSponsorRefund.amount.toFixed(2)+') from this invoice to the sponsor invoice.'
+                        }).then((confirmSponsorRefund2) => {
+                            if(confirmSponsorRefund2) {
+                                cancelPayment({paymentId: event.detail.row.id, amount: confirmSponsorRefund.amount})
+                                .then((sponsorRefundMessage) => {
+                                    let sponsorCustomResponse = REFUND_SENT_TOAST;
+                                    sponsorCustomResponse.message = sponsorRefundMessage;
+                                    this.dispatchEvent(sponsorCustomResponse);
                                 })
                                 .catch((error) => {
                                     this.dispatchEvent(new ShowToastEvent({title: 'Payment Refund', message: error.body.message, variant: 'error'}));
                                 });
+                            }
+                        });
                     }
                 });
                 return;
             }
-            modalConfirm.open({
+            refundModal.open({
+                size: 'small',
                 title: 'Refund/Void Payment',
-                content: 'Are you sure you want refund/void this payment?'
+                content: 'Are you sure you want refund/void this payment?',
+                defaultAmount: event.detail.row.csuoee__Amount__c
             }).then((check1) => {
-                if(check1) {
+                if(check1.ok) {
                     modalConfirm.open({
                         title: 'WARNING',
-                        content: 'This will IMMEDIATELY refund/void this payment. If it came from Authorize.Net, then we will send a request to return the student\'s money & deactivate enrollments in Canvas.'
+                        content: 'This will IMMEDIATELY refund/void ($'+check1.amount.toFixed(2)+') from this payment. If it came from Authorize.Net, then we will send a request to return the student\'s money & deactivate enrollments in Canvas.'
                     }).then((check2) => {
                         if(check2) {
                             //Do it.
-                            cancelPayment({paymentId: event.detail.row.id})
+                            cancelPayment({paymentId: event.detail.row.id, amount: check1.amount})
                                 .then((refundMessage) => {
                                     let customResponse = REFUND_SENT_TOAST;
                                     customResponse.message = refundMessage;
