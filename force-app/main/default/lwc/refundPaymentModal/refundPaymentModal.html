@@ -1,0 +1,13 @@
+<template>
+    <lightning-modal-header label="Refund Payment"></lightning-modal-header>    
+    <lightning-modal-body>
+        <lightning-card>Please specify the Amount of the refund (default is the entire payment).</lightning-card>
+        <lightning-record-edit-form object-api-name="csuoee__Noncredit_Invoice_Payment__c">
+            <lightning-input-field lwc:ref="refundamount" field-name="csuoee__Amount__c" value={defaultAmount}></lightning-input-field>
+        </lightning-record-edit-form>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Refund" onclick={handleRefund}></lightning-button>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+    </lightning-modal-footer>
+</template>

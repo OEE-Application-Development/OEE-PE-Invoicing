@@ -139,12 +139,12 @@ global with sharing class InvoiceButtonHandler {
     @AuraEnabled
     public static boolean sendEscalationEmail(Id invoiceId) {
         csuoee__Noncredit_Invoice__c invoice = InvoiceButtonHandler.getInvoiceById(invoiceId);
-        if(invoice.csuoee__Escalation_Sent__c) throw new AuraHandledException('An escalation email has already been sent for this invoice!');
+        if(invoice.csuoee__Escalation_Sent__c) return false;
 
         csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, csuoee__Event__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d', csuoee__Key__c = 'APIEvent-5fb3143e-8df7-32b9-4d07-dec54063bd7d'+invoice.Id, csuoee__Event_Type__c = 'PaymentEscalation', csuoee__RelatedToId__c = invoiceId);
         insert event;
         
-        if(String.isBlank(event.Id)) throw new AuraHandledException('Could not send email! Possibly a duplicate...');
+        if(String.isBlank(event.Id)) return false;
 
         invoice.csuoee__Escalation_Sent__c = true;
         //Set for cancel
@@ -171,7 +171,7 @@ global with sharing class InvoiceButtonHandler {
     }
 
     @AuraEnabled
-    public static String initiatePaymentRefund(Id paymentId){
+    public static String initiatePaymentRefund(Id paymentId, Decimal amount){
         try {
             csuoee__Noncredit_Invoice_Payment__c toRefund = [select Id, csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, csuoee__Amount__c, csuoee__Processor_Trans_Id__c, csuoee__CSU_Trans_Id__c, csuoee__Successful__c from csuoee__Noncredit_Invoice_Payment__c where Id = :paymentId LIMIT 1];
             if(!toRefund.csuoee__Successful__c) throw new IllegalArgumentException('This payment is already not marked successful... has it already been removed?');
@@ -179,7 +179,7 @@ global with sharing class InvoiceButtonHandler {
                 new List<PEPaymentEvent.PEPaymentRequest>{new PEPaymentEvent.PEPaymentRequest(
                     toRefund.csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, 
                     'Cancel', 
-                    toRefund.csuoee__Amount__c, 
+                    amount, 
                     toRefund.csuoee__Processor_Trans_Id__c,
                     toRefund.csuoee__CSU_Trans_Id__c)}
             );

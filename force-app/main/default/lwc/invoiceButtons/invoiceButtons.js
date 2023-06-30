@@ -95,11 +95,12 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
         }).then((result) => {
             if(result) {
                 sendEscalationEmail({invoiceId: this.recordId}).then((emailResult) => {
-                    this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Escalation Sent!', variant: 'success'}));
-                    workspaceAPI.refreshCurrentTab();
-                })
-                .catch((error) => {
-                    this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Failed to send Escalation: '+error.body.message, variant: 'error'}));
+                    if(emailResult) {
+                        this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Escalation Sent!', variant: 'success'}));
+                        workspaceAPI.refreshCurrentTab();
+                    } else {
+                        this.dispatchEvent(new ShowToastEvent({title: 'Escalation Send', message: 'Failed to send Escalation; usually this is because an escalation has already been sent.', variant: 'error'}));
+                    }
                 });
             }
         })

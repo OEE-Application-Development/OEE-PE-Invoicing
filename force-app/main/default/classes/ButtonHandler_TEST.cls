@@ -53,14 +53,14 @@ private class ButtonHandler_TEST {
         invoice.csuoee__Is_Cancelled__c = true;
         update invoice;
 
-        String messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id);
+        String messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id, payment.csuoee__Amount__c);
         System.assert('Refund Request Sent'.equals(messageResult));
 
         payment.csuoee__Successful__c = false;
         update payment;
 
         try {
-            messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id);
+            messageResult = InvoiceButtonHandler.initiatePaymentRefund(payment.Id, payment.csuoee__Amount__c);
             System.assert(false);
         } catch(Exception e) {
             System.assert(true);
@@ -160,7 +160,7 @@ private class ButtonHandler_TEST {
         System.assert(result);
 
         try {
-            InvoiceButtonHandler.sendEscalationEmail(invoice.Id);
+            result = InvoiceButtonHandler.sendEscalationEmail(invoice.Id);
         } catch(AuraHandledException ae) {
             result = false;
         }
