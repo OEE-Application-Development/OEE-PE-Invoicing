@@ -75,6 +75,7 @@ const noPayments = [
         "csuoee__Amount__c": null
     }
 ];
+const noCommunication = [{"id": "fakeid", "Subject": "No Communication", "csuoee__Has_Been_Opened__c": false}];
 const TRACKING_RESTART_TOAST = new ShowToastEvent({title: 'Line Item Tracking', message: 'Previous tracking for this line item was cancelled. If a course connection was found, then this should now be confirmed... otherwise tracking restarted!', variant: 'success'});
 const REFUND_SENT_TOAST = new ShowToastEvent({title: 'Payment Refund/Void', message: 'Refund Request Sent!', variant: 'success'});
 
@@ -287,7 +288,11 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedEmails({error, data}) {
         if(data) {
-            this.emailData = data;
+            if(data.length == 0) {
+                this.emailData = noCommunication;
+            } else {
+                this.emailData = data;
+            }
         }
     }
     
