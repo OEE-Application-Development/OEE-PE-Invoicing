@@ -49,6 +49,13 @@
             <operator>equals</operator>
             <value>1</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Intended_Payment_Method__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Credit Card</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
@@ -66,7 +73,7 @@
         <field>Noncredit_Invoice__c$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Fully Paid Invoices</name>
+    <name>Credit Card Invoices - Paid</name>
     <params>
         <name>co</name>
         <value>1</value>

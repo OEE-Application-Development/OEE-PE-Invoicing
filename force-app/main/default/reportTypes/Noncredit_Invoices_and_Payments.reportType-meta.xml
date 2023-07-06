@@ -142,7 +142,57 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
+            <field>Actual_Paid__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Escalation_Sent__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
             <field>Has_Open_Entry__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Cancel_At__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Cancel_Requested__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Credit_Line_Item_Count__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Fulfilled_Email_Sent__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LastActivityDate</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Intended_Payment_Method__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Notes__c</field>
+            <table>Noncredit_Invoice__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Open_Entry_Line_Item_Count__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
         <masterLabel>Noncredit Invoices</masterLabel>
@@ -162,6 +212,16 @@
             <checkedByDefault>false</checkedByDefault>
             <field>CreatedDate</field>
             <table>Noncredit_Invoice__c.Payments__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Noncredit_Invoice__c</field>
+            <table>Noncredit_Invoice__c.Payments__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Cancel_in_Progress__c</field>
+            <table>Noncredit_Invoice__c</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
@@ -211,6 +271,11 @@
         <columns>
             <checkedByDefault>false</checkedByDefault>
             <field>Is_Actual__c</field>
+            <table>Noncredit_Invoice__c.Payments__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Payment_Type__c</field>
             <table>Noncredit_Invoice__c.Payments__r</table>
         </columns>
         <masterLabel>Noncredit Invoice Payments</masterLabel>

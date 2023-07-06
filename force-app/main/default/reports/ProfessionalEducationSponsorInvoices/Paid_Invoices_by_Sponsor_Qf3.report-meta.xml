@@ -20,6 +20,10 @@
     <columns>
         <field>Account.Noncredit_Invoices__r$LastModifiedDate</field>
     </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Account.Noncredit_Invoices__r$Line_Item_Count__c</field>
+    </columns>
     <filter>
         <criteriaItems>
             <column>Account.Noncredit_Invoices__r$Is_Sponsor_Invoice__c</column>
@@ -68,7 +72,7 @@
         <field>Account$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Paid Invoices by Sponsor</name>
+    <name>Sponsor Invoices - Paid</name>
     <params>
         <name>co</name>
         <value>1</value>

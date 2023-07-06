@@ -61,7 +61,7 @@
         <field>Account$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Cancelled Invoices by Sponsor</name>
+    <name>Sponsor Invoices - Cancelled</name>
     <params>
         <name>co</name>
         <value>1</value>
