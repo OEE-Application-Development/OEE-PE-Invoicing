@@ -1,85 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
     <columns>
-        <field>Account.Noncredit_Invoices__r$Name</field>
-    </columns>
-    <columns>
-        <field>Account.Noncredit_Invoices__r$Contact__c</field>
+        <field>Noncredit_Invoice__c$Invoice_Number__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.Noncredit_Invoices__r$Total_Amount__c</field>
+        <field>Noncredit_Invoice__c$Total_Amount__c</field>
     </columns>
     <columns>
         <aggregateTypes>Sum</aggregateTypes>
-        <field>Account.Noncredit_Invoices__r$Total_Paid__c</field>
+        <field>Noncredit_Invoice__c$Total_Paid__c</field>
     </columns>
     <columns>
-        <field>Account.Noncredit_Invoices__r$Registration_Id__c</field>
+        <field>Noncredit_Invoice__c$Noncredit_ID__c</field>
     </columns>
     <columns>
-        <field>Account.Noncredit_Invoices__r$LastModifiedDate</field>
+        <field>Noncredit_Invoice__c$Registration_Id__c</field>
+    </columns>
+    <columns>
+        <field>Noncredit_Invoice__c$LastModifiedDate</field>
     </columns>
     <filter>
         <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Is_Sponsor_Invoice__c</column>
+            <column>Noncredit_Invoice__c$Is_Paid__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Is_Paid__c</column>
+            <column>Noncredit_Invoice__c$Is_Cancelled__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>0</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Is_Cancelled__c</column>
+            <column>Noncredit_Invoice__c$Has_Failed_Payments__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>0</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Has_Failed_Payments__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>0</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Is_Noncredit_Only__c</column>
+            <column>Noncredit_Invoice__c$Is_Noncredit_Only__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Intended_Payment_Method__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Credit Card</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
     <groupingsDown>
-        <field>Account$CreatedDate</field>
+        <field>Noncredit_Invoice__c$CreatedDate</field>
         <sortOrder>Desc</sortOrder>
     </groupingsDown>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>Account$Name</field>
+        <field>Noncredit_Invoice__c$Contact__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Unpaid Invoices by Sponsor</name>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Noncredit_Invoice__c$Name</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Credit Card Invoices - Paid</name>
     <params>
         <name>co</name>
         <value>1</value>
     </params>
-    <reportType>Accounts_and_Noncredit_Invoices__c</reportType>
+    <reportType>Noncredit_Invoices__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
     <showGrandTotal>true</showGrandTotal>
-    <showSubTotals>true</showSubTotals>
+    <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
-        <dateColumn>Account$CreatedDate</dateColumn>
+        <dateColumn>Noncredit_Invoice__c$CreatedDate</dateColumn>
         <interval>INTERVAL_CUSTOM</interval>
     </timeFrameFilter>
 </Report>

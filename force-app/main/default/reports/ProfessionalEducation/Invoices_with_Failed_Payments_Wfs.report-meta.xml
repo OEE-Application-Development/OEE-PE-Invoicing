@@ -7,6 +7,9 @@
         <field>Noncredit_Invoice__c.Payments__r$Name</field>
     </columns>
     <columns>
+        <field>Noncredit_Invoice__c.Payments__r$Failure_Reason__c</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Noncredit_Invoice__c$Total_Amount__c</field>
     </columns>
@@ -15,25 +18,38 @@
         <field>Noncredit_Invoice__c$Total_Paid__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Noncredit_Invoice__c.Payments__r$Amount__c</field>
+        <field>Noncredit_Invoice__c$Registration_Id__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Noncredit_Invoice__c$Has_Failed_Payments__c</field>
+        <field>Noncredit_Invoice__c.Payments__r$CSU_Trans_Id__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Noncredit_Invoice__c$Is_Cancelled__c</field>
+        <field>Noncredit_Invoice__c.Payments__r$Processor_Trans_Id__c</field>
     </columns>
     <columns>
-        <aggregateTypes>Sum</aggregateTypes>
-        <field>Noncredit_Invoice__c$Is_Paid__c</field>
+        <field>Noncredit_Invoice__c.Payments__r$Processor_Trans_Status__c</field>
+    </columns>
+    <columns>
+        <field>Noncredit_Invoice__c$Payer_Account__c</field>
     </columns>
     <columns>
         <field>Noncredit_Invoice__c$LastModifiedDate</field>
     </columns>
     <filter>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Has_Failed_Payments__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Is_Cancelled__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>false</isUnlocked>
+            <operator>equals</operator>
+            <value>0</value>
+        </criteriaItems>
         <criteriaItems>
             <column>Noncredit_Invoice__c$Is_Sponsor_Invoice__c</column>
             <columnToColumn>false</columnToColumn>
@@ -47,6 +63,13 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Intended_Payment_Method__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Credit Card</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -65,7 +88,7 @@
         <field>Noncredit_Invoice__c$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>All Noncredit Invoices (Non-Sponsor)</name>
+    <name>Credit Card Invoices - Failed Payments</name>
     <params>
         <name>co</name>
         <value>0</value>

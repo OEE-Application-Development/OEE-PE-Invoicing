@@ -4,6 +4,9 @@
         <field>Noncredit_Invoice__c$Invoice_Number__c</field>
     </columns>
     <columns>
+        <field>Noncredit_Invoice__c.Payments__r$Name</field>
+    </columns>
+    <columns>
         <aggregateTypes>Sum</aggregateTypes>
         <field>Noncredit_Invoice__c$Total_Amount__c</field>
     </columns>
@@ -12,31 +15,27 @@
         <field>Noncredit_Invoice__c$Total_Paid__c</field>
     </columns>
     <columns>
-        <field>Noncredit_Invoice__c$Noncredit_ID__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c.Payments__r$Amount__c</field>
     </columns>
     <columns>
-        <field>Noncredit_Invoice__c$Registration_Id__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c$Has_Failed_Payments__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c$Is_Cancelled__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c$Is_Paid__c</field>
     </columns>
     <columns>
         <field>Noncredit_Invoice__c$LastModifiedDate</field>
     </columns>
     <filter>
         <criteriaItems>
-            <column>Noncredit_Invoice__c$Is_Paid__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Noncredit_Invoice__c$Is_Cancelled__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>0</value>
-        </criteriaItems>
-        <criteriaItems>
-            <column>Noncredit_Invoice__c$Has_Failed_Payments__c</column>
+            <column>Noncredit_Invoice__c$Is_Sponsor_Invoice__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
@@ -48,6 +47,13 @@
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Intended_Payment_Method__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value>Credit Card</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
@@ -66,15 +72,15 @@
         <field>Noncredit_Invoice__c$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Fully Paid Invoices</name>
+    <name>All Credit Card Invoices</name>
     <params>
         <name>co</name>
-        <value>1</value>
+        <value>0</value>
     </params>
-    <reportType>Noncredit_Invoices__c</reportType>
+    <reportType>Noncredit_Invoices_and_Payments__c</reportType>
     <scope>organization</scope>
     <showDetails>true</showDetails>
-    <showGrandTotal>true</showGrandTotal>
+    <showGrandTotal>false</showGrandTotal>
     <showSubTotals>false</showSubTotals>
     <timeFrameFilter>
         <dateColumn>Noncredit_Invoice__c$CreatedDate</dateColumn>

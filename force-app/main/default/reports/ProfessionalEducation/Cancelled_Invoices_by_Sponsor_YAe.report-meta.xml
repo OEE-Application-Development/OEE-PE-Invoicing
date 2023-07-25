@@ -29,18 +29,11 @@
             <value>1</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Account.Noncredit_Invoices__r$Is_Paid__c</column>
-            <columnToColumn>false</columnToColumn>
-            <isUnlocked>false</isUnlocked>
-            <operator>equals</operator>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
             <column>Account.Noncredit_Invoices__r$Is_Cancelled__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
-            <value>0</value>
+            <value>1</value>
         </criteriaItems>
         <criteriaItems>
             <column>Account.Noncredit_Invoices__r$Has_Failed_Payments__c</column>
@@ -68,7 +61,7 @@
         <field>Account$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Paid Invoices by Sponsor</name>
+    <name>Sponsor Invoices - Cancelled</name>
     <params>
         <name>co</name>
         <value>1</value>
