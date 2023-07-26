@@ -130,7 +130,7 @@
         <name>Send_Invoice_Escalation</name>
         <label>Send Invoice Escalation</label>
         <locationX>2426</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <actionName>InvoiceEscalationInvocable</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -149,7 +149,7 @@
         <name>Flip_Escalated_True</name>
         <label>Flip Escalated True</label>
         <locationX>2426</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>IsEscalated</assignToReference>
             <operator>Assign</operator>
@@ -334,6 +334,37 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>Pre_Escalation_Refresh</name>
+        <label>Pre-Escalation Refresh</label>
+        <locationX>2426</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Invoice_Escalation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LineItemInProgress.Id</elementReference>
+            </value>
+        </filters>
+        <object>Noncredit_Invoice_Line_Item__c</object>
+        <outputReference>LineItemInProgress</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Is_Fulfilled__c</queriedFields>
+        <queriedFields>Requires_LMS_Fulfillment__c</queriedFields>
+        <queriedFields>Canvas_Enrollment__c</queriedFields>
+        <queriedFields>Course_Offering__c</queriedFields>
+        <queriedFields>Is_Actual__c</queriedFields>
+        <queriedFields>Is_Confirmed__c</queriedFields>
+        <queriedFields>Is_Credit_Line_Item__c</queriedFields>
+        <queriedFields>Line_Item_Amount__c</queriedFields>
+        <queriedFields>Noncredit_Invoice__c</queriedFields>
+        <queriedFields>Section_Reference__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
         <locationX>1469</locationX>
@@ -438,7 +469,7 @@
             <targetReference>Is_this_a_valid_start</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>DeserializedLmsCourseEnrollment</name>
         <dataType>SObject</dataType>
@@ -690,7 +721,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Send_Invoice_Escalation</targetReference>
+                <targetReference>Pre_Escalation_Refresh</targetReference>
             </connector>
             <eventType>AlarmEvent</eventType>
             <inputParameters>
@@ -739,7 +770,7 @@
             </conditions>
             <connector>
                 <isGoTo>true</isGoTo>
-                <targetReference>Send_Invoice_Escalation</targetReference>
+                <targetReference>Pre_Escalation_Refresh</targetReference>
             </connector>
             <eventType>AlarmEvent</eventType>
             <inputParameters>
