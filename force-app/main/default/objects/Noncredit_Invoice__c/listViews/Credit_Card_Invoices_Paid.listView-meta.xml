@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Invoices_Pending_Failed_Payment</fullName>
+    <fullName>Credit_Card_Invoices_Paid</fullName>
     <columns>Contact__c</columns>
     <columns>NAME</columns>
     <columns>Invoice_Number__c</columns>
     <columns>Registration_Id__c</columns>
     <columns>Noncredit_ID__c</columns>
-    <columns>Total_Amount__c</columns>
-    <columns>Total_Paid__c</columns>
+    <columns>Actual_Total__c</columns>
+    <columns>Actual_Paid__c</columns>
     <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Is_Paid__c</field>
-        <operation>equals</operation>
-        <value>0</value>
-    </filters>
-    <filters>
-        <field>Has_Failed_Payments__c</field>
         <operation>equals</operation>
         <value>1</value>
     </filters>
@@ -40,5 +35,5 @@
         <operation>equals</operation>
         <value>Credit Card</value>
     </filters>
-    <label>Credit Card Invoices w/ Failed Payments</label>
+    <label>Credit Card Invoices Paid</label>
 </ListView>
