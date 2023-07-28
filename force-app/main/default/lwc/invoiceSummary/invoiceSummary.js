@@ -150,7 +150,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         if(data) {
             if(getFieldValue(this.invoice.data, IS_SPONSOR_INVOICE)) {
                 let formattedData = datatableHelpers.parseFieldData(this.dataLineItemColumns, data);
-                this.lineItemData = this.spliceTrackingStatus(formattedData, result);
+                this.lineItemData = this.spliceTrackingStatus(formattedData, data);
             } else {
                 getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                     .then((result) => {
@@ -383,16 +383,16 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                     formattedData[i].LineItemTracked = 'Sponsor Invoice';
                     continue;
                 }
-                let status = trackingResult[formattedData[i].csuoee__Section_Reference__c];
+                let status = (trackingResult!=null)?trackingResult[formattedData[i].csuoee__Section_Reference__c]:null;
                 if(status == null){
                     if(formattedData[i].csuoee__Is_Confirmed__c) {
                         if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
                             formattedData[i].LineItemTracked = 'Complete';
                         } else {
-                            formattedData[i].LineItemTracked = 'Error - Fulfillment';
+                            formattedData[i].LineItemTracked = 'Not Tracked - Requires Fulfillment';
                         }
                     } else {
-                        formattedData[i].LineItemTracked = 'Error - Confirmation';
+                        formattedData[i].LineItemTracked = 'Not Tracked - Requires Confirmation';
                     }
                 } else {
                     if(status == 'Await_Confirmation') {
