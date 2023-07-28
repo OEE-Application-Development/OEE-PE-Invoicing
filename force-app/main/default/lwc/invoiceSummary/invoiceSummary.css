@@ -2,3 +2,6 @@ button {
     display:inline-block;
     width:180px;
 }
+div.hide {
+    display:none!important;
+}
