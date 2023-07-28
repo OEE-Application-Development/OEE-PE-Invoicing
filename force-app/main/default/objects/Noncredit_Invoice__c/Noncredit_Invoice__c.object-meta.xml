@@ -160,7 +160,17 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Noncredit Invoices</pluralLabel>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Invoice_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Registration_Id__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Registration_Method__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Is_Paid__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Actual_Paid__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Actual_Total__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Payer_Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

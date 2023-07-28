@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Sponsor_Invoices_Pending_Payment</fullName>
-    <columns>Payer_Account__c</columns>
+    <columns>Contact__c</columns>
     <columns>NAME</columns>
+    <columns>Invoice_Number__c</columns>
     <columns>Registration_Method__c</columns>
     <columns>Is_Paid__c</columns>
-    <columns>Actual_Total__c</columns>
     <columns>Actual_Paid__c</columns>
+    <columns>Actual_Total__c</columns>
+    <columns>Payer_Account__c</columns>
+    <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>Is_Noncredit_Only__c</field>

@@ -5,9 +5,11 @@
     <columns>NAME</columns>
     <columns>Invoice_Number__c</columns>
     <columns>Registration_Id__c</columns>
-    <columns>Noncredit_ID__c</columns>
-    <columns>Actual_Total__c</columns>
+    <columns>Registration_Method__c</columns>
+    <columns>Is_Paid__c</columns>
     <columns>Actual_Paid__c</columns>
+    <columns>Actual_Total__c</columns>
+    <columns>Payer_Account__c</columns>
     <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>

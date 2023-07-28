@@ -80,7 +80,7 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>none</value>
+                    <value>readonly</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.CSU_Online_Account_Email__c</fieldItem>
                 <identifier>RecordCSU_Online_Account_Email_cField</identifier>
