@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ListView xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Invoices_Pending_Payment</fullName>
+    <fullName>Sponsor_Invoices_Pending_Processing</fullName>
     <columns>Contact__c</columns>
     <columns>NAME</columns>
     <columns>Invoice_Number__c</columns>
@@ -13,16 +13,6 @@
     <columns>CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>
-        <field>Is_Paid__c</field>
-        <operation>equals</operation>
-        <value>0</value>
-    </filters>
-    <filters>
-        <field>Is_Cancelled__c</field>
-        <operation>equals</operation>
-        <value>0</value>
-    </filters>
-    <filters>
         <field>Is_Noncredit_Only__c</field>
         <operation>equals</operation>
         <value>1</value>
@@ -33,14 +23,19 @@
         <value>0</value>
     </filters>
     <filters>
-        <field>Has_Failed_Payments__c</field>
+        <field>Intended_Payment_Method__c</field>
+        <operation>equals</operation>
+        <value>Sponsor</value>
+    </filters>
+    <filters>
+        <field>Is_Paid__c</field>
         <operation>equals</operation>
         <value>0</value>
     </filters>
     <filters>
-        <field>Intended_Payment_Method__c</field>
+        <field>Is_Cancelled__c</field>
         <operation>equals</operation>
-        <value>Credit Card</value>
+        <value>0</value>
     </filters>
-    <label>Credit Card Invoices Pending Payment</label>
+    <label>Sponsor Invoices Pending Processing</label>
 </ListView>
