@@ -389,10 +389,10 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                         if(formattedData[i].csuoee__Is_Fulfilled__c || !formattedData[i].csuoee__Requires_LMS_Fulfillment__c) {
                             formattedData[i].LineItemTracked = 'Complete';
                         } else {
-                            formattedData[i].LineItemTracked = 'Not Tracked - Requires Fulfillment';
+                            formattedData[i].LineItemTracked = 'Not Tracked';
                         }
                     } else {
-                        formattedData[i].LineItemTracked = 'Not Tracked - Requires Confirmation';
+                        formattedData[i].LineItemTracked = 'Not Tracked';
                     }
                 } else {
                     if(status == 'Await_Confirmation') {
