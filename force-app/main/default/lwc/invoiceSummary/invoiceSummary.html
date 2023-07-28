@@ -13,7 +13,7 @@
     <lightning-card title="Invoice Details" class="slds-show slds-m-bottom_small">
         <lightning-record-view-form object-api-name="csuoee__Noncredit_Invoice__c" record-id={recordId}>
             <div class="slds-grid">
-                <div class="slds-col slds-size_1-of-3">
+                <div class="slds-col slds-size_1-of-2">
                     <div class="slds-form-element slds-form-element_stacked">
                         <label class="slds-form-element__label" for="form-element-01">Opus Invoice Number</label>
                         <lightning-output-field variant="label-hidden" field-name="csuoee__Invoice_Number__c"></lightning-output-field>
@@ -27,21 +27,23 @@
                         <lightning-output-field variant="label-hidden" field-name="csuoee__Total_Amount__c"></lightning-output-field>
                     </div>
                 </div>
-                <div class="slds-col slds-size_2-of-3">
+                <div class="slds-col slds-size_1-of-2">
                     <div class="slds-form-element slds-form-element_stacked">
                         <label class="slds-form-element__label" for="form-element-04">Opus Registration ID</label>
-                        <lightning-output-field field-name="csuoee__Registration_Id__c"></lightning-output-field>
+                        <lightning-output-field variant="label-hidden" field-name="csuoee__Registration_Id__c"></lightning-output-field>
                     </div>
-                    <div class="slds-form-element slds-form-element_stacked">
+                    <div class={sponsorClass}>
                         <label class="slds-form-element__label" for="form-element-05">Sponsor Account</label>
-                        <lightning-output-field field-name="csuoee__Payer_Account__c"></lightning-output-field>
+                        <lightning-output-field variant="label-hidden" field-name="csuoee__Payer_Account__c"></lightning-output-field>
+                    </div>
+                    <div class={contactClass}>
+                        <label class="slds-form-element__label" for="form-element-06">Student</label>
+                        <lightning-output-field variant="label-hidden" field-name="csuoee__Contact__c"></lightning-output-field>
                     </div>
                     <div class="slds-form-element slds-form-element_stacked">
-                        <label class="slds-form-element__label" for="form-element-06">Total Paid</label>
+                        <label class="slds-form-element__label" for="form-element-07">Total Paid</label>
                         <lightning-output-field variant="label-hidden" field-name="csuoee__Total_Paid__c"></lightning-output-field>
                     </div>
-                </div>
-                <div class="slds-col slds-size_3-of-3">
                 </div>
             </div>
         </lightning-record-view-form>

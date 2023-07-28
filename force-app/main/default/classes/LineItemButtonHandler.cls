@@ -29,7 +29,7 @@ global with sharing class LineItemButtonHandler {
     }
 
     @AuraEnabled
-    global static void trackLineItem(Id lineItemId){
+    global static Map<String, Object> trackLineItem(Id lineItemId){
         csuoee__Noncredit_Invoice_Line_Item__c li = getLineItemById(lineItemId);
 
         boolean hasBeenUpdated = false;
@@ -76,14 +76,35 @@ global with sharing class LineItemButtonHandler {
 
         String label = 'Line Item for [Invoice: '+li.csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c+', Section: '+li.csuoee__Section_Reference__c+']';
         try {
-            List<FlowInterview> currentlyRunning = [select Id from FlowInterview where InterviewStatus = 'Paused' and InterviewLabel = :label];
-            delete currentlyRunning;
+            List<FlowInterview> currentlyRunning = [select Id, CurrentElement from FlowInterview where InterviewStatus = 'Paused' and InterviewLabel = :label];
+            // For each flow interview, only delete if appropriate.
+            List<FlowInterview> toDelete = new List<FlowInterview>();
+            for(FlowInterview interview : currentlyRunning) {
+                if(interview.CurrentElement == 'Await_Confirmation') {
+                    if(li.csuoee__Is_Confirmed__c) {
+                        toDelete.add(interview);
+                    }
+                } else if(interview.CurrentElement == 'Await_Fulfillment') {
+                    if(li.csuoee__Is_Fulfilled__c) {
+                        toDelete.add(interview);
+                    }
+                }
+            }
+
+            delete toDelete;
+
+            if(toDelete.size() == currentlyRunning.size()) {
+                Map<String, Object> inputMap = new Map<String, Object>();
+                inputMap.put('LineItemInProgress', li);
+                Flow.Interview.createInterview('csuoee', 'Noncredit_Line_Item_Process', inputMap).start();
+
+                return new Map<String, Object>{'updated' => hasBeenUpdated, 'tracking' => true, 'message' => 'Tracking reset.'};
+            }
         } catch(Exception e) {
 
         }
-        Map<String, Object> inputMap = new Map<String, Object>();
-        inputMap.put('LineItemInProgress', li);
-        Flow.Interview.createInterview('csuoee', 'Noncredit_Line_Item_Process', inputMap).start();
+
+        return new Map<String, Object>{'updated' => hasBeenUpdated, 'tracking' => false, 'message' => (hasBeenUpdated)?'Line Item updated.':'No changes.'};
     }
 
     @AuraEnabled(cacheable = true)
