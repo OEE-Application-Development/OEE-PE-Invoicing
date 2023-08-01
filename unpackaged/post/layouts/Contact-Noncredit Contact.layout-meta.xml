@@ -129,7 +129,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Noncredit_Invoice__c.Contact__c</relatedList>
+        <relatedList>csuoee__Noncredit_Invoice__c.csuoee__Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
