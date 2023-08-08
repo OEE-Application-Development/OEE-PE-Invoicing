@@ -148,7 +148,7 @@ global with sharing class InvoiceButtonHandler {
             // the event couldn't be created. Don't mark the esclation as sent, still needs to cancel in the future.
         }
         
-        if(String.isBlank(event.Id)) return false;
+        if(event.Id == null) return false;
 
         invoice.csuoee__Escalation_Sent__c = true;
         //Set for cancel
