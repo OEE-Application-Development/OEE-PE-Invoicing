@@ -91,7 +91,7 @@
     <name>Credit Card Invoices - Failed Payments</name>
     <params>
         <name>co</name>
-        <value>0</value>
+        <value>1</value>
     </params>
     <reportType>Noncredit_Invoices_and_Payments__c</reportType>
     <scope>organization</scope>

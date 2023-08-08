@@ -18,10 +18,21 @@
         <field>Noncredit_Invoice__c$Total_Paid__c</field>
     </columns>
     <columns>
-        <field>Noncredit_Invoice__c$LastModifiedDate</field>
+        <field>Noncredit_Invoice__c$Notes__c</field>
     </columns>
     <columns>
-        <field>Noncredit_Invoice__c$Notes__c</field>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c$Cancel_Requested__c</field>
+    </columns>
+    <columns>
+        <field>Noncredit_Invoice__c$Cancel_At__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>Noncredit_Invoice__c$Is_Cancelled__c</field>
+    </columns>
+    <columns>
+        <field>Noncredit_Invoice__c$LastModifiedDate</field>
     </columns>
     <filter>
         <criteriaItems>
@@ -59,6 +70,13 @@
             <operator>equals</operator>
             <value>Credit Card</value>
         </criteriaItems>
+        <criteriaItems>
+            <column>Noncredit_Invoice__c$Escalation_Sent__c</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>1</value>
+        </criteriaItems>
         <language>en_US</language>
     </filter>
     <format>Summary</format>
@@ -76,7 +94,7 @@
         <field>Noncredit_Invoice__c$Name</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Credit Card Invoices - Pending Payment</name>
+    <name>Credit Card Invoices - Escalated, Unpaid</name>
     <params>
         <name>co</name>
         <value>1</value>
