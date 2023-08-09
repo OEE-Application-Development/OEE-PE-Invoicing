@@ -15,8 +15,8 @@ trigger CSUOEE_StartLineItemProcessFlow on csuoee__Noncredit_Invoice_Line_Item__
             Flow.Interview.createInterview('csuoee', 'Noncredit_Line_Item_Process', inputMap).start();
 
         // Set pending status!
-        if(!String.isBlank(li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c)) {
-            hed__Course_Enrollment__c pendingEnrollment = new hed__Course_Enrollment__c(RecordTypeId = PEHelpers.getNoncreditPendingStudentEnrollmentRecordType(), hed__Course_Offering__c = li.csuoee__Course_Offering__c, hed__Contact__c = li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c);
+        if(li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c != null) {
+            hed__Course_Enrollment__c pendingEnrollment = new hed__Course_Enrollment__c(RecordTypeId = PEHelpers.getNoncreditPendingStudentEnrollmentRecordType().Id, hed__Course_Offering__c = li.csuoee__Course_Offering__c, hed__Contact__c = li.csuoee__Noncredit_Invoice__r.csuoee__Contact__c);
             pendingEnrollments.add(pendingEnrollment);
         }
 

@@ -29,7 +29,7 @@
           "package": "04t5b000001yz1fAAA"
         },
         {
-          "package": "04t5b000001yz0hAAA"
+          "package": "04t5b000001yz29AAA"
         }
       ]
     }
@@ -107,7 +107,8 @@
     "OEE-PE-Invoicing@0.38.0-4": "04t5b000001yz0rAAA",
     "OEE-PE-Invoicing@0.39.0-1": "04t5b000001yz0wAAA",
     "OEE-PE-Invoicing@0.40.0-1": "04t5b000001yz1BAAQ",
-    "OEE-PE-Invoicing@0.41.0-1": "04t5b000001yz1QAAQ"
+    "OEE-PE-Invoicing@0.41.0-1": "04t5b000001yz1QAAQ",
+    "OEE-PE-Invoicing@0.42.0-2": "04t5b000001yz2JAAQ"
   },
   "sourceApiVersion": "57.0"
 }
