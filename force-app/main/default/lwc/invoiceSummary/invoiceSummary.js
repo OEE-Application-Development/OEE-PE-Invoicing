@@ -55,10 +55,11 @@ import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
 import cancelPayment from '@salesforce/apex/InvoiceButtonHandler.initiatePaymentRefund';
 
 import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
+import PAYMENT_TRANS_ID from '@salesforce/schema/Noncredit_Invoice_Payment__c.CSU_Trans_Id__c';
 import PAYMENT_TYPE from '@salesforce/schema/Noncredit_Invoice_Payment__c.Payment_Type__c';
 import PAYMENT_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Amount__c';
 import PAYMENT_SUCCESS from '@salesforce/schema/Noncredit_Invoice_Payment__c.Successful__c';
-import PAYMENT_CREATED_AT from '@salesforce/schema/Noncredit_Invoice_Payment__c.CreatedDate';
+import PAYMENT_CREATED_AT from '@salesforce/schema/Noncredit_Invoice_Payment__c.Posted_At__c';
 
 /* Email */
 import getInvoiceEmails from '@salesforce/apex/InvoiceEmailMessageHandler.getInvoiceEmails';
@@ -72,6 +73,7 @@ const noPayments = [
     {
         "id": "fakeid",
         "Name": "No Payments",
+        "csuoee__CSU_Trans_Id__c":"",
         "csuoee__Payment_Type__c": "",
         "csuoee__Successful__c": false,
         "CreatedDate": "",
@@ -94,6 +96,7 @@ const LINE_ITEM_FIELDS = ['id',
     LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName];
 const PAYMENT_FIELDS = ['id', 
     PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, 
+    PAYMENT_TRANS_ID.objectApiName+'.'+PAYMENT_TRANS_ID.fieldApiName,
     PAYMENT_TYPE.objectApiName+'.'+PAYMENT_TYPE.fieldApiName, 
     PAYMENT_SUCCESS.objectApiName+'.'+PAYMENT_SUCCESS.fieldApiName, 
     PAYMENT_AMOUNT.objectApiName+'.'+PAYMENT_AMOUNT.fieldApiName,
@@ -192,6 +195,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     /* Payments */
     paymentColumns = [
         {label: 'Payment', fieldName: PAYMENT_NAME.fieldApiName, type: 'text'},
+        {label: 'CSU Trans ID', fieldName: PAYMENT_TRANS_ID.fieldApiName, type: 'text'},
         {label: 'Payment Type', fieldName: PAYMENT_TYPE.fieldApiName, type: 'text'},
         {label: 'Successful', fieldName: PAYMENT_SUCCESS.fieldApiName, type: 'boolean'},
         {label: 'Paid At', fieldName: PAYMENT_CREATED_AT.fieldApiName, type: 'date'},

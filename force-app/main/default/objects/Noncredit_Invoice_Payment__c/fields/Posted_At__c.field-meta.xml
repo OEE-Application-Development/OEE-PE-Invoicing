@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Posted_At__c</fullName>
+    <description>Datetime at which the payment was posted.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Datetime at which the payment was posted.</inlineHelpText>
+    <label>Posted At</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

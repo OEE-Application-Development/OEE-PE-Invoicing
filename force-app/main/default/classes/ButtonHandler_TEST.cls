@@ -172,9 +172,9 @@ private class ButtonHandler_TEST {
     private static void requestInvoice() {
         Account a = new Account(Name = 'test', hed__School_Code__c = 'test');
         insert a;
-        csuoee__Noncredit_Invoice__c i = generateInvoice();
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        csuoee__Noncredit_Invoice__c i = generateInvoice();
         Boolean result = InvoiceButtonHandler.requestInvoice(a.Id, i.Id, 120.00);
         Test.stopTest();
 
