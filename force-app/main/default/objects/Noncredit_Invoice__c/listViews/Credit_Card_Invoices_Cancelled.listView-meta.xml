@@ -34,9 +34,9 @@
         <value>0</value>
     </filters>
     <filters>
-        <field>Intended_Payment_Method__c</field>
+        <field>Registration_Method__c</field>
         <operation>equals</operation>
-        <value>Credit Card</value>
+        <value>Online - Credit Card</value>
     </filters>
     <label>Credit Card Invoices Cancelled</label>
 </ListView>

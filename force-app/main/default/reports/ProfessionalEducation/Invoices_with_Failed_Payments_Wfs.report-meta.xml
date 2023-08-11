@@ -65,11 +65,11 @@
             <value>1</value>
         </criteriaItems>
         <criteriaItems>
-            <column>Noncredit_Invoice__c$Intended_Payment_Method__c</column>
+            <column>Noncredit_Invoice__c$Registration_Method__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Credit Card</value>
+            <value>Online - Credit Card</value>
         </criteriaItems>
         <language>en_US</language>
     </filter>
