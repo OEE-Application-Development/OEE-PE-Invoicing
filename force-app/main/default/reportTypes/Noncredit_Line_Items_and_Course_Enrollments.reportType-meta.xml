@@ -470,7 +470,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Noncredit_Invoice__c.Intended_Payment_Method__c</field>
+            <field>Noncredit_Invoice__c.Registration_Method__c</field>
             <table>lms_hed__LMS_Course_Enrollment__c.Noncredit_Invoice_Line_Items__r</table>
         </columns>
         <columns>

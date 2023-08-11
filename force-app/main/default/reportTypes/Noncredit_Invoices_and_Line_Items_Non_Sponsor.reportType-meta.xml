@@ -187,7 +187,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Intended_Payment_Method__c</field>
+            <field>Registration_Method__c</field>
             <table>Noncredit_Invoice__c</table>
         </columns>
         <columns>
