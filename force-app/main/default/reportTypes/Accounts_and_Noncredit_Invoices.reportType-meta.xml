@@ -458,7 +458,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Intended_Payment_Method__c</field>
+            <field>Registration_Method__c</field>
             <table>Account.Noncredit_Invoices__r</table>
         </columns>
         <columns>

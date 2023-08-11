@@ -85,7 +85,7 @@
                             <value>NAME</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Intended_Payment_Method__c</value>
+                            <value>Registration_Method__c</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Is_Paid__c</value>

@@ -27,9 +27,9 @@
         <value>0</value>
     </filters>
     <filters>
-        <field>Intended_Payment_Method__c</field>
+        <field>Registration_Method__c</field>
         <operation>equals</operation>
-        <value>Credit Card</value>
+        <value>Online - Credit Card</value>
     </filters>
     <filters>
         <field>Escalation_Sent__c</field>
