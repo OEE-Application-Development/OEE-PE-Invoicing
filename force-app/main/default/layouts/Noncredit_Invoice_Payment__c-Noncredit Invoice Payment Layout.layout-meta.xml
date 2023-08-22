@@ -50,6 +50,10 @@
                 <behavior>Edit</behavior>
                 <field>Posted_At__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Noncredit_Invoice_Line_Item__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
