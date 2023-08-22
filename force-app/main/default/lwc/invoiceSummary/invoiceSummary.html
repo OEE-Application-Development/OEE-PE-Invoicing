@@ -10,13 +10,13 @@
         <lightning-formatted-text style="text-align:center;" class={pendingCancelMessageClass} value={cancelMessage}></lightning-formatted-text>
     </lightning-card>
     
-    <lightning-card title="Invoice Details" class="slds-show slds-m-bottom_small">
+    <lightning-card title={invoiceSummaryTitle} class="slds-show slds-m-bottom_small">
         <lightning-record-view-form object-api-name="csuoee__Noncredit_Invoice__c" record-id={recordId}>
             <div class="slds-grid">
                 <div class="slds-col slds-size_1-of-2">
                     <div class="slds-form-element slds-form-element_stacked">
-                        <label class="slds-form-element__label" for="form-element-01">Opus Invoice Number</label>
-                        <lightning-output-field variant="label-hidden" field-name="csuoee__Invoice_Number__c"></lightning-output-field>
+                        <label class="slds-form-element__label" for="form-element-01">Opus Registration Method</label>
+                        <lightning-output-field variant="label-hidden" field-name="csuoee__Registration_Method__c"></lightning-output-field>
                     </div>
                     <div class="slds-form-element slds-form-element_stacked">
                         <label class="slds-form-element__label" for="form-element-02">Opus User ID</label>

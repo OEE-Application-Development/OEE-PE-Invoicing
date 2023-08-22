@@ -24,6 +24,7 @@ import CANCEL_AT from '@salesforce/schema/Noncredit_Invoice__c.Cancel_At__c';
 import NOTES from '@salesforce/schema/Noncredit_Invoice__c.Notes__c';
 import INVOICE_CREATED_AT from '@salesforce/schema/Noncredit_Invoice__c.CreatedDate';
 import INVOICE_CANCELLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Cancelled__c';
+import REGISTRATION_METHOD from '@salesforce/schema/Noncredit_Invoice__c.Registration_Method__c';
 
 import IS_SPONSOR_INVOICE from '@salesforce/schema/Noncredit_Invoice__c.Is_Sponsor_Invoice__c';
 
@@ -68,7 +69,7 @@ import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Open
 
 import workspaceAPI from "c/workspaceAPI";
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED, IS_SPONSOR_INVOICE];
+const allFields = [INVOICE_NUMBER, REGISTRATION_METHOD, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED, IS_SPONSOR_INVOICE];
 const noPayments = [
     {
         "id": "fakeid",
@@ -103,7 +104,7 @@ const PAYMENT_FIELDS = ['id',
     PAYMENT_CREATED_AT.objectApiName+'.'+PAYMENT_CREATED_AT.fieldApiName];
 
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
-    invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
+    invoiceFields = [ INVOICE_NUMBER, REGISTRATION_METHOD, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
     notesOnly = [ NOTES ];
 
     @api recordId;
@@ -120,9 +121,18 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
 
     get cancelMessage() {
         if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
-            return "This invoice is cancelled & no longer appears in Opus. If you need to recreate it, contact IT support.";
+            return "This invoice is cancelled - no more actions required. If you need to recreate it, contact IT support.";
         } else {
             return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
+        }
+    }
+
+    get invoiceSummaryTitle() {
+        const invoiceNumber = getFieldValue(this.invoice.data, INVOICE_NUMBER);
+        if(invoiceNumber == null) {
+            return "Invoice Details";
+        } else {
+            return "Invoice Details - #"+invoiceNumber;
         }
     }
 
@@ -425,8 +435,6 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
             .then((data) => {
                 getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                     .then((result) => {
-                        console.log(data);
-                        console.log(result);
                         this.lineItemData = this.spliceTrackingStatus(data, result);
                     });
             });
