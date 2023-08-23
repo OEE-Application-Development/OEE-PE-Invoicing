@@ -14,7 +14,7 @@ private class ButtonHandler_TEST {
         System.assert(result);
         
         //Empty cancel
-        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id, 1.0);
         Test.stopTest();
         System.assert(result != null);
     }
@@ -48,7 +48,7 @@ private class ButtonHandler_TEST {
         update li;
 
         //Cancel 1
-        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id, 10);
 
         invoice.csuoee__Is_Cancelled__c = true;
         update invoice;
@@ -309,7 +309,7 @@ private class ButtonHandler_TEST {
         update li;
         System.assert(true);
 
-        InvoiceButtonHandler.cancelInvoice(li.csuoee__Noncredit_Invoice__c);
+        InvoiceButtonHandler.cancelInvoice(li.csuoee__Noncredit_Invoice__c, 1.0);
 
         Test.stopTest();
     }
