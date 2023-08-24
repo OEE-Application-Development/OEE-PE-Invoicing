@@ -1,6 +1,6 @@
 global with sharing class InvoiceButtonHandler {
     private static csuoee__Noncredit_Invoice__c getInvoiceById(Id invoiceId) {
-        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c, csuoee__Line_Item_Amount__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
+        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalate_Automatically__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c, csuoee__Line_Item_Amount__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
     }
     
     @AuraEnabled

@@ -119,6 +119,10 @@
                 <behavior>Edit</behavior>
                 <field>Intended_Payment_Method__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Escalate_Automatically__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
