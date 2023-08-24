@@ -132,6 +132,7 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         if(invoiceNumber == null) {
             return "Invoice Details";
         } else {
+            workspaceAPI.setCurrentTabLabel('Inv#'+invoiceNumber);
             return "Invoice Details - #"+invoiceNumber;
         }
     }
