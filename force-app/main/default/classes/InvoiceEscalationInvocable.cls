@@ -5,7 +5,6 @@ global with sharing class InvoiceEscalationInvocable {
             InvoiceButtonHandler.sendEscalationEmail(request.invoiceId);
         }
     }
-    
 
     global class InvoiceEscalationRequest {
         @InvocableVariable(Required=true Description='ID of the invoice to escalate.')
