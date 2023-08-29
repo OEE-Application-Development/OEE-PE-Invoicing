@@ -26,14 +26,21 @@ global with sharing class InvoiceButtonHandler {
     @AuraEnabled
     global static String cancelInvoice(Id invoiceId, Decimal refundAmount){
         csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
-        List<PEConfirmedEvent.PEConfirmedRequest> voidRequests = new List<PEConfirmedEvent.PEConfirmedRequest>();
+        List<PEConfirmedEvent.PEConfirmedRequest> dropRequests = new List<PEConfirmedEvent.PEConfirmedRequest>();
+        List<PEVoidLineItemEvent.PEVoidLineItemRequest> voidRequests = new List<PEVoidLineItemEvent.PEVoidLineItemRequest>();
+        
         for(csuoee__Noncredit_Invoice_Line_Item__c li : invoice.csuoee__Noncredit_Invoice_Line_Items__r) {
-            if(!li.csuoee__Is_Confirmed__c) continue;
-
-            voidRequests.add(new PEConfirmedEvent.PEConfirmedRequest(invoice.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c));
+            if(li.csuoee__Is_Confirmed__c) {
+                dropRequests.add(new PEConfirmedEvent.PEConfirmedRequest(invoice.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c));
+            } else {
+                voidRequests.add(new PEVoidLineItemEvent.PEVoidLineItemRequest(invoice.csuoee__Invoice_Number__c, li.csuoee__Section_Reference__c));
+            }
+        }
+        if(!dropRequests.isEmpty()) {
+            PEVoidConfirmedEvent.unenrollStudent(dropRequests);
         }
         if(!voidRequests.isEmpty()) {
-            PEVoidConfirmedEvent.unenrollStudent(voidRequests);
+            PEVoidLineItemEvent.voidLineItem(voidRequests);
         }
         List<csuoee__Noncredit_Invoice_Payment__c> payments = [select Id, csuoee__CSU_Trans_Id__c, csuoee__Is_Actual__c, csuoee__Payment_Type__c, csuoee__Processor_Trans_Id__c, csuoee__Processor_Trans_Status__c, csuoee__Amount__c from csuoee__Noncredit_Invoice_Payment__c where csuoee__Noncredit_Invoice__c = :invoiceId and csuoee__Successful__c = true];
         List<PEPaymentEvent.PEPaymentRequest> refunds = new List<PEPaymentEvent.PEPaymentRequest>();
@@ -73,6 +80,14 @@ global with sharing class InvoiceButtonHandler {
         for(Id relatedInvoiceId : relatedInvoiceIds) {
             cancelInvoice(relatedInvoiceId, refundAmount);
         }
+
+        invoice.csuoee__Is_Cancelled__c = true;
+        update invoice;
+
+        EventBus.publish(new csuoee__Flow_Cancel__e(
+            csuoee__Cancel_Type__c = 'Invoice Cancel',
+            csuoee__Cancel_Identifier__c = invoice.Id
+        ));
 
         return 'Invoice cancellation in progress. Please allow a moment for completion.';
     }
