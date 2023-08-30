@@ -11,6 +11,11 @@
         <operation>equals</operation>
         <value>True</value>
     </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Noncredit_Invoice_Payment__c.Successful__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
     <summaryForeignKey>Noncredit_Invoice_Payment__c.Noncredit_Invoice__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackTrending>false</trackTrending>
