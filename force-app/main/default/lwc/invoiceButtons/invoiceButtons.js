@@ -11,6 +11,8 @@ import IS_ESCALATION_SENT_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Es
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
 import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscalationEmail';
+
+import refundPaymentModal from "c/refundPaymentModal";
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
@@ -65,34 +67,40 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
     }
 
     runCancel() {
-        let title = "";
+        let title = "", isRefund = false;
         if(getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD)) {
             title = "Drop & Refund";
+            isRefund = true;
         } else {
             title = "Void Invoice";
         }
-        modalConfirm.open({
-            title: title,
-            content: 'Are you sure you want to cancel this invoice? This action will reverse any confirmations that have already occurred.'
-        }).then((result) => {
-            if(result) {
-                cancelInvoice({invoiceId: this.recordId})
-                .then((invoiceMessage) => {
-                    modalAlert.open({
-                        title: 'Invoice Cancelled',
-                        content: invoiceMessage
-                    }).then((result) => {
-                        workspaceAPI.refreshCurrentTab();
+
+        if(isRefund) {
+            refundPaymentModal.open();
+        } else {
+            modalConfirm.open({
+                title: title,
+                content: 'Are you sure you want to cancel this invoice? This action will reverse any confirmations that have already occurred.'
+            }).then((result) => {
+                if(result) {
+                    cancelInvoice({invoiceId: this.recordId})
+                    .then((invoiceMessage) => {
+                        modalAlert.open({
+                            title: 'Invoice Cancelled',
+                            content: invoiceMessage
+                        }).then((result) => {
+                            workspaceAPI.refreshCurrentTab();
+                        });
+                    })
+                    .catch((error) => {
+                        modalAlert.open({
+                            title: 'Cancel Error',
+                            content: 'Send failure! If this issue persists, please contact IT.'
+                        });
                     });
-                })
-                .catch((error) => {
-                    modalAlert.open({
-                        title: 'Cancel Error',
-                        content: 'Send failure! If this issue persists, please contact IT.'
-                    });
-                });
-            }
-        });
+                }
+            });
+        }
     }
 
     runSendEscalation() {
