@@ -20,6 +20,18 @@ global with sharing class LineItemButtonHandler {
     global static Boolean voidLineItem(Id lineItemId){
         try {
             csuoee__Noncredit_Invoice_Line_Item__c li = getLineItemById(lineItemId);
+            PEVoidLineItemEvent.voidLineItem(new List<PEVoidLineItemEvent.PEVoidLineItemRequest>{new PEVoidLineItemEvent.PEVoidLineItemRequest(li.csuoee__Noncredit_Invoice__r.csuoee__Invoice_Number__c, li.csuoee__Section_Reference__c)});
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+
+        return true;
+    }
+
+    @AuraEnabled
+    global static Boolean dropLineItem(Id lineItemId){
+        try {
+            csuoee__Noncredit_Invoice_Line_Item__c li = getLineItemById(lineItemId);
             PEVoidConfirmedEvent.unenrollStudent(new List<PEConfirmedEvent.PEConfirmedRequest>{new PEConfirmedEvent.PEConfirmedRequest(li.csuoee__Noncredit_Invoice__r.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c)});
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
