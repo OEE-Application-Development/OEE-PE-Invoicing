@@ -5,7 +5,7 @@
         <label>Get Canvas Enrollment Status</label>
         <locationX>4334</locationX>
         <locationY>2486</locationY>
-        <actionName>csuoee::CSUOEEMiddleware.canvasEnrollmentStatus</actionName>
+        <actionName>CSUOEEMiddleware.canvasEnrollmentStatus</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Response_Successful_Canvas</targetReference>
@@ -37,7 +37,7 @@
         <label>Get Enrollment Status in Opus</label>
         <locationX>3086</locationX>
         <locationY>2378</locationY>
-        <actionName>csuoee::CSUOEEMiddleware.enrollmentStatus</actionName>
+        <actionName>CSUOEEMiddleware.enrollmentStatus</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Response_Successful</targetReference>
@@ -97,7 +97,7 @@
         <label>GetLoginIdFromOpus</label>
         <locationX>512</locationX>
         <locationY>1298</locationY>
-        <actionName>csuoee::CSUOEEMiddleware.getLoginForUser</actionName>
+        <actionName>CSUOEEMiddleware.getLoginForUser</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Opus_Get_LoginId_Success</targetReference>
@@ -194,7 +194,7 @@
         <label>Validate TX in Middleware</label>
         <locationX>1898</locationX>
         <locationY>2054</locationY>
-        <actionName>csuoee::CSUOEEMiddleware.postValidateTx</actionName>
+        <actionName>CSUOEEMiddleware.postValidateTx</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>TX_Check_Status_Decision</targetReference>
