@@ -4,5 +4,6 @@
         <label><button aria-label="Confirm Entire Invoice" onclick={runConfirm} disabled={isConfirmed} class="slds-button slds-button_neutral slds-var-m-left_x-small">Confirm Entire Invoice</button></label>
         <label><button aria-label="Cancel Invoice" onclick={runCancel} disabled={isCancelled} class="slds-button slds-button_neutral slds-var-m-left_x-small">{cancelLabel}</button></label>
         <label><button aria-label="View in Opus" onclick={runViewInOpus} class="slds-button slds-button_neutral slds-var-m-left_x-small">View in Opus</button></label>
+        <label><button aria-label="Review Invoice" onclick={runReviewInvoice} disabled={isCancelled} class="slds-button slds-button_neutral slds-var-m-left_x-small">Review Invoice</button></label>
     </lightning-card>
 </template>
