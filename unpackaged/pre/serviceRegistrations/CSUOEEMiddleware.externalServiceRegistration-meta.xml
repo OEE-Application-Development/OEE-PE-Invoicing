@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>CSUOEEMiddleware</label>
+    <namedCredentialReference>CSUOEEMiddleware</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>enrollmentstatus</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getloginforuser</name>
+    </operations>
+    <operations>
+        <active>false</active>
+        <name>listjobs</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>postvalidatetx</name>
+    </operations>
+    <registrationProviderType>Custom</registrationProviderType>
+    <schema>{
+  &quot;openapi&quot;: &quot;3.0.2&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;CSUOEE Middlware&quot;,
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;description&quot;: &quot;The middlware application exposes 2 types of endpoints:\n  - Jobs that are predefined to perform specific operations\n  - Microservice Endpoints to facilitate communication between disparate services&quot;
+  },
+  &quot;tags&quot;: [{
+      &quot;name&quot;: &quot;Admin&quot;,
+      &quot;description&quot;: &quot;Admin related functions.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Job&quot;,
+      &quot;description&quot;: &quot;Related to Job Management&quot;
+    }
+  ],
+  &quot;servers&quot;: [{
+      &quot;url&quot;: &quot;https://csu-online-data-integration.azurewebsites.net/&quot;
+    },
+    {
+      &quot;url&quot;: &quot;https://csu-online-data-integration-dev.azurewebsites.net/&quot;
+    },
+    {
+      &quot;url&quot;: &quot;http://localhost:8080/&quot;
+    }
+  ],
+  &quot;paths&quot;: {
+    &quot;/job/&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Admin&quot;,
+          &quot;Job&quot;
+        ],
+        &quot;security&quot;: [{
+          &quot;rest_auth&quot;: []
+        }],
+        &quot;summary&quot;: &quot;List currently available jobs.&quot;,
+        &quot;operationId&quot;: &quot;listJobs&quot;,
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/Job&quot;
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    &quot;/action/enrollment/status&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Admin&quot;,
+          &quot;Credit Enrollment&quot;
+        ],
+        &quot;security&quot;: [{
+          &quot;rest_auth&quot;: []
+        }],
+        &quot;summary&quot;: &quot;Evaluate an enrollment. If it&apos;s in Banner, confirmation will flip in Opus &amp; returns a success status.&quot;,
+        &quot;operationId&quot;: &quot;enrollmentStatus&quot;,
+        &quot;parameters&quot;: [{
+            &quot;name&quot;: &quot;isCredit&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;true if checking a credit enrollment&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;sectionReference&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;e.g. 2024SP-MATH-210-001&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;studentId&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;Student ID to evaluate, could be noncredit id, CSU ID or Front Door ID&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/ActionResponse&quot;
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    &quot;/action/canvas/loginForUser&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Admin&quot;,
+          &quot;Canvas&quot;
+        ],
+        &quot;security&quot;: [{
+          &quot;rest_auth&quot;: []
+        }],
+        &quot;summary&quot;: &quot;Return Canvas loginId for OpusUser userId.&quot;,
+        &quot;operationId&quot;: &quot;getLoginForUser&quot;,
+        &quot;parameters&quot;: [{
+          &quot;name&quot;: &quot;userId&quot;,
+          &quot;in&quot;: &quot;query&quot;,
+          &quot;description&quot;: &quot;userId to look up in Opus&quot;,
+          &quot;required&quot;: true,
+          &quot;schema&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        }],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/ActionResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Invalid UserId in request.&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/ActionResponse&quot;
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    &quot;/action/tx/validate&quot;: {
+      &quot;post&quot;: {
+        &quot;tags&quot;: [
+          &quot;Admin&quot;,
+          &quot;Authorize.net&quot;
+        ],
+        &quot;security&quot;: [{
+          &quot;rest_auth&quot;: []
+        }],
+        &quot;summary&quot;: &quot;With either a CSU or Auth.Net TX ID - validate transaction status in Opus.&quot;,
+        &quot;operationId&quot;: &quot;postValidateTx&quot;,
+        &quot;requestBody&quot;: {
+          &quot;description&quot;: &quot;One or both of csuTxId / processorTxId&quot;,
+          &quot;required&quot;: true,
+          &quot;content&quot;: {
+            &quot;application/json&quot;: {
+              &quot;schema&quot;: {
+                &quot;$ref&quot;: &quot;#/components/schemas/TxRequest&quot;
+              }
+            }
+          }
+        },
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;OK&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/ActionResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Invalid UserId in request.&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/ActionResponse&quot;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  &quot;components&quot;: {
+    &quot;schemas&quot;: {
+      &quot;Job&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;id&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          }
+        }
+      },
+      &quot;ActionResponse&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;success&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;
+          },
+          &quot;message&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;data&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+              &quot;loginId&quot;: {
+                &quot;type&quot;: &quot;string&quot;
+              },
+              &quot;status&quot;: {
+                &quot;type&quot;: &quot;string&quot;
+              }
+            }
+          }
+        }
+      },
+      &quot;TxRequest&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;csuTxId&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;processorTxId&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        }
+      }
+    },
+    &quot;securitySchemes&quot;: {
+      &quot;rest_auth&quot;: {
+        &quot;type&quot;: &quot;http&quot;,
+        &quot;scheme&quot;: &quot;bearer&quot;
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi3</schemaType>
+    <serviceBinding>{&quot;host&quot;:&quot;csu-online-data-integration.azurewebsites.net&quot;,&quot;basePath&quot;:&quot;/&quot;,&quot;allowedSchemes&quot;:[&quot;HTTP&quot;,&quot;HTTPS&quot;],&quot;requestMediaTypes&quot;:[],&quot;responseMediaTypes&quot;:[],&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+    <systemVersion>4</systemVersion>
+</ExternalServiceRegistration>

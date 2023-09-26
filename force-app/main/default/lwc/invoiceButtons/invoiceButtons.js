@@ -8,11 +8,13 @@ import IS_CANCELLED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Cance
 import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
 import IS_ESCALATION_SENT_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Escalation_Sent__c';
+import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
 import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscalationEmail';
 
 import refundPaymentModal from "c/refundPaymentModal";
+import reviewInvoiceModal from 'c/reviewInvoiceModal';
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
@@ -141,6 +143,14 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
         } else {
             return "Void Invoice";
         }
+    }
+
+    // FLOW
+    runReviewInvoice() {
+        reviewInvoiceModal.open({
+            title: 'Review Invoice#'+getFieldValue(this.lineItem.data, INVOICE_NUMBER),
+            invoiceId: this.recordId
+        }).then();
     }
     
 }

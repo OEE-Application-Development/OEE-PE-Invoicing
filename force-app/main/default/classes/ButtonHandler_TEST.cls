@@ -268,6 +268,11 @@ private class ButtonHandler_TEST {
         update li;
         
         LineItemButtonHandler.getLineItemData(li.Id);
+
+        GetLineItemData.LineItemDataRequest request = new GetLineItemData.LineItemDataRequest();
+        request.lineItemId = li.Id;
+
+        GetLineItemData.getLineItemData(new List<GetLineItemData.LineItemDataRequest>{request});
         
         LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
         Test.stopTest();
