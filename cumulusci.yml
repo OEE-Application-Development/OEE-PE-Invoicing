@@ -6,6 +6,8 @@ project:
         namespace: csuoee
         api_version: '57.0'
     dependencies:
+        - namespace: oeesvc
+          version: '1.0'
         - github: 'https://github.com/OEE-Application-Development/OEE-EDA-Base-Unlocked'
         - github: 'https://github.com/OEE-Application-Development/OEE-PE-Unlocked'
         - namespace: lms_hed
