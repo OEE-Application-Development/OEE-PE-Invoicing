@@ -5,7 +5,7 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
     }
     
     List<csuoee__Marketing_Cloud_Journey_Event__c> journeyEvents = new List<csuoee__Marketing_Cloud_Journey_Event__c>();
-    List<csuoee__Noncredit_Invoice__c> invoicesToComplete = [select Id, csuoee__Contact__c, csuoee__Fulfilled_Email_Sent__c from csuoee__Noncredit_Invoice__c where Id in :invoiceIds and csuoee__Fulfilled_Email_Sent__c = false];
+    List<csuoee__Noncredit_Invoice__c> invoicesToComplete = [select Id, csuoee__Contact__c, csuoee__Fulfilled_Email_Sent__c, csuoee__Send_Confirmation_Email__c from csuoee__Noncredit_Invoice__c where Id in :invoiceIds and csuoee__Fulfilled_Email_Sent__c = false];
     
     List<csuoee__Noncredit_Invoice_Line_Item__c> lineItemsToCheck = [select Id, csuoee__Noncredit_Invoice__c, csuoee__Canvas_Enrollment__c from csuoee__Noncredit_Invoice_Line_Item__c where csuoee__Noncredit_Invoice__c in :invoiceIds];
     Map<Id, List<csuoee__Noncredit_Invoice_Line_Item__c>> liToInvoiceMap = new Map<Id, List<csuoee__Noncredit_Invoice_Line_Item__c>>();
