@@ -29,7 +29,7 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
             for(csuoee__Noncredit_Invoice_Line_Item__c li : liToInvoiceMap.get(invoice.Id)) {
                 isComplete = isComplete&&(li.csuoee__Canvas_Enrollment__c != null);
             }
-            if(!isComplete) continue;
+            if(!isComplete || !invoice.csuoee__Send_Confirmation_Email__c) continue;
 
             journeyEvents.add(
                 new csuoee__Marketing_Cloud_Journey_Event__c(
