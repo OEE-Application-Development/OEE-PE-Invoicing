@@ -5,7 +5,7 @@
         <label>Get Canvas Enrollment Status</label>
         <locationX>4334</locationX>
         <locationY>2486</locationY>
-        <actionName>oeesvc__MiddlewareSvc.canvasEnrollmentStatus</actionName>
+        <actionName>oeesvc::MiddlewareSvc.canvasEnrollmentStatus</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Response_Successful_Canvas</targetReference>
@@ -37,7 +37,7 @@
         <label>Get Enrollment Status in Opus</label>
         <locationX>3086</locationX>
         <locationY>2378</locationY>
-        <actionName>oeesvc__MiddlewareSvc.enrollmentStatus</actionName>
+        <actionName>oeesvc::MiddlewareSvc.enrollmentStatus</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Response_Successful</targetReference>
@@ -59,6 +59,12 @@
             <name>studentId</name>
             <value>
                 <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>registrationId</name>
+            <value>
+                <elementReference>InvoiceToReview.Registration_Id__c</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -97,7 +103,7 @@
         <label>GetLoginIdFromOpus</label>
         <locationX>512</locationX>
         <locationY>1298</locationY>
-        <actionName>oeesvc__MiddlewareSvc.getLoginForUser</actionName>
+        <actionName>oeesvc::MiddlewareSvc.getLoginForUser</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>Was_Opus_Get_LoginId_Success</targetReference>
@@ -194,7 +200,7 @@
         <label>Validate TX in Middleware</label>
         <locationX>1898</locationX>
         <locationY>2054</locationY>
-        <actionName>oeesvc__MiddlewareSvc.postValidateTx</actionName>
+        <actionName>oeesvc::MiddlewareSvc.postValidateTx</actionName>
         <actionType>externalService</actionType>
         <connector>
             <targetReference>TX_Check_Status_Decision</targetReference>
