@@ -189,7 +189,7 @@ global with sharing class InvoiceButtonHandler {
     @AuraEnabled
     public static string validateTxInOpus(String csuTx, String processorTx) {
         try {
-            MiddlewareIntegration.MiddlewareActionResponse resp = MiddlewareIntegration.sendPostRequest('/action/tx/validate', new Map<String, String>{'csuTxId' => csuTx, 'processorTxId' => processorTx});
+            MiddlewareActionResponse resp = MiddlewareIntegration.sendPostRequest('/action/tx/validate', new Map<String, String>{'csuTxId' => csuTx, 'processorTxId' => processorTx});
             
             return resp.message;
         } catch (System.CalloutException e) {

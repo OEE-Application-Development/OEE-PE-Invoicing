@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Canvas_Enrollment_Status</name>
-        <label>Get Canvas Enrollment Status</label>
+        <name>Get_User_from_Canvas</name>
+        <label>Get User from Canvas</label>
+        <locationX>182</locationX>
+        <locationY>1514</locationY>
+        <actionName>can_hed__GetUserByLoginOrEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Was_Get_Canvas_User_Successful</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Canvas_Get_User_Error</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>searchTerm</name>
+            <value>
+                <elementReference>MiddlewareResponseData.loginId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>GetCanvasEnrollmentStatus</name>
+        <label>GetCanvasEnrollmentStatus</label>
         <locationX>4334</locationX>
         <locationY>2486</locationY>
-        <actionName>oeesvc::MiddlewareSvc.canvasEnrollmentStatus</actionName>
-        <actionType>externalService</actionType>
+        <actionName>GetCanvasEnrollmentStatus</actionName>
+        <actionType>apex</actionType>
         <connector>
             <targetReference>Was_Response_Successful_Canvas</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>isCredit</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
         <inputParameters>
             <name>sectionReference</name>
             <value>
@@ -18,27 +46,64 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>studentId</name>
+            <name>userId</name>
             <value>
                 <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
-            <assignToReference>MiddlewareActionResponse</assignToReference>
-            <name>200</name>
+            <assignToReference>MiddlewareResponseData</assignToReference>
+            <name>data</name>
         </outputParameters>
         <outputParameters>
             <assignToReference>GetLoginIdHttpStatus</assignToReference>
-            <name>responseCode</name>
+            <name>httpStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>MiddlewareActionSuccess</assignToReference>
+            <name>success</name>
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Get_Enrollment_Status_in_Opus</name>
-        <label>Get Enrollment Status in Opus</label>
+        <name>GetCanvasLoginIdFromOpus</name>
+        <label>GetCanvasLoginIdFromOpus</label>
+        <locationX>512</locationX>
+        <locationY>1298</locationY>
+        <actionName>GetLoginIdFromOpus</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Was_Opus_Get_LoginId_Success</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Set_Opus_Get_Login_Error</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>userIds</name>
+            <value>
+                <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>MiddlewareResponseData</assignToReference>
+            <name>data</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>GetLoginIdHttpStatus</assignToReference>
+            <name>httpStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>MiddlewareActionSuccess</assignToReference>
+            <name>success</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>GetOpusEnrollmentStatus</name>
+        <label>GetOpusEnrollmentStatus</label>
         <locationX>3086</locationX>
         <locationY>2378</locationY>
-        <actionName>oeesvc::MiddlewareSvc.enrollmentStatus</actionName>
-        <actionType>externalService</actionType>
+        <actionName>GetEnrollmentStatus</actionName>
+        <actionType>apex</actionType>
         <connector>
             <targetReference>Was_Response_Successful</targetReference>
         </connector>
@@ -56,75 +121,22 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>studentId</name>
-            <value>
-                <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>registrationId</name>
-            <value>
-                <elementReference>InvoiceToReview.Registration_Id__c</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>MiddlewareActionResponse</assignToReference>
-            <name>200</name>
-        </outputParameters>
-        <outputParameters>
-            <assignToReference>GetLoginIdHttpStatus</assignToReference>
-            <name>responseCode</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Get_User_from_Canvas</name>
-        <label>Get User from Canvas</label>
-        <locationX>182</locationX>
-        <locationY>1514</locationY>
-        <actionName>can_hed__GetUserByLoginOrEmail</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Was_Get_Canvas_User_Successful</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Canvas_Get_User_Error</targetReference>
-        </faultConnector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
-        <inputParameters>
-            <name>searchTerm</name>
-            <value>
-                <elementReference>MiddlewareActionResponse.data.loginId</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <name>GetLoginIdFromOpus</name>
-        <label>GetLoginIdFromOpus</label>
-        <locationX>512</locationX>
-        <locationY>1298</locationY>
-        <actionName>oeesvc::MiddlewareSvc.getLoginForUser</actionName>
-        <actionType>externalService</actionType>
-        <connector>
-            <targetReference>Was_Opus_Get_LoginId_Success</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Set_Opus_Get_Login_Error</targetReference>
-        </faultConnector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
-        <inputParameters>
             <name>userId</name>
             <value>
                 <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
-            <assignToReference>MiddlewareActionResponse</assignToReference>
-            <name>200</name>
+            <assignToReference>MiddlewareResponseData</assignToReference>
+            <name>data</name>
         </outputParameters>
         <outputParameters>
             <assignToReference>GetLoginIdHttpStatus</assignToReference>
-            <name>responseCode</name>
+            <name>httpStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>MiddlewareActionSuccess</assignToReference>
+            <name>success</name>
         </outputParameters>
     </actionCalls>
     <actionCalls>
@@ -196,29 +208,39 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Validate_TX_in_Middleware</name>
-        <label>Validate TX in Middleware</label>
+        <name>ValidateOpusTx</name>
+        <label>ValidateOpusTx</label>
         <locationX>1898</locationX>
         <locationY>2054</locationY>
-        <actionName>oeesvc::MiddlewareSvc.postValidateTx</actionName>
-        <actionType>externalService</actionType>
+        <actionName>ValidateTx</actionName>
+        <actionType>apex</actionType>
         <connector>
             <targetReference>TX_Check_Status_Decision</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>body</name>
+            <name>csuTxId</name>
             <value>
-                <elementReference>MiddlewareTxRequest</elementReference>
+                <elementReference>SelectedTxToReview.CSU_Trans_Id__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>processorTxId</name>
+            <value>
+                <elementReference>SelectedTxToReview.Processor_Trans_Id__c</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
-            <assignToReference>MiddlewareActionResponse</assignToReference>
-            <name>200</name>
+            <assignToReference>MiddlewareResponseData</assignToReference>
+            <name>data</name>
         </outputParameters>
         <outputParameters>
             <assignToReference>GetLoginIdHttpStatus</assignToReference>
-            <name>responseCode</name>
+            <name>httpStatus</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>MiddlewareActionSuccess</assignToReference>
+            <name>success</name>
         </outputParameters>
     </actionCalls>
     <apiVersion>58.0</apiVersion>
@@ -362,7 +384,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Validate_TX_in_Middleware</targetReference>
+            <targetReference>ValidateOpusTx</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -873,7 +895,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetLoginIdFromOpus</targetReference>
+                <targetReference>GetCanvasLoginIdFromOpus</targetReference>
             </connector>
             <label>CanvasUserLookup</label>
         </rules>
@@ -884,7 +906,7 @@
         <locationX>3996</locationX>
         <locationY>2378</locationY>
         <defaultConnector>
-            <targetReference>Get_Canvas_Enrollment_Status</targetReference>
+            <targetReference>GetCanvasEnrollmentStatus</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Fulfillment Expected</defaultConnectorLabel>
         <rules>
@@ -1057,7 +1079,7 @@
             <name>TX_Check_Changed</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>MiddlewareActionResponse.success</leftValueReference>
+                <leftValueReference>MiddlewareActionSuccess</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -1089,7 +1111,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Enrollment_Status_in_Opus</targetReference>
+                <targetReference>GetOpusEnrollmentStatus</targetReference>
             </connector>
             <label>Line Item Selected</label>
         </rules>
@@ -1232,7 +1254,7 @@
             <name>Recommended_Request</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>MiddlewareActionResponse.data.recommendedAction</leftValueReference>
+                <leftValueReference>MiddlewareResponseData.recommendedAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Request_Enrollment</stringValue>
@@ -1271,7 +1293,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>MiddlewareActionResponse.success</leftValueReference>
+                <leftValueReference>MiddlewareActionSuccess</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -1328,7 +1350,7 @@
             <name>Recommended_Action_None</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>MiddlewareActionResponse.data.recommendedAction</leftValueReference>
+                <leftValueReference>MiddlewareResponseData.recommendedAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>None</stringValue>
@@ -1354,7 +1376,7 @@
     <formulas>
         <name>GetCanvasUserFailureMessage</name>
         <dataType>String</dataType>
-        <expression>&apos;Could not find login {&apos;&amp;{!MiddlewareActionResponse.data.loginId}&amp;&apos;} in Canvas.&apos;</expression>
+        <expression>&apos;Could not find login {&apos;&amp;{!MiddlewareResponseData.loginId}&amp;&apos;} in Canvas.&apos;</expression>
     </formulas>
     <formulas>
         <name>IsCanvasLookinDisabled</name>
@@ -1364,7 +1386,7 @@
     <formulas>
         <name>IsConfirmedFromMiddleware</name>
         <dataType>Boolean</dataType>
-        <expression>{!MiddlewareActionResponse.data.status}=&apos;Confirmed&apos;</expression>
+        <expression>{!MiddlewareResponseData.status}=&apos;Confirmed&apos;</expression>
     </formulas>
     <formulas>
         <name>IsPathMessageSet</name>
@@ -1374,12 +1396,12 @@
     <formulas>
         <name>LineItemStatusCheckMessage</name>
         <dataType>String</dataType>
-        <expression>&apos;Got status of &apos;&amp;{!MiddlewareActionResponse.data.status}&amp;&apos; back from Opus.&apos;</expression>
+        <expression>&apos;Got status of &apos;&amp;{!MiddlewareResponseData.status}&amp;&apos; back from Opus.&apos;</expression>
     </formulas>
     <formulas>
         <name>MiddlewareTXCheckStatus</name>
         <dataType>String</dataType>
-        <expression>IF({!MiddlewareActionResponse.success}, &apos;success&apos;, &apos;error&apos;)</expression>
+        <expression>IF({!MiddlewareActionSuccess}, &apos;success&apos;, &apos;error&apos;)</expression>
     </formulas>
     <formulas>
         <name>MissingEnrollmentFoundMessage</name>
@@ -2211,8 +2233,15 @@
         <objectType>lms_hed__LMS_Course_Term__c</objectType>
     </variables>
     <variables>
-        <name>MiddlewareActionResponse</name>
-        <apexClass>ExternalService__oeesvc__MiddlewareSvc_ActionResponse</apexClass>
+        <name>MiddlewareActionSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MiddlewareResponseData</name>
+        <apexClass>csuoee__MiddlewareActionResponseData</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
