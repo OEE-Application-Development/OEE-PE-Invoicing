@@ -150,7 +150,10 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
         reviewInvoiceModal.open({
             title: 'Review Invoice#'+getFieldValue(this.lineItem.data, INVOICE_NUMBER),
             invoiceId: this.recordId
-        }).then();
+        }).then((ok) => {
+            // Result doesn't matter - just refresh page.
+            workspaceAPI.refreshCurrentTab();
+        });
     }
     
 }

@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Get_First_Line_Item</name>
+        <label>Get First Line Item</label>
+        <locationX>4510</locationX>
+        <locationY>2054</locationY>
+        <actionName>GetFirstItemFromCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordCollections</typeName>
+            <typeValue>Noncredit_Invoice_Line_Item__c</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__output</typeName>
+            <typeValue>Noncredit_Invoice_Line_Item__c</typeValue>
+        </dataTypeMappings>
+        <faultConnector>
+            <targetReference>Clear_Default_Line_Item</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>recordCollections</name>
+            <value>
+                <elementReference>InvoiceLineItems</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>LineItemToReview</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_First_Tx</name>
+        <label>Get First Tx</label>
+        <locationX>2940</locationX>
+        <locationY>1514</locationY>
+        <actionName>GetFirstItemFromCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>BlankOutSwitcherBeforePayments</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__recordCollections</typeName>
+            <typeValue>Noncredit_Invoice_Payment__c</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__output</typeName>
+            <typeValue>Noncredit_Invoice_Payment__c</typeValue>
+        </dataTypeMappings>
+        <faultConnector>
+            <targetReference>Clear_Payment_Default</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>recordCollections</name>
+            <value>
+                <elementReference>Get_Payments</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>SelectedTxToReview</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Get_User_from_Canvas</name>
         <label>Get User from Canvas</label>
         <locationX>182</locationX>
@@ -25,13 +91,16 @@
     <actionCalls>
         <name>GetCanvasEnrollmentStatus</name>
         <label>GetCanvasEnrollmentStatus</label>
-        <locationX>4334</locationX>
-        <locationY>2486</locationY>
+        <locationX>4433</locationX>
+        <locationY>2702</locationY>
         <actionName>GetCanvasEnrollmentStatus</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Was_Response_Successful_Canvas</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Fail_Assign_Canvas_Check_Error</targetReference>
+        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>isCredit</name>
@@ -101,7 +170,7 @@
         <name>GetOpusEnrollmentStatus</name>
         <label>GetOpusEnrollmentStatus</label>
         <locationX>3086</locationX>
-        <locationY>2378</locationY>
+        <locationY>2594</locationY>
         <actionName>GetEnrollmentStatus</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -147,7 +216,7 @@
         <actionName>can_hed__ImportCanvasUsers</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Canvas_User_Success</targetReference>
+            <targetReference>Update_LMS_Account_Name</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -176,13 +245,16 @@
     <actionCalls>
         <name>Validate_Canvas_Enrollment</name>
         <label>Validate Canvas Enrollment</label>
-        <locationX>4582</locationX>
-        <locationY>2918</locationY>
+        <locationX>4318</locationX>
+        <locationY>4484</locationY>
         <actionName>can_hed__ValidateCanvasEnrollment</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Was_Missing_Enrollment_Found</targetReference>
+            <targetReference>Does_Enrollment_Require_Save</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Set_Validate_Canvas_Failure</targetReference>
+        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>lmsAccountId</name>
@@ -211,7 +283,7 @@
         <name>ValidateOpusTx</name>
         <label>ValidateOpusTx</label>
         <locationX>1898</locationX>
-        <locationY>2054</locationY>
+        <locationY>2162</locationY>
         <actionName>ValidateTx</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -248,7 +320,7 @@
         <name>Assign_Canvas_Check_Error</name>
         <label>Assign Canvas Check Error</label>
         <locationX>3922</locationX>
-        <locationY>2702</locationY>
+        <locationY>2918</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -272,7 +344,7 @@
         <name>Assign_LI_Check_Error</name>
         <label>Assign LI Check Error</label>
         <locationX>2954</locationX>
-        <locationY>2594</locationY>
+        <locationY>2810</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -296,7 +368,7 @@
         <name>Assign_TX_Check_Changed</name>
         <label>Assign TX Check Changed</label>
         <locationX>1898</locationX>
-        <locationY>2270</locationY>
+        <locationY>2378</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -320,7 +392,7 @@
         <name>Assign_TX_Check_Error</name>
         <label>Assign TX Check Error</label>
         <locationX>1634</locationX>
-        <locationY>2270</locationY>
+        <locationY>2378</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -344,7 +416,7 @@
         <name>Assign_TX_Check_Unchanged</name>
         <label>Assign TX Check Unchanged</label>
         <locationX>2162</locationX>
-        <locationY>2270</locationY>
+        <locationY>2378</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -368,7 +440,7 @@
         <name>Assign_TX_Request_Fields</name>
         <label>Assign TX Request Fields</label>
         <locationX>1898</locationX>
-        <locationY>1946</locationY>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>MiddlewareTxRequest.csuTxId</assignToReference>
             <operator>Assign</operator>
@@ -390,7 +462,7 @@
     <assignments>
         <name>BlankMessageAfterContact</name>
         <label>BlankMessageAfterContact</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>1082</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
@@ -406,8 +478,8 @@
     <assignments>
         <name>BlankMessageBeforeLineItem</name>
         <label>BlankMessageBeforeLineItem</label>
-        <locationX>4186</locationX>
-        <locationY>1838</locationY>
+        <locationX>4510</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -416,19 +488,30 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+            <targetReference>Get_First_Line_Item</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>BlankOutSwitcherBeforeLineItems</name>
         <label>BlankOutSwitcherBeforeLineItems</label>
-        <locationX>4186</locationX>
-        <locationY>1946</locationY>
+        <locationX>4510</locationX>
+        <locationY>2162</locationY>
         <assignmentItems>
             <assignToReference>PathSwitcher</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>DefaultLineItemSelection</assignToReference>
+            <operator>RemoveAll</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>DefaultLineItemSelection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>LineItemToReview</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -438,13 +521,24 @@
     <assignments>
         <name>BlankOutSwitcherBeforePayments</name>
         <label>BlankOutSwitcherBeforePayments</label>
-        <locationX>2778</locationX>
-        <locationY>1514</locationY>
+        <locationX>2940</locationX>
+        <locationY>1622</locationY>
         <assignmentItems>
             <assignToReference>PathSwitcher</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>DefaultPaymentSelection</assignToReference>
+            <operator>RemoveAll</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>DefaultPaymentSelection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>SelectedTxToReview</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -454,7 +548,7 @@
     <assignments>
         <name>BlankOutSwitchersBeforContact</name>
         <label>BlankOutSwitcherBeforeContact</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>866</locationY>
         <assignmentItems>
             <assignToReference>PathSwitcher</assignToReference>
@@ -470,7 +564,7 @@
     <assignments>
         <name>BlankPathMessage</name>
         <label>BlankPathMessage</label>
-        <locationX>2778</locationX>
+        <locationX>2940</locationX>
         <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
@@ -480,14 +574,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>BlankOutSwitcherBeforePayments</targetReference>
+            <targetReference>Get_First_Tx</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Canvas_User_Success</name>
         <label>Canvas User Success</label>
         <locationX>50</locationX>
-        <locationY>1838</locationY>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -508,9 +602,85 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Clear_Default_Line_Item</name>
+        <label>Clear Default Line Item</label>
+        <locationX>6595</locationX>
+        <locationY>2162</locationY>
+        <assignmentItems>
+            <assignToReference>DefaultLineItemSelection</assignToReference>
+            <operator>RemoveAll</operator>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Clear_Payment_Default</name>
+        <label>Clear Payment Default</label>
+        <locationX>6859</locationX>
+        <locationY>1622</locationY>
+        <assignmentItems>
+            <assignToReference>DefaultPaymentSelection</assignToReference>
+            <operator>RemoveAll</operator>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforePayments</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Fail_Assign_Canvas_Check_Error</name>
+        <label>Fail Assign Canvas Check Error</label>
+        <locationX>5891</locationX>
+        <locationY>2810</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>MiddlewareReturnFailureMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>LMS_Course_Term_Lookup_Error</name>
+        <label>LMS Course Term Lookup Error</label>
+        <locationX>4978</locationX>
+        <locationY>4484</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanvasCourseMissingMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Logical_OR_Login_Required</name>
         <label>Logical OR Login Required</label>
-        <locationX>1733</locationX>
+        <locationX>1814</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>CanvasLoginRequired</assignToReference>
@@ -557,8 +727,8 @@
     <assignments>
         <name>Set_Drop_Parameters</name>
         <label>Set Drop Parameters</label>
-        <locationX>5242</locationX>
-        <locationY>2918</locationY>
+        <locationX>5627</locationX>
+        <locationY>3134</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -581,13 +751,13 @@
     <assignments>
         <name>Set_Expected_Enrollment_Valid_Status</name>
         <label>Set Expected Enrollment Valid Status</label>
-        <locationX>4186</locationX>
-        <locationY>2918</locationY>
+        <locationX>4483</locationX>
+        <locationY>3134</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Expected Canvas Enrollment Exists!</stringValue>
+                <elementReference>CanvasReturnMessage</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -605,8 +775,8 @@
     <assignments>
         <name>Set_Found_Enrollment_Results</name>
         <label>Set Found Enrollment Results</label>
-        <locationX>4450</locationX>
-        <locationY>3134</locationY>
+        <locationX>4186</locationX>
+        <locationY>5000</locationY>
         <assignmentItems>
             <assignToReference>LineItemToReview.Canvas_Enrollment__c</assignToReference>
             <operator>Assign</operator>
@@ -683,13 +853,13 @@
     <assignments>
         <name>Set_IT_Help_Check_Status</name>
         <label>Set IT Help Check Status</label>
-        <locationX>4714</locationX>
-        <locationY>3134</locationY>
+        <locationX>4450</locationX>
+        <locationY>5000</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Salesforce could not find the enrollment... please ask IT for help.</stringValue>
+                <elementReference>CanvasReturnMessage</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -708,7 +878,7 @@
         <name>Set_Line_Item_Check_Results</name>
         <label>Set Line Item Check Results</label>
         <locationX>3218</locationX>
-        <locationY>2594</locationY>
+        <locationY>2810</locationY>
         <assignmentItems>
             <assignToReference>LineItemToReview.Is_Confirmed__c</assignToReference>
             <operator>Assign</operator>
@@ -731,14 +901,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Refresh_Line_Items</targetReference>
+            <targetReference>Update_Line_Item_Status</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_No_Fulfillment_Expected_Error</name>
         <label>Set No Fulfillment Expected Error</label>
         <locationX>3658</locationX>
-        <locationY>2486</locationY>
+        <locationY>2702</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -761,8 +931,8 @@
     <assignments>
         <name>Set_No_Line_Item_Error</name>
         <label>Set No Line Item Error</label>
-        <locationX>4186</locationX>
-        <locationY>4004</locationY>
+        <locationX>4510</locationX>
+        <locationY>5870</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -783,10 +953,57 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_No_LMS_Account_Error</name>
+        <label>Set No LMS Account Error</label>
+        <locationX>5231</locationX>
+        <locationY>3884</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>MissingLMSAccountMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Offering_Set_on_Line_Item</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_No_Offering_Error</name>
+        <label>Set No Offering Error</label>
+        <locationX>5242</locationX>
+        <locationY>4268</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>OfferingNotSetWarning</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Set_No_Payment_Error</name>
         <label>Set No Payment Error</label>
         <locationX>2426</locationX>
-        <locationY>1946</locationY>
+        <locationY>2054</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -804,6 +1021,30 @@
         <connector>
             <isGoTo>true</isGoTo>
             <targetReference>BlankOutSwitcherBeforePayments</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_No_Primary_Acct_Error</name>
+        <label>Set No Primary Acct Error</label>
+        <locationX>4967</locationX>
+        <locationY>3776</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NoPrimaryAcctError</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -833,8 +1074,8 @@
     <assignments>
         <name>Set_Request_Parameters</name>
         <label>Set Request Parameters</label>
-        <locationX>4978</locationX>
-        <locationY>2918</locationY>
+        <locationX>4923</locationX>
+        <locationY>3134</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -847,6 +1088,30 @@
             <operator>Assign</operator>
             <value>
                 <stringValue>success</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Validate_Canvas_Failure</name>
+        <label>Set Validate Canvas Failure</label>
+        <locationX>4714</locationX>
+        <locationY>4592</locationY>
+        <assignmentItems>
+            <assignToReference>PathMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanvasReturnMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PathMessageStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>error</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -869,6 +1134,34 @@
         </value>
     </constants>
     <constants>
+        <name>MiddlewareReturnFailureMessage</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Failed to get update from Middleware! We&apos;re most likely processing the request still - please retry. If the failure persists, contact support.</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>MissingLMSAccountMessage</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No LMS Account found! Return to Contact Review to check for a LMS Account.</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>NoPrimaryAcctError</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No LMS Account Set for Contact! Return to Review Contact screen to look up LMS Account.</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>OfferingNotSetWarning</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Offering is not set on this line item! Contact IT support about this invoice to make sure there are no data issues.</stringValue>
+        </value>
+    </constants>
+    <constants>
         <name>ReviewWelcomeMessage</name>
         <dataType>String</dataType>
         <value>
@@ -878,7 +1171,7 @@
     <decisions>
         <name>ContactStageUserChoice</name>
         <label>ContactStageUserChoice</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>Get_Payments</targetReference>
@@ -901,10 +1194,60 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Does_Contact_Have_a_Primary_Canvas_Acct</name>
+        <label>Does Contact Have a Primary Canvas Acct?</label>
+        <locationX>5099</locationX>
+        <locationY>3668</locationY>
+        <defaultConnector>
+            <targetReference>Get_LMS_Account_For_Contact</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Primary Acct Exists</defaultConnectorLabel>
+        <rules>
+            <name>No_Primary_Acct</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContactToReview.Primary_Canvas_Account__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_No_Primary_Acct_Error</targetReference>
+            </connector>
+            <label>No Primary Acct</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Does_Enrollment_Require_Save</name>
+        <label>Does Enrollment Require Save?</label>
+        <locationX>4318</locationX>
+        <locationY>4592</locationY>
+        <defaultConnector>
+            <targetReference>Was_Missing_Enrollment_Found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Enrollment is Good!</defaultConnectorLabel>
+        <rules>
+            <name>Enrollment_Requires_Save</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CanvasEnrollment.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Insert_Canvas_Enrollment</targetReference>
+            </connector>
+            <label>Enrollment Requires Save</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_Fulfillment_Expected</name>
         <label>If Fulfillment Expected?</label>
-        <locationX>3996</locationX>
-        <locationY>2378</locationY>
+        <locationX>4045</locationX>
+        <locationY>2594</locationY>
         <defaultConnector>
             <targetReference>GetCanvasEnrollmentStatus</targetReference>
         </defaultConnector>
@@ -926,22 +1269,86 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_LMS_Account_Id_Set</name>
+        <label>Is LMS Account Id Set?</label>
+        <locationX>4945</locationX>
+        <locationY>3560</locationY>
+        <defaultConnector>
+            <targetReference>Does_Contact_Have_a_Primary_Canvas_Acct</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Account Missing</defaultConnectorLabel>
+        <rules>
+            <name>Account_Set</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LmsAccount.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Offering_Set_on_Line_Item</targetReference>
+            </connector>
+            <label>Account Set</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Offering_Set_on_Line_Item</name>
+        <label>Is Offering Set on Line Item?</label>
+        <locationX>4945</locationX>
+        <locationY>4160</locationY>
+        <defaultConnector>
+            <targetReference>Set_No_Offering_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Offering Missing</defaultConnectorLabel>
+        <rules>
+            <name>Offering_is_Set</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemToReview.Course_Offering__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Lookup_LMS_Course_Term</targetReference>
+            </connector>
+            <label>Offering is Set</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_the_expected_Canvas_Enrollment_here</name>
         <label>Is the expected Canvas Enrollment here?</label>
-        <locationX>4384</locationX>
-        <locationY>2810</locationY>
+        <locationX>4615</locationX>
+        <locationY>3026</locationY>
         <defaultConnector>
-            <targetReference>Validate_Canvas_Enrollment</targetReference>
+            <targetReference>Is_LMS_Account_Id_Set</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Canvas Enrollment Missing</defaultConnectorLabel>
         <rules>
             <name>Canvas_Enrollment_Already_Exists</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 OR (2 AND 3)</conditionLogic>
             <conditions>
                 <leftValueReference>CanvasEnrollment.Id</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>CanvasEnrollment.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MiddlewareResponseData.id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -953,8 +1360,8 @@
     <decisions>
         <name>LineItemStageUserChoice</name>
         <label>LineItemStageUserChoice</label>
-        <locationX>4186</locationX>
-        <locationY>2162</locationY>
+        <locationX>4510</locationX>
+        <locationY>2378</locationY>
         <defaultConnectorLabel>Finish</defaultConnectorLabel>
         <rules>
             <name>Return_to_Payments</name>
@@ -1006,8 +1413,8 @@
     <decisions>
         <name>PaymentStageUserChoice</name>
         <label>PaymentStageUserChoice</label>
-        <locationX>2778</locationX>
-        <locationY>1730</locationY>
+        <locationX>2940</locationX>
+        <locationY>1838</locationY>
         <defaultConnector>
             <targetReference>BlankMessageBeforeLineItem</targetReference>
         </defaultConnector>
@@ -1048,7 +1455,7 @@
         <name>TX_Check_Status_Decision</name>
         <label>TX Check Status Decision</label>
         <locationX>1898</locationX>
-        <locationY>2162</locationY>
+        <locationY>2270</locationY>
         <defaultConnector>
             <targetReference>Assign_TX_Check_Unchanged</targetReference>
         </defaultConnector>
@@ -1095,7 +1502,7 @@
         <name>Was_a_Line_Item_Selected</name>
         <label>Was a Line Item Selected?</label>
         <locationX>3284</locationX>
-        <locationY>2270</locationY>
+        <locationY>2486</locationY>
         <defaultConnector>
             <targetReference>Set_No_Line_Item_Error</targetReference>
         </defaultConnector>
@@ -1119,8 +1526,8 @@
     <decisions>
         <name>Was_a_Line_Item_Selected_Other</name>
         <label>Was a Line Item Selected?</label>
-        <locationX>4751</locationX>
-        <locationY>2270</locationY>
+        <locationX>5100</locationX>
+        <locationY>2486</locationY>
         <defaultConnector>
             <targetReference>Set_No_Line_Item_Error</targetReference>
         </defaultConnector>
@@ -1139,6 +1546,32 @@
                 <targetReference>If_Fulfillment_Expected</targetReference>
             </connector>
             <label>Line Item Selected</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Was_an_ID_Returned</name>
+        <label>Was an ID Returned?</label>
+        <locationX>5275</locationX>
+        <locationY>3134</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>BlankOutSwitcherBeforeLineItems</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No ID Returned</defaultConnectorLabel>
+        <rules>
+            <name>Enrollment_ID_Returned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MiddlewareResponseData.id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_LMS_Account_Id_Set</targetReference>
+            </connector>
+            <label>Enrollment ID Returned</label>
         </rules>
     </decisions>
     <decisions>
@@ -1167,10 +1600,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Was_LMS_Course_Term_Found</name>
+        <label>Was LMS Course Term Found?</label>
+        <locationX>4648</locationX>
+        <locationY>4376</locationY>
+        <defaultConnector>
+            <targetReference>LMS_Course_Term_Lookup_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>LMS Course Term Missing</defaultConnectorLabel>
+        <rules>
+            <name>LMS_Course_Term_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LMSCourseTerm.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Validate_Canvas_Enrollment</targetReference>
+            </connector>
+            <label>LMS Course Term Found</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Was_Missing_Enrollment_Found</name>
         <label>Was Missing Enrollment Found?</label>
-        <locationX>4582</locationX>
-        <locationY>3026</locationY>
+        <locationX>4318</locationX>
+        <locationY>4892</locationY>
         <defaultConnector>
             <targetReference>Set_IT_Help_Check_Status</targetReference>
         </defaultConnector>
@@ -1220,7 +1678,7 @@
         <name>Was_Payment_Selected</name>
         <label>Was Payment Selected?</label>
         <locationX>2162</locationX>
-        <locationY>1838</locationY>
+        <locationY>1946</locationY>
         <defaultConnector>
             <targetReference>Set_No_Payment_Error</targetReference>
         </defaultConnector>
@@ -1244,8 +1702,8 @@
     <decisions>
         <name>Was_Recommendation_Request</name>
         <label>Was Recommendation Request?</label>
-        <locationX>5110</locationX>
-        <locationY>2810</locationY>
+        <locationX>5275</locationX>
+        <locationY>3026</locationY>
         <defaultConnector>
             <targetReference>Set_Drop_Parameters</targetReference>
         </defaultConnector>
@@ -1265,12 +1723,27 @@
             </connector>
             <label>Recommended Request</label>
         </rules>
+        <rules>
+            <name>Update_Screen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MiddlewareResponseData.recommendedAction</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Update_Screen</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Was_an_ID_Returned</targetReference>
+            </connector>
+            <label>Update Screen</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Was_Response_Successful</name>
         <label>Was Response Successful?</label>
         <locationX>3086</locationX>
-        <locationY>2486</locationY>
+        <locationY>2702</locationY>
         <defaultConnector>
             <targetReference>Set_Line_Item_Check_Results</targetReference>
         </defaultConnector>
@@ -1308,8 +1781,8 @@
     <decisions>
         <name>Was_Response_Successful_Canvas</name>
         <label>Was Response Successful</label>
-        <locationX>4334</locationX>
-        <locationY>2594</locationY>
+        <locationX>4433</locationX>
+        <locationY>2810</locationY>
         <defaultConnector>
             <targetReference>Was_There_a_Recommended_Action</targetReference>
         </defaultConnector>
@@ -1340,8 +1813,8 @@
     <decisions>
         <name>Was_There_a_Recommended_Action</name>
         <label>Was There a Recommended Action?</label>
-        <locationX>4747</locationX>
-        <locationY>2702</locationY>
+        <locationX>4945</locationX>
+        <locationY>2918</locationY>
         <defaultConnector>
             <targetReference>Was_Recommendation_Request</targetReference>
         </defaultConnector>
@@ -1364,9 +1837,19 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
+        <name>CanvasCourseMissingMessage</name>
+        <dataType>String</dataType>
+        <expression>&apos;Canvas Reference for &apos;&amp;{!LineItemToReview.Section_Reference__c}&amp;&apos; is missing! If this is a Canvas course - contact IT support to import the Canvas course properly.&apos;</expression>
+    </formulas>
+    <formulas>
         <name>CanvasLoginDisplay</name>
         <dataType>String</dataType>
         <expression>IF(({!ContactToReview.Primary_Canvas_Username__c} == &apos;&apos;), &apos;This Contact does not have a Canvas Login!&apos;, &apos;Canvas Login: &apos;&amp;{!ContactToReview.Primary_Canvas_Username__c})</expression>
+    </formulas>
+    <formulas>
+        <name>CanvasReturnMessage</name>
+        <dataType>String</dataType>
+        <expression>IF({!MiddlewareResponseData.id}=&apos;&apos;, &apos;Canvas Enrollment does not exist, but not needed yet.&apos;, &apos;Required Canvas Enrollment Exists!&apos;)</expression>
     </formulas>
     <formulas>
         <name>CanvasUserSuccessMessage</name>
@@ -1428,7 +1911,7 @@
     <loops>
         <name>Review_Line_Items_for_Confirmed</name>
         <label>Review Line Items for Confirmed</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>566</locationY>
         <collectionReference>InvoiceLineItems</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1458,10 +1941,49 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>Insert_Canvas_Enrollment</name>
+        <label>Insert Canvas Enrollment</label>
+        <locationX>4186</locationX>
+        <locationY>4700</locationY>
+        <connector>
+            <targetReference>Was_Missing_Enrollment_Found</targetReference>
+        </connector>
+        <inputReference>CanvasEnrollment</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Push_Line_Item_Flow</name>
+        <label>Push Line Item Flow</label>
+        <locationX>3218</locationX>
+        <locationY>3026</locationY>
+        <connector>
+            <targetReference>Refresh_Line_Items</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Is_Drop__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Section_Reference__c</field>
+            <value>
+                <elementReference>LineItemToReview.Section_Reference__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>User_Id__c</field>
+            <value>
+                <elementReference>InvoiceToReview.Noncredit_ID__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Confirmation_Publish__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Get_Line_Items</name>
         <label>Get Line Items</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1481,13 +2003,36 @@
         <queriedFields>Section_Reference__c</queriedFields>
         <queriedFields>Is_Confirmed__c</queriedFields>
         <queriedFields>Requires_LMS_Fulfillment__c</queriedFields>
+        <queriedFields>Course_Offering__c</queriedFields>
         <sortField>Section_Reference__c</sortField>
         <sortOrder>Asc</sortOrder>
     </recordLookups>
     <recordLookups>
+        <name>Get_LMS_Account_For_Contact</name>
+        <label>Get LMS Account For Contact</label>
+        <locationX>5231</locationX>
+        <locationY>3776</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_No_LMS_Account_Error</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ContactToReview.Primary_Canvas_Account__c</elementReference>
+            </value>
+        </filters>
+        <object>lms_hed__LMS_Account__c</object>
+        <outputReference>LmsAccount</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>lms_hed__LMS_External_ID__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Payments</name>
         <label>Get Payments</label>
-        <locationX>2778</locationX>
+        <locationX>2940</locationX>
         <locationY>1298</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1510,7 +2055,7 @@
     <recordLookups>
         <name>Load_Contact_Data</name>
         <label>Load Contact Data</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1531,11 +2076,12 @@
         <queriedFields>Primary_Canvas_Username__c</queriedFields>
         <queriedFields>FirstName</queriedFields>
         <queriedFields>LastName</queriedFields>
+        <queriedFields>Primary_Canvas_Account__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Load_Required_Invoice_Data</name>
         <label>Load Required Invoice Data</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1559,10 +2105,42 @@
         <queriedFields>Noncredit_ID__c</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Lookup_LMS_Course_Term</name>
+        <label>Lookup LMS Course Term</label>
+        <locationX>4648</locationX>
+        <locationY>4268</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Was_LMS_Course_Term_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>lms_hed__Term__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LineItemToReview.Course_Offering__r.hed__Term__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>lms_hed__Course__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LineItemToReview.Course_Offering__r.hed__Course__c</elementReference>
+            </value>
+        </filters>
+        <object>lms_hed__LMS_Course_Term__c</object>
+        <outputReference>LMSCourseTerm</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>lms_hed__Term__c</queriedFields>
+        <queriedFields>lms_hed__Course__c</queriedFields>
+        <queriedFields>lms_hed__LMS__c</queriedFields>
+        <queriedFields>lms_hed__LMS_Course_ID__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Refresh_Line_Items</name>
         <label>Refresh Line Items</label>
         <locationX>3218</locationX>
-        <locationY>2702</locationY>
+        <locationY>3134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1582,25 +2160,86 @@
         <queriedFields>Section_Reference__c</queriedFields>
         <queriedFields>Is_Confirmed__c</queriedFields>
         <queriedFields>Requires_LMS_Fulfillment__c</queriedFields>
+        <queriedFields>Course_Offering__c</queriedFields>
+        <queriedFields>Is_Fulfilled__c</queriedFields>
         <sortField>Section_Reference__c</sortField>
         <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>Reload_Contact_Data</name>
+        <label>Reload Contact Data</label>
+        <locationX>50</locationX>
+        <locationY>1946</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Canvas_User_Success</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>InvoiceToReview.Contact__c</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputReference>ContactToReview</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Primary_Canvas_Username__c</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Save_Line_Item_With_Enrollment</name>
         <label>Save Line Item With Enrollment</label>
-        <locationX>4450</locationX>
-        <locationY>3242</locationY>
+        <locationX>4186</locationX>
+        <locationY>5108</locationY>
         <connector>
             <isGoTo>true</isGoTo>
             <targetReference>Refresh_Line_Items</targetReference>
         </connector>
         <inputReference>LineItemToReview</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_Line_Item_Status</name>
+        <label>Update Line Item Status</label>
+        <locationX>3218</locationX>
+        <locationY>2918</locationY>
+        <connector>
+            <targetReference>Push_Line_Item_Flow</targetReference>
+        </connector>
+        <inputReference>LineItemToReview</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_LMS_Account_Name</name>
+        <label>Update LMS Account Name</label>
+        <locationX>50</locationX>
+        <locationY>1838</locationY>
+        <connector>
+            <targetReference>Reload_Contact_Data</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LmsAccount.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>ContactToReview.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <object>lms_hed__LMS_Account__c</object>
+    </recordUpdates>
     <runInMode>DefaultMode</runInMode>
     <screens>
         <name>Review_Contact</name>
         <label>Review Contact</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>974</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1763,8 +2402,8 @@
     <screens>
         <name>Review_Line_Items</name>
         <label>Review Line Items</label>
-        <locationX>4186</locationX>
-        <locationY>2054</locationY>
+        <locationX>4510</locationX>
+        <locationY>2270</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1813,6 +2452,12 @@
                 <name>columns</name>
                 <value>
                     <stringValue>[{&quot;apiName&quot;:&quot;csuoee__Line_Item_ID__c&quot;,&quot;guid&quot;:&quot;column-d371&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Line Item ID&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;csuoee__Section_Reference__c&quot;,&quot;guid&quot;:&quot;column-0fe4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Section Reference&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;csuoee__Is_Confirmed__c&quot;,&quot;guid&quot;:&quot;column-a6fa&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Is Confirmed&quot;,&quot;type&quot;:&quot;boolean&quot;},{&quot;apiName&quot;:&quot;csuoee__Is_Fulfilled__c&quot;,&quot;guid&quot;:&quot;column-1a13&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Is Fulfilled&quot;,&quot;type&quot;:&quot;boolean&quot;},{&quot;apiName&quot;:&quot;csuoee__Is_Dropped__c&quot;,&quot;guid&quot;:&quot;column-6a10&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Is Dropped&quot;,&quot;type&quot;:&quot;boolean&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedRows</name>
+                <value>
+                    <elementReference>DefaultLineItemSelection</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>ResetValues</inputsOnNextNavToAssocScrn>
@@ -1951,8 +2596,8 @@
     <screens>
         <name>Review_Payments</name>
         <label>Review Payments</label>
-        <locationX>2778</locationX>
-        <locationY>1622</locationY>
+        <locationX>2940</locationX>
+        <locationY>1730</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -2117,7 +2762,7 @@
     <screens>
         <name>ReviewWelcomeScreen</name>
         <label>ReviewWelcomeScreen</label>
-        <locationX>1645</locationX>
+        <locationX>1726</locationX>
         <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -2134,7 +2779,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1519</locationX>
+        <locationX>1600</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Load_Required_Invoice_Data</targetReference>
@@ -2166,6 +2811,22 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>DefaultLineItemSelection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Noncredit_Invoice_Line_Item__c</objectType>
+    </variables>
+    <variables>
+        <name>DefaultPaymentSelection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Noncredit_Invoice_Payment__c</objectType>
     </variables>
     <variables>
         <name>FutureFulfillmentRequired</name>
