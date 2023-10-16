@@ -410,4 +410,18 @@ private class ButtonHandler_TEST {
         return sponsorInvoice;
     }
 
+    @IsTest
+    private static void testTxList() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, getTxMiddlewareMock(new MiddlewareActionTxResponse(true, 'Test Message', new List<MiddlewareTransactionResponse>{})));
+        List<List<csuoee__Noncredit_Invoice_Payment__c>> responses = GetTransactionsOnInvoice.getTransactionsOnInvoice(new List<String>{'12345'});
+
+        System.assert(responses.get(0).isEmpty());
+        Test.stopTest();
+    }
+
+    private static HttpCalloutMock getTxMiddlewareMock(MiddlewareActionTxResponse response) {
+        return csuoee.BaseTestUtil.getBasicMiddlewareMock(JSON.serialize(response));
+    }
+
 }
