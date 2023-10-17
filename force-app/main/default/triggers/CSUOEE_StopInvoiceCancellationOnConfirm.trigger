@@ -3,7 +3,7 @@ trigger CSUOEE_StopInvoiceCancellationOnConfirm on csuoee__Noncredit_Invoice_Lin
     for(csuoee__Noncredit_Invoice_Line_Item__c li : (List<csuoee__Noncredit_Invoice_Line_Item__c>)Trigger.new) {
         invoiceIdsToSave.add(li.csuoee__Noncredit_Invoice__c); // De-Duping
     }
-    Set<csuoee__Noncredit_Invoice__c> invoicesToSave = new Set<csuoee__Noncredit_Invoice__c>();
+    List<csuoee__Noncredit_Invoice__c> invoicesToSave = new List<csuoee__Noncredit_Invoice__c>();
     for(Id invoiceId : invoiceIdsToSave) {
         invoicesToSave.add(new csuoee__Noncredit_Invoice__c(Id = invoiceId, csuoee__Cancel_At__c = null));
     }
