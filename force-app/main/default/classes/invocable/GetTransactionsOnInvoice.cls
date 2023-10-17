@@ -25,6 +25,8 @@ global with sharing class GetTransactionsOnInvoice {
                             csuoee__Failure_Reason__c = tx.failureReason
                         ));
                     }
+
+                    results.add(payments);
                 }
             }
         }
