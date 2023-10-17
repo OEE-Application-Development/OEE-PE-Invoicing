@@ -336,6 +336,10 @@
             <name>httpStatus</name>
         </outputParameters>
         <outputParameters>
+            <assignToReference>PathMessage</assignToReference>
+            <name>message</name>
+        </outputParameters>
+        <outputParameters>
             <assignToReference>MiddlewareActionSuccess</assignToReference>
             <name>success</name>
         </outputParameters>
@@ -395,13 +399,6 @@
         <locationX>2426</locationX>
         <locationY>2378</locationY>
         <assignmentItems>
-            <assignToReference>PathMessage</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>An update was made in Opus!</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>PathMessageStatus</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -442,13 +439,6 @@
         <label>Assign TX Check Unchanged</label>
         <locationX>2690</locationX>
         <locationY>2378</locationY>
-        <assignmentItems>
-            <assignToReference>PathMessage</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>No changes were required.</stringValue>
-            </value>
-        </assignmentItems>
         <assignmentItems>
             <assignToReference>PathMessageStatus</assignToReference>
             <operator>Assign</operator>
@@ -1564,19 +1554,12 @@
         <defaultConnectorLabel>TX Check - Unchanged</defaultConnectorLabel>
         <rules>
             <name>TX_Check_Error</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>GetLoginIdHttpStatus</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
+                <leftValueReference>MiddlewareActionSuccess</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>300.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>GetLoginIdHttpStatus</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <numberValue>200.0</numberValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
