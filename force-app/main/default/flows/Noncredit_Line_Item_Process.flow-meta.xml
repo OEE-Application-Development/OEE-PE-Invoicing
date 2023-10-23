@@ -37,7 +37,7 @@
     <actionCalls>
         <name>Deserialize_Course_Enrollment</name>
         <label>Deserialize Course Enrollment</label>
-        <locationX>3526</locationX>
+        <locationX>2998</locationX>
         <locationY>998</locationY>
         <actionName>JsonDecode</actionName>
         <actionType>apex</actionType>
@@ -69,7 +69,7 @@
     <actionCalls>
         <name>Get_Canvas_Account</name>
         <label>Get Canvas Account</label>
-        <locationX>3466</locationX>
+        <locationX>2893</locationX>
         <locationY>782</locationY>
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
@@ -91,7 +91,7 @@
     <actionCalls>
         <name>Get_Canvas_Enrollment_Status</name>
         <label>Get Canvas Enrollment Status</label>
-        <locationX>2571</locationX>
+        <locationX>1953</locationX>
         <locationY>998</locationY>
         <actionName>GetCanvasEnrollmentStatus</actionName>
         <actionType>apex</actionType>
@@ -181,9 +181,35 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Import_LMS_Enrollment_by_ID</name>
+        <label>Import LMS Enrollment by ID</label>
+        <locationX>1568</locationX>
+        <locationY>1214</locationY>
+        <actionName>ImportCanvasEnrollment</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Is_Enrollment_Null</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Await_Fulfillment</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>enrollmentIds</name>
+            <value>
+                <elementReference>MiddlewareResponseData.id</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>FoundEnrollment</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Send_Fulfillment_Missing_Error</name>
         <label>Send Fulfillment Missing Error</label>
-        <locationX>4098</locationX>
+        <locationX>3570</locationX>
         <locationY>998</locationY>
         <actionName>PEHumanRequiredErrorEvent</actionName>
         <actionType>apex</actionType>
@@ -221,7 +247,7 @@
     <actionCalls>
         <name>Send_Invoice_Escalation</name>
         <label>Send Invoice Escalation</label>
-        <locationX>5242</locationX>
+        <locationX>4714</locationX>
         <locationY>566</locationY>
         <actionName>InvoiceEscalationInvocable</actionName>
         <actionType>apex</actionType>
@@ -236,49 +262,11 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <actionCalls>
-        <name>Validate_Found_Enrollment</name>
-        <label>Validate Found Enrollment</label>
-        <locationX>1568</locationX>
-        <locationY>1646</locationY>
-        <actionName>can_hed__ValidateCanvasEnrollment</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Is_Enrollment_Null</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Await_Fulfillment</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>lmsAccountId</name>
-            <value>
-                <elementReference>LmsAccount.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>lmsCourseTermId</name>
-            <value>
-                <elementReference>LMSCourseTerm.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>offeringId</name>
-            <value>
-                <elementReference>LineItemInProgress.Course_Offering__c</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>FoundEnrollment</assignToReference>
-            <name>output</name>
-        </outputParameters>
-    </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Flip_Escalated_True</name>
         <label>Flip Escalated True</label>
-        <locationX>5242</locationX>
+        <locationX>4714</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>IsEscalated</assignToReference>
@@ -308,7 +296,7 @@
     <assignments>
         <name>Set_IsEscalated_Variable</name>
         <label>Set IsEscalated Variable</label>
-        <locationX>3042</locationX>
+        <locationX>2778</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>IsEscalated</assignToReference>
@@ -345,7 +333,7 @@
     <decisions>
         <name>Applies_to_this_Line_Item</name>
         <label>Applies to this Line Item?</label>
-        <locationX>3526</locationX>
+        <locationX>2998</locationX>
         <locationY>1106</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -386,7 +374,7 @@
         <name>Does_Enrollment_Require_Save</name>
         <label>Does Enrollment Require Save?</label>
         <locationX>1766</locationX>
-        <locationY>1862</locationY>
+        <locationY>1430</locationY>
         <defaultConnector>
             <targetReference>Update_Enrollment_on_Line_Item</targetReference>
         </defaultConnector>
@@ -410,7 +398,7 @@
     <decisions>
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
-        <locationX>4046</locationX>
+        <locationX>3495</locationX>
         <locationY>674</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
@@ -433,7 +421,7 @@
         <name>Is_Enrollment_Null</name>
         <label>Is Enrollment Null?</label>
         <locationX>1568</locationX>
-        <locationY>1754</locationY>
+        <locationY>1322</locationY>
         <defaultConnector>
             <targetReference>Does_Enrollment_Require_Save</targetReference>
         </defaultConnector>
@@ -456,61 +444,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Is_there_an_LMS_Account</name>
-        <label>Is there an LMS Account?</label>
-        <locationX>2277</locationX>
-        <locationY>1322</locationY>
-        <defaultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Await_Fulfillment</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>No LMS Account</defaultConnectorLabel>
-        <rules>
-            <name>LMS_Account_Exists</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>LmsAccount.Id</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Lookup_LMS_Course_Term</targetReference>
-            </connector>
-            <label>LMS Account Exists</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Is_There_an_LMS_Course_Term</name>
-        <label>Is There an LMS Course Term</label>
-        <locationX>1953</locationX>
-        <locationY>1538</locationY>
-        <defaultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Await_Fulfillment</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>LMS Course Term Missing</defaultConnectorLabel>
-        <rules>
-            <name>LMS_Course_Term_Exists</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>LMSCourseTerm.Id</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Validate_Found_Enrollment</targetReference>
-            </connector>
-            <label>LMS Course Term Exists</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>4670</locationX>
+        <locationX>4274</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -532,7 +468,7 @@
     <decisions>
         <name>Was_an_Enrollment_Found</name>
         <label>Was an Enrollment Found?</label>
-        <locationX>2571</locationX>
+        <locationX>1953</locationX>
         <locationY>1106</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -564,7 +500,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Find_LMS_Account</targetReference>
+                <targetReference>Import_LMS_Enrollment_by_ID</targetReference>
             </connector>
             <label>Successful Enrollment Found</label>
         </rules>
@@ -636,7 +572,7 @@
         <name>Insert_Canvas_Enrollment</name>
         <label>Insert Canvas Enrollment</label>
         <locationX>1634</locationX>
-        <locationY>1970</locationY>
+        <locationY>1538</locationY>
         <connector>
             <targetReference>Update_Enrollment_on_Line_Item</targetReference>
         </connector>
@@ -673,63 +609,9 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Find_LMS_Account</name>
-        <label>Find LMS Account</label>
-        <locationX>2277</locationX>
-        <locationY>1214</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Is_there_an_LMS_Account</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>LineItemInProgress.Noncredit_Invoice__r.Contact__c</elementReference>
-            </value>
-        </filters>
-        <object>lms_hed__LMS_Account__c</object>
-        <outputReference>LmsAccount</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>lms_hed__LMS_External_ID__c</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Lookup_LMS_Course_Term</name>
-        <label>Lookup LMS Course Term</label>
-        <locationX>1953</locationX>
-        <locationY>1430</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Is_There_an_LMS_Course_Term</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>lms_hed__Term__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>LineItemInProgress.Course_Offering__r.hed__Term__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>lms_hed__Course__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>LineItemInProgress.Course_Offering__r.hed__Course__c</elementReference>
-            </value>
-        </filters>
-        <object>lms_hed__LMS_Course_Term__c</object>
-        <outputReference>LMSCourseTerm</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>lms_hed__Term__c</queriedFields>
-        <queriedFields>lms_hed__Course__c</queriedFields>
-        <queriedFields>lms_hed__LMS__c</queriedFields>
-        <queriedFields>lms_hed__LMS_Course_ID__c</queriedFields>
-    </recordLookups>
-    <recordLookups>
         <name>Pre_Escalation_Refresh</name>
         <label>Pre-Escalation Refresh</label>
-        <locationX>5242</locationX>
+        <locationX>4714</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -760,7 +642,7 @@
     <recordLookups>
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
-        <locationX>4046</locationX>
+        <locationX>3495</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -791,8 +673,8 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>3042</locationX>
-        <locationY>2966</locationY>
+        <locationX>2778</locationX>
+        <locationY>2366</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -812,7 +694,7 @@
     <recordUpdates>
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
-        <locationX>4046</locationX>
+        <locationX>3495</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
@@ -836,7 +718,7 @@
     <recordUpdates>
         <name>Set_Fulfilled</name>
         <label>Set Fulfilled</label>
-        <locationX>3394</locationX>
+        <locationX>2866</locationX>
         <locationY>1214</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -858,7 +740,7 @@
         <name>Update_Enrollment_on_Line_Item</name>
         <label>Update Enrollment on Line Item</label>
         <locationX>1766</locationX>
-        <locationY>2162</locationY>
+        <locationY>1730</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -876,7 +758,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>4544</locationX>
+        <locationX>4148</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -991,7 +873,7 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>3042</locationX>
+        <locationX>2778</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1335,7 +1217,7 @@
         <description>Waiting for Canvas Enrollment.</description>
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
-        <locationX>3466</locationX>
+        <locationX>2893</locationX>
         <locationY>890</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>

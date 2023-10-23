@@ -268,35 +268,23 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Validate_Canvas_Enrollment</name>
-        <label>Validate Canvas Enrollment</label>
+        <name>Import_LMS_Enrollment_by_ID</name>
+        <label>Import LMS Enrollment by ID</label>
         <locationX>4846</locationX>
         <locationY>4484</locationY>
-        <actionName>can_hed__ValidateCanvasEnrollment</actionName>
+        <actionName>ImportCanvasEnrollment</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Does_Enrollment_Require_Save</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Set_Validate_Canvas_Failure</targetReference>
+            <targetReference>Set_Unable_to_Import_Message</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>lmsAccountId</name>
+            <name>enrollmentIds</name>
             <value>
-                <elementReference>LmsAccount.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>lmsCourseTermId</name>
-            <value>
-                <elementReference>LMSCourseTerm.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>offeringId</name>
-            <value>
-                <elementReference>LineItemToReview.Course_Offering__c</elementReference>
+                <elementReference>MiddlewareResponseData.id</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -1159,15 +1147,15 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Set_Validate_Canvas_Failure</name>
-        <label>Set Validate Canvas Failure</label>
+        <name>Set_Unable_to_Import_Message</name>
+        <label>Set Unable to Import Message</label>
         <locationX>5242</locationX>
         <locationY>4592</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>CanvasReturnMessage</elementReference>
+                <stringValue>Unable to Import Enrollment even though it exists! Ask IT for support.</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -1704,7 +1692,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Validate_Canvas_Enrollment</targetReference>
+                <targetReference>Import_LMS_Enrollment_by_ID</targetReference>
             </connector>
             <label>LMS Course Term Found</label>
         </rules>
@@ -1887,6 +1875,13 @@
                 <operator>LessThan</operator>
                 <rightValue>
                     <numberValue>200.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>MiddlewareActionSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
