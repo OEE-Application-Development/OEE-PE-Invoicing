@@ -275,7 +275,7 @@
         <actionName>ImportCanvasEnrollment</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Does_Enrollment_Require_Save</targetReference>
+            <targetReference>Was_Missing_Enrollment_Found</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Set_Unable_to_Import_Message</targetReference>
@@ -827,7 +827,7 @@
         <name>Set_Found_Enrollment_Results</name>
         <label>Set Found Enrollment Results</label>
         <locationX>4714</locationX>
-        <locationY>5000</locationY>
+        <locationY>4700</locationY>
         <assignmentItems>
             <assignToReference>LineItemToReview.Canvas_Enrollment__c</assignToReference>
             <operator>Assign</operator>
@@ -905,7 +905,7 @@
         <name>Set_IT_Help_Check_Status</name>
         <label>Set IT Help Check Status</label>
         <locationX>4978</locationX>
-        <locationY>5000</locationY>
+        <locationY>4700</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -983,7 +983,7 @@
         <name>Set_No_Line_Item_Error</name>
         <label>Set No Line Item Error</label>
         <locationX>5038</locationX>
-        <locationY>5870</locationY>
+        <locationY>5570</locationY>
         <assignmentItems>
             <assignToReference>PathMessage</assignToReference>
             <operator>Assign</operator>
@@ -1281,31 +1281,6 @@
                 <targetReference>Set_No_Primary_Acct_Error</targetReference>
             </connector>
             <label>No Primary Acct</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Does_Enrollment_Require_Save</name>
-        <label>Does Enrollment Require Save?</label>
-        <locationX>4846</locationX>
-        <locationY>4592</locationY>
-        <defaultConnector>
-            <targetReference>Was_Missing_Enrollment_Found</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Enrollment is Good!</defaultConnectorLabel>
-        <rules>
-            <name>Enrollment_Requires_Save</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CanvasEnrollment.Id</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Insert_Canvas_Enrollment</targetReference>
-            </connector>
-            <label>Enrollment Requires Save</label>
         </rules>
     </decisions>
     <decisions>
@@ -1701,7 +1676,7 @@
         <name>Was_Missing_Enrollment_Found</name>
         <label>Was Missing Enrollment Found?</label>
         <locationX>4846</locationX>
-        <locationY>4892</locationY>
+        <locationY>4592</locationY>
         <defaultConnector>
             <targetReference>Set_IT_Help_Check_Status</targetReference>
         </defaultConnector>
@@ -2022,16 +1997,6 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Insert_Canvas_Enrollment</name>
-        <label>Insert Canvas Enrollment</label>
-        <locationX>4714</locationX>
-        <locationY>4700</locationY>
-        <connector>
-            <targetReference>Was_Missing_Enrollment_Found</targetReference>
-        </connector>
-        <inputReference>CanvasEnrollment</inputReference>
-    </recordCreates>
-    <recordCreates>
         <name>Push_Line_Item_Flow</name>
         <label>Push Line Item Flow</label>
         <locationX>3746</locationX>
@@ -2274,7 +2239,7 @@
         <name>Save_Line_Item_With_Enrollment</name>
         <label>Save Line Item With Enrollment</label>
         <locationX>4714</locationX>
-        <locationY>5108</locationY>
+        <locationY>4808</locationY>
         <connector>
             <isGoTo>true</isGoTo>
             <targetReference>Refresh_Line_Items</targetReference>
