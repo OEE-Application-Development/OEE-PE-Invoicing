@@ -4,7 +4,7 @@
     <description>ID Field - can lookup for Contact.</description>
     <externalId>true</externalId>
     <inlineHelpText>ID Field - can lookup for Contact.</inlineHelpText>
-    <label>Noncredit ID</label>
+    <label>Opus ID</label>
     <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
