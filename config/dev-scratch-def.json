@@ -1,0 +1,36 @@
+{
+    "orgName": "OEE-PE-Invoicing - Dev Org",
+    "edition": "Enterprise",
+    "features": ["SharedActivities"],
+    "settings": {
+      "accountSettings": {
+        "enableAccountHistoryTracking": true
+      },
+      "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
+      },
+      "chatterSettings": {
+        "enableChatter": true
+      },
+      "emailAdministrationSettings": {
+        "enableEnhancedEmailEnabled": true
+      },
+      "userManagementSettings": {
+        "enableNewProfileUI": true
+      },
+      "securitySettings": {
+        "enableAdminLoginAsAnyUser": true,
+        "sessionSettings": {
+          "forceRelogin": false
+        }
+      },
+      "languageSettings": {
+        "enableTranslationWorkbench": true
+      }
+    },
+    "objectSettings": {
+      "account": {
+        "defaultRecordType": "Administrative"
+      }
+    }
+  }
