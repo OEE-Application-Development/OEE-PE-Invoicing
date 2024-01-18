@@ -1,0 +1,21 @@
+name: 'Automatic Beta Builder'
+on:
+  pull_request:
+    types: [closed]
+    branches: [main/**]
+jobs:
+  SF-CLI-BUILD:
+    runs-on: ubuntu-latest
+      - run: echo "Loading SF CLI actions via NPM..."
+      - name: Install SF CLI
+        run: npm install @salesforce/cli --global
+      - name: Get Repository
+        uses: actions/checkout@v4
+      - name: Install SF CCI
+        run: pipx install cumulusci
+      - name: Create Build Org
+        run: sf force org create -f orgs/build.json -a OEE-PE-Invoicing__dev
+      - name: Install Package Dependencies
+        run: cci flow run dependencies --org dev
+      - name: Run Beta Release
+        run: cci flow run release_unlocked_beta --org dev

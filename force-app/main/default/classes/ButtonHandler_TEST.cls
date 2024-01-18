@@ -1,9 +1,19 @@
 @IsTest
 private class ButtonHandler_TEST {
 
+    @TestSetup
+    static void initSettings(){
+        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(
+            csuoee__Invoicing_Journey_API_Key__c = 'SDKJFHKJSDHF',
+            csuoee__Invoicing_Journey_Confirmation_Type__c = 'Confirmed',
+            csuoee__PE_Notification_Event__c = 'Notification',
+            csuoee__PE_Manual_Refund_Mailbox__c = 'test@csu.edu'
+            );
+        insert settings;
+    }
+
     @IsTest
     private static void confirmAndCancelInvoiceEmpty() {
-        generateJourneySettings();
         csuoee__Noncredit_Invoice__c invoice = generateInvoice();
         Boolean result;
         //Empty Confirm
@@ -196,16 +206,9 @@ private class ButtonHandler_TEST {
     }
 
     private static csuoee__Noncredit_Invoice_Line_Item__c generateLineItem(csuoee__Noncredit_Invoice__c invoice) {
-        generateJourneySettings();
         csuoee__Noncredit_Invoice_Line_Item__c lineItem = new csuoee__Noncredit_Invoice_Line_Item__c(csuoee__Noncredit_Invoice__c = invoice.Id, csuoee__Noncredit_Invoice__r = invoice, csuoee__Section_Reference__c = '1111SP-AAA-222-100', csuoee__Line_Item_Amount__c = 120);
         insert lineItem;
         return lineItem;
-    }
-
-    @IsTest
-    private static void generateJourneySettings() {
-        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Invoicing_Journey_API_Key__c = 'bananas', csuoee__Invoicing_Journey_Confirmation_Type__c = 'Confirmation', csuoee__PE_Manual_Refund_Mailbox__c = 'test@csu.edu');
-        insert settings;
     }
 
     @IsTest
