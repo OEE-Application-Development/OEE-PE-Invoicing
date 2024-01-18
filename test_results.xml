@@ -1,43 +1,117 @@
-<testsuite tests="41">
-  <testcase classname="AzureEventIntegration_TEST" name="constructorCoverage" time="54" />
-  <testcase classname="AzureEventIntegration_TEST" name="getAccount" time="1173" />
-  <testcase classname="AzureEventIntegration_TEST" name="sendEvents" time="14" />
-  <testcase classname="ButtonHandler_TEST" name="addPayment" time="5813" />
-  <testcase classname="ButtonHandler_TEST" name="autocompleteInvoiceLineItem" time="2002" />
-  <testcase classname="ButtonHandler_TEST" name="checkLineItemEnrollmentExists" time="2375" />
-  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoice" time="2039" />
-  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoiceEmpty" time="578" />
-  <testcase classname="ButtonHandler_TEST" name="confirmLineItem" time="780" />
-  <testcase classname="ButtonHandler_TEST" name="emitEnrollmentComplete" time="1800" />
-  <testcase classname="ButtonHandler_TEST" name="escalateInvoice" time="715" />
-  <testcase classname="ButtonHandler_TEST" name="generateCanvasAccount" time="157" />
-  <testcase classname="ButtonHandler_TEST" name="generateContact" time="428" />
-  <testcase classname="ButtonHandler_TEST" name="generateInvoice" time="570" />
-  <testcase classname="ButtonHandler_TEST" name="generateJourneySettings" time="29" />
-  <testcase classname="ButtonHandler_TEST" name="generateLineItem" time="746" />
-  <testcase classname="ButtonHandler_TEST" name="generateOffering" time="282" />
-  <testcase classname="ButtonHandler_TEST" name="insertEnrollment" time="955" />
-  <testcase classname="ButtonHandler_TEST" name="requestInvoice" time="648" />
-  <testcase classname="ButtonHandler_TEST" name="sendEscalationEmail" time="632" />
-  <testcase classname="ButtonHandler_TEST" name="trackLineItem" time="3273" />
-  <testcase classname="ButtonHandler_TEST" name="voidLineItem" time="914" />
-  <testcase classname="CombinedFunctions_TEST" name="createEventsForSection" time="6554" />
-  <testcase classname="CombinedFunctions_TEST" name="createRegistrationBatch" time="1318" />
-  <testcase classname="CombinedFunctions_TEST" name="getContactsByEmails" time="23" />
-  <testcase classname="CombinedFunctions_TEST" name="handleEnrollments" time="1976" />
-  <testcase classname="CombinedFunctions_TEST" name="midpointTriggers" time="2787" />
-  <testcase classname="CombinedFunctions_TEST" name="overloadEvent" time="3449" />
-  <testcase classname="CombinedFunctions_TEST" name="refreshData" time="274" />
-  <testcase classname="CombinedFunctions_TEST" name="simpleEmail" time="113" />
-  <testcase classname="JsonTest_TEST" name="decode" time="33" />
-  <testcase classname="JsonTest_TEST" name="encode" time="7" />
-  <testcase classname="PEEvent_TEST" name="cancelRegistration" time="67" />
-  <testcase classname="PEEvent_TEST" name="enrollStudent" time="15" />
-  <testcase classname="PEEvent_TEST" name="lmsEnrollmentComplete" time="11" />
-  <testcase classname="PEEvent_TEST" name="lmsEnrollmentRequest" time="9" />
-  <testcase classname="PEEvent_TEST" name="registrationBatchTest" time="2114" />
-  <testcase classname="PEEvent_TEST" name="sendHumanRequired" time="10" />
-  <testcase classname="PEEvent_TEST" name="unenrollStudent" time="11" />
-  <testcase classname="PEHandleEnrollments_TEST" name="handleStudentEnrollment" time="4105" />
-  <testcase classname="PEHelpers_TEST" name="recordTypeTest" time="116" />
+<testsuite tests="20">
+  <testcase classname="ButtonHandler_TEST" name="addPayment" time="8068">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.addPayment: line 136, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="autocompleteInvoiceLineItem" time="663">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.autocompleteInvoiceLineItem: line 188, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="checkLineItemEnrollmentExists" time="3371">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1
+Class.csuoee.ButtonHandler_TEST.checkLineItemEnrollmentExists: line 291, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoice" time="543">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.confirmAndCancelInvoice: line 24, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="confirmAndCancelInvoiceEmpty" time="1186" />
+  <testcase classname="ButtonHandler_TEST" name="confirmLineItem" time="812">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1
+Class.csuoee.ButtonHandler_TEST.confirmLineItem: line 75, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="emitEnrollmentComplete" time="1989">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1
+Class.csuoee.ButtonHandler_TEST.emitEnrollmentComplete: line 247, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="escalateInvoice" time="680">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.escalateInvoice: line 324, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="generateCanvasAccount" time="189" />
+  <testcase classname="ButtonHandler_TEST" name="generateContact" time="484" />
+  <testcase classname="ButtonHandler_TEST" name="generateInvoice" time="739">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="generateJourneySettings" time="44" />
+  <testcase classname="ButtonHandler_TEST" name="generateLineItem" time="702">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="generateOffering" time="461" />
+  <testcase classname="ButtonHandler_TEST" name="insertEnrollment" time="1446" />
+  <testcase classname="ButtonHandler_TEST" name="requestInvoice" time="901">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.requestInvoice: line 177, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="sendEscalationEmail" time="656">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.sendEscalationEmail: line 157, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="testTxList" time="129" />
+  <testcase classname="ButtonHandler_TEST" name="trackLineItem" time="613">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1
+Class.csuoee.ButtonHandler_TEST.trackLineItem: line 97, column 1]]></failure>
+  </testcase>
+  <testcase classname="ButtonHandler_TEST" name="voidLineItem" time="589">
+    <failure type="failed" message="System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert
+
+caused by: System.QueryException: List has no rows for assignment to SObject
+
+Trigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []"><![CDATA[Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1
+Class.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1
+Class.csuoee.ButtonHandler_TEST.voidLineItem: line 86, column 1]]></failure>
+  </testcase>
 </testsuite>
