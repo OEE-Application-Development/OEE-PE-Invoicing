@@ -5,7 +5,7 @@
         <name>Set_Is_Credit_Field</name>
         <label>Set Is Credit Field</label>
         <locationX>50</locationX>
-        <locationY>791</locationY>
+        <locationY>719</locationY>
         <assignmentItems>
             <assignToReference>$Record.csuoee__Is_Credit_Line_Item__c</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +18,7 @@
         <name>Found_an_Offering</name>
         <label>Found an Offering?</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>395</locationY>
         <defaultConnectorLabel>Offering Missing</defaultConnectorLabel>
         <rules>
             <name>Offering_Found</name>
@@ -67,7 +67,7 @@
         <name>Get_RecordType</name>
         <label>Get RecordType</label>
         <locationX>50</locationX>
-        <locationY>671</locationY>
+        <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_Is_Credit_Field</targetReference>
@@ -90,7 +90,7 @@
         <name>Get_Related_Course</name>
         <label>Get Related Course</label>
         <locationX>50</locationX>
-        <locationY>551</locationY>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_RecordType</targetReference>
@@ -105,10 +105,6 @@
         </filters>
         <object>hed__Course__c</object>
         <outputAssignments>
-            <assignToReference>$Record.csuoee__Is_Open_Entry_Line_Item__c</assignToReference>
-            <field>Open_Entry__c</field>
-        </outputAssignments>
-        <outputAssignments>
             <assignToReference>FoundCourseRecordType</assignToReference>
             <field>RecordTypeId</field>
         </outputAssignments>
@@ -117,7 +113,7 @@
         <name>Lookup_Offering</name>
         <label>Lookup Offering</label>
         <locationX>182</locationX>
-        <locationY>311</locationY>
+        <locationY>287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Found_an_Offering</targetReference>
@@ -134,6 +130,10 @@
         <outputAssignments>
             <assignToReference>$Record.csuoee__Course_Offering__c</assignToReference>
             <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record.csuoee__Is_Open_Entry_Line_Item__c</assignToReference>
+            <field>Open_Entry__c</field>
         </outputAssignments>
         <outputAssignments>
             <assignToReference>$Record.csuoee__Requires_LMS_Fulfillment__c</assignToReference>

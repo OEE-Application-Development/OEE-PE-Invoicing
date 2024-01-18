@@ -4,18 +4,23 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import REG_ID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Registration_Id__c';
 import IS_CONFIRMED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Completely_Confirmed__c';
+import IS_CANCELLED_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Cancelled__c';
 import IS_PAID_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Is_Paid__c';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Contact__r.Email';
 import IS_ESCALATION_SENT_FIELD from '@salesforce/schema/Noncredit_Invoice__c.Escalation_Sent__c';
+import INVOICE_NUMBER from '@salesforce/schema/Noncredit_Invoice__c.Invoice_Number__c';
 import confirmInvoice from "@salesforce/apex/InvoiceButtonHandler.confirmInvoice";
 import cancelInvoice from "@salesforce/apex/InvoiceButtonHandler.cancelInvoice";
 import sendEscalationEmail from '@salesforce/apex/InvoiceButtonHandler.sendEscalationEmail';
+
+import refundPaymentModal from "c/refundPaymentModal";
+import reviewInvoiceModal from 'c/reviewInvoiceModal';
 import modalConfirm from "c/modalConfirm";
 import modalAlert from "c/modalAlert";
 
 import workspaceAPI from "c/workspaceAPI";
 
-const fields = [REG_ID_FIELD, IS_CONFIRMED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
+const fields = [REG_ID_FIELD, IS_CONFIRMED_FIELD, IS_CANCELLED_FIELD, IS_PAID_FIELD, CONTACT_EMAIL_FIELD, IS_ESCALATION_SENT_FIELD];
 const NULL_EMAIL_TOAST = new ShowToastEvent({title: 'Escalation Email', message: 'This contact does not have an email! Please add an email for this person before sending an escalation.', variant: 'error'});
 export default class InvoiceButtons extends NavigationMixin(LightningElement) {
 
@@ -26,11 +31,15 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
 
 
     get isConfirmed() {
-        return getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD);
+        return (getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD) || getFieldValue(this.lineItem.data, IS_CANCELLED_FIELD));
     }
 
     get isEscalationNotAvailable() {
-        return (getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD));
+        return (getFieldValue(this.lineItem.data, IS_PAID_FIELD) || getFieldValue(this.lineItem.data, IS_ESCALATION_SENT_FIELD) || getFieldValue(this.lineItem.data, IS_CANCELLED_FIELD));
+    }
+
+    get isCancelled() {
+        return getFieldValue(this.lineItem.data, IS_CANCELLED_FIELD);
     }
     
 
@@ -60,28 +69,40 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
     }
 
     runCancel() {
-        modalConfirm.open({
-            title: 'Void Confirmed',
-            content: 'Are you sure you want to cancel this invoice? This action will reverse any confirmations that have already occurred.'
-        }).then((result) => {
-            if(result) {
-                cancelInvoice({invoiceId: this.recordId})
-                .then((invoiceMessage) => {
-                    modalAlert.open({
-                        title: 'Invoice Cancelled',
-                        content: invoiceMessage
-                    }).then((result) => {
-                        workspaceAPI.closeCurrentTab();
+        let title = "", isRefund = false;
+        if(getFieldValue(this.lineItem.data, IS_CONFIRMED_FIELD)) {
+            title = "Drop & Refund";
+            isRefund = true;
+        } else {
+            title = "Void Invoice";
+        }
+
+        if(isRefund) {
+            refundPaymentModal.open();
+        } else {
+            modalConfirm.open({
+                title: title,
+                content: 'Are you sure you want to cancel this invoice? This action will reverse any confirmations that have already occurred.'
+            }).then((result) => {
+                if(result) {
+                    cancelInvoice({invoiceId: this.recordId})
+                    .then((invoiceMessage) => {
+                        modalAlert.open({
+                            title: 'Invoice Cancelled',
+                            content: invoiceMessage
+                        }).then((result) => {
+                            workspaceAPI.refreshCurrentTab();
+                        });
+                    })
+                    .catch((error) => {
+                        modalAlert.open({
+                            title: 'Cancel Error',
+                            content: 'Send failure! If this issue persists, please contact IT.'
+                        });
                     });
-                })
-                .catch((error) => {
-                    modalAlert.open({
-                        title: 'Cancel Error',
-                        content: 'Send failure! If this issue persists, please contact IT.'
-                    });
-                });
-            }
-        })
+                }
+            });
+        }
     }
 
     runSendEscalation() {
@@ -122,6 +143,17 @@ export default class InvoiceButtons extends NavigationMixin(LightningElement) {
         } else {
             return "Void Invoice";
         }
+    }
+
+    // FLOW
+    runReviewInvoice() {
+        reviewInvoiceModal.open({
+            title: 'Review Invoice#'+getFieldValue(this.lineItem.data, INVOICE_NUMBER),
+            invoiceId: this.recordId
+        }).then((ok) => {
+            // Result doesn't matter - just refresh page.
+            workspaceAPI.refreshCurrentTab();
+        });
     }
     
 }

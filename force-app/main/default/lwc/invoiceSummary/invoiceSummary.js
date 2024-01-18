@@ -24,6 +24,7 @@ import CANCEL_AT from '@salesforce/schema/Noncredit_Invoice__c.Cancel_At__c';
 import NOTES from '@salesforce/schema/Noncredit_Invoice__c.Notes__c';
 import INVOICE_CREATED_AT from '@salesforce/schema/Noncredit_Invoice__c.CreatedDate';
 import INVOICE_CANCELLED from '@salesforce/schema/Noncredit_Invoice__c.Is_Cancelled__c';
+import REGISTRATION_METHOD from '@salesforce/schema/Noncredit_Invoice__c.Registration_Method__c';
 
 import IS_SPONSOR_INVOICE from '@salesforce/schema/Noncredit_Invoice__c.Is_Sponsor_Invoice__c';
 
@@ -39,11 +40,14 @@ import getTrackingInterviewsForInvoice from '@salesforce/apex/InvoiceButtonHandl
 import trackLineItem from "@salesforce/apex/LineItemButtonHandler.trackLineItem";
 import confirmLineItem from '@salesforce/apex/LineItemButtonHandler.confirmLineItem';
 import voidLineItem from '@salesforce/apex/LineItemButtonHandler.voidLineItem';
+import dropLineItem from '@salesforce/apex/LineItemButtonHandler.dropLineItem';
 
 import LINE_ITEM_SECTION_REFERENCE from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Section_Reference__c';
 import LINE_ITEM_AMOUNT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Line_Item_Amount__c';
 import LINE_ITEM_CANVAS_LINK from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Course_Offering__r.Canvas_Link__c';
 import LINE_ITEM_IS_CONFIRMED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Confirmed__c';
+import LINE_ITEM_IS_VOIDED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Voided__c';
+import LINE_ITEM_IS_DROPPED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Dropped__c';
 import LINE_ITEM_CONFIRMED_AT from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Confirmed_At__c';
 import LINE_ITEM_IS_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c';
 import LINE_ITEM_REQUIRES_FULFILLED from '@salesforce/schema/Noncredit_Invoice_Line_Item__c.Requires_LMS_Fulfillment__c';
@@ -53,6 +57,7 @@ import LINE_ITEM_SPONSORED_INVOICE from '@salesforce/schema/Noncredit_Invoice_Li
 /* Payments */
 import sendPayment from '@salesforce/apex/InvoiceButtonHandler.addPayment';
 import cancelPayment from '@salesforce/apex/InvoiceButtonHandler.initiatePaymentRefund';
+import validateTxInOpus from '@salesforce/apex/InvoiceButtonHandler.validateTxInOpus';
 
 import PAYMENT_NAME from '@salesforce/schema/Noncredit_Invoice_Payment__c.Name';
 import PAYMENT_TRANS_ID from '@salesforce/schema/Noncredit_Invoice_Payment__c.CSU_Trans_Id__c';
@@ -68,7 +73,7 @@ import EMAIL_HAS_BEEN_OPENED from '@salesforce/schema/EmailMessage.Has_Been_Open
 
 import workspaceAPI from "c/workspaceAPI";
 
-const allFields = [INVOICE_NUMBER, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED, IS_SPONSOR_INVOICE];
+const allFields = [INVOICE_NUMBER, REGISTRATION_METHOD, REGISTRATION_NUMBER, IS_PAID, IS_CONFIRMED, IS_FULFILLED, HAS_FAILED_PAYMENTS, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL, CANCEL_IN_PROGRESS, CANCEL_AT, NOTES, INVOICE_CREATED_AT, INVOICE_CANCELLED, IS_SPONSOR_INVOICE];
 const noPayments = [
     {
         "id": "fakeid",
@@ -93,7 +98,9 @@ const LINE_ITEM_FIELDS = ['id',
     LINE_ITEM_IS_FULFILLED.objectApiName+'.'+LINE_ITEM_IS_FULFILLED.fieldApiName,
     LINE_ITEM_SPONSORED_INVOICE.objectApiName+'.'+LINE_ITEM_SPONSORED_INVOICE.fieldApiName,
     LINE_ITEM_REQUIRES_FULFILLED.objectApiName+'.'+LINE_ITEM_REQUIRES_FULFILLED.fieldApiName,
-    LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName];
+    LINE_ITEM_CONFIRMED_AT.objectApiName+'.'+LINE_ITEM_CONFIRMED_AT.fieldApiName,
+    LINE_ITEM_IS_VOIDED.objectApiName+'.'+LINE_ITEM_IS_VOIDED.fieldApiName,
+    LINE_ITEM_IS_DROPPED.objectApiName+'.'+LINE_ITEM_IS_DROPPED.fieldApiName];
 const PAYMENT_FIELDS = ['id', 
     PAYMENT_NAME.objectApiName+'.'+PAYMENT_NAME.fieldApiName, 
     PAYMENT_TRANS_ID.objectApiName+'.'+PAYMENT_TRANS_ID.fieldApiName,
@@ -103,7 +110,7 @@ const PAYMENT_FIELDS = ['id',
     PAYMENT_CREATED_AT.objectApiName+'.'+PAYMENT_CREATED_AT.fieldApiName];
 
 export default class InvoiceSummary extends NavigationMixin(LightningElement) {
-    invoiceFields = [ INVOICE_NUMBER, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
+    invoiceFields = [ INVOICE_NUMBER, REGISTRATION_METHOD, REGISTRATION_NUMBER, NONCREDIT_ID, PAYER_ACCOUNT, COST_TOTAL, PAYMENT_TOTAL ];
     notesOnly = [ NOTES ];
 
     @api recordId;
@@ -120,9 +127,19 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
 
     get cancelMessage() {
         if(getFieldValue(this.invoice.data, INVOICE_CANCELLED)) {
-            return "This invoice is cancelled & no longer appears in Opus. If you need to recreate it, contact IT support.";
+            return "This invoice is cancelled - no more actions required. If you need to recreate it, contact IT support.";
         } else {
             return "Unless a payment occurs or this invoice is confirmed, this invoice is set to expire on "+getFieldDisplayValue(this.invoice.data, CANCEL_AT)+" at midnight.";
+        }
+    }
+
+    get invoiceSummaryTitle() {
+        const invoiceNumber = getFieldValue(this.invoice.data, INVOICE_NUMBER);
+        if(invoiceNumber == null) {
+            return "Invoice Details";
+        } else {
+            workspaceAPI.setCurrentTabLabel('Inv#'+invoiceNumber);
+            return "Invoice Details - #"+invoiceNumber;
         }
     }
 
@@ -136,7 +153,9 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: '', fieldName: LINE_ITEM_SPONSORED_INVOICE.fieldApiName, cellAttributes: {class: 'slds-hidden'}},
         {label: 'Tracking Status', fieldName: 'LineItemTracked', type: 'text'},
         {label: 'Confirmed At', fieldName: LINE_ITEM_CONFIRMED_AT.fieldApiName, type: 'date'},
-        {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'}
+        {label: '', fieldName: LINE_ITEM_REQUIRES_FULFILLED.fieldApiName, type: 'boolean'},
+        {label: '', fieldName: LINE_ITEM_IS_VOIDED.fieldApiName, type: 'boolean'},
+        {label: '', fieldName: LINE_ITEM_IS_DROPPED.fieldApiName, type: 'boolean'}
     ];
     lineItemColumns = [
         {label: 'Section Reference', fieldName: LINE_ITEM_SECTION_REFERENCE.fieldApiName, type: 'text'},
@@ -189,6 +208,12 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                     setTimeout(() => {this.refreshLineItemData();}, 3000);
                 }
             });
+        } else if(event.detail.row.operationName == 'Drop Line Item') {
+            dropLineItem({lineItemId: event.detail.row.id}).then((result) => {
+                if(result) {
+                    setTimeout(() => {this.refreshLineItemData();}, 3000);
+                }
+            });
         }
     }
 
@@ -199,8 +224,8 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
         {label: 'Payment Type', fieldName: PAYMENT_TYPE.fieldApiName, type: 'text'},
         {label: 'Successful', fieldName: PAYMENT_SUCCESS.fieldApiName, type: 'boolean'},
         {label: 'Paid At', fieldName: PAYMENT_CREATED_AT.fieldApiName, type: 'date'},
-        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }}/*,
-    {label: '', type: 'button', typeAttributes: {label: 'Refund/Void Payment', name: 'cancelPayment'}, cellAttributes: {alignment: 'center'}}*/
+        {label: 'Amount', fieldName: PAYMENT_AMOUNT.fieldApiName, type: 'currency', cellAttributes: { alignment: 'left' }},
+        {label: '', type: 'button', typeAttributes: {label: {fieldName: 'operationName'}, name: {fieldName: 'operationName'}, disabled: {fieldName: 'lidisabled'}}, cellAttributes: {alignment: 'center'}}
     ];
     paymentData = [];
     @wire(getRelatedListRecords, {
@@ -210,74 +235,41 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     })
     relatedPayments({error, data}) {
         if(data) {
-            if(data.count == 0)
+            if(data.count == 0) {
                 this.paymentData = noPayments;
-            else
-                this.paymentData = datatableHelpers.parseFieldData(this.paymentColumns, data);
+            } else {
+                let formattedData = datatableHelpers.parseFieldData(this.paymentColumns, data);
+                for(var i=0;i<formattedData.length;i++) {
+                    if(formattedData[i].csuoee__Successful__c) {
+                        formattedData[i].operationName = 'Validate in Opus';
+                    } else {
+                        formattedData[i].operationName = 'Validate in Opus';
+                    }
+                }
+                this.paymentData = formattedData;
+            }
         } else {
             this.paymentData = noPayments;
         }
     }
 
     handlePayItemAction(event) {
-        /*if(event.detail.action.name == 'cancelPayment') {
-            if(event.detail.row.csuoee__Payment_Type__c == "") return;
-            if(event.detail.row.csuoee__Payment_Type__c == "Sponsor") {
-                refundModal.open({
-                    size: 'small',
-                    title: 'Cancel Sponsor Payment',
-                    content: 'This is a sponsor payment, cancelling it will remove this credit & return it to the sponsor\'s invoice.',
-                    defaultAmount: event.detail.row.csuoee__Amount__c
-                }).then((confirmSponsorRefund) => {
-                    if(confirmSponsorRefund.ok) {
-                        modalConfirm.open({
-                            title: 'Sponsor Refund',
-                            content: 'This will return ($'+confirmSponsorRefund.amount.toFixed(2)+') from this invoice to the sponsor invoice.'
-                        }).then((confirmSponsorRefund2) => {
-                            if(confirmSponsorRefund2) {
-                                cancelPayment({paymentId: event.detail.row.id, amount: confirmSponsorRefund.amount})
-                                .then((sponsorRefundMessage) => {
-                                    let sponsorCustomResponse = REFUND_SENT_TOAST;
-                                    sponsorCustomResponse.message = sponsorRefundMessage;
-                                    this.dispatchEvent(sponsorCustomResponse);
-                                })
-                                .catch((error) => {
-                                    this.dispatchEvent(new ShowToastEvent({title: 'Payment Refund', message: error.body.message, variant: 'error'}));
-                                });
-                            }
+        if(event.detail.row.operationName == 'Validate in Opus') {
+            modalConfirm.open({
+                title: 'Validate Transaction',
+                content: 'Opus often does not handle a decline or failed transaction properly. Click OK to check that the transaction is properly set in Opus. Querying Authorize.Net can take time, if the request times out - check back later.'
+            }).then((result) => {
+                if(result) {
+                    validateTxInOpus({csuTx: event.detail.row.csuoee__CSU_Trans_Id__c, processorTx: event.detail.row.csuoee__Processor_Trans_Id__c})
+                        .then((webhookResult) => {
+                            modalAlert.open({
+                                title: 'Validate Result',
+                                content: webhookResult
+                            })
                         });
-                    }
-                });
-                return;
-            }
-            refundModal.open({
-                size: 'small',
-                title: 'Refund/Void Payment',
-                content: 'Are you sure you want refund/void this payment?',
-                defaultAmount: event.detail.row.csuoee__Amount__c
-            }).then((check1) => {
-                if(check1.ok) {
-                    modalConfirm.open({
-                        title: 'WARNING',
-                        content: 'This will IMMEDIATELY refund/void ($'+check1.amount.toFixed(2)+') from this payment. If it came from Authorize.Net, then we will send a request to return the student\'s money & deactivate enrollments in Canvas.'
-                    }).then((check2) => {
-                        if(check2) {
-                            //Do it.
-                            cancelPayment({paymentId: event.detail.row.id, amount: check1.amount})
-                                .then((refundMessage) => {
-                                    let customResponse = REFUND_SENT_TOAST;
-                                    customResponse.message = refundMessage;
-                                    this.dispatchEvent(customResponse);
-                                })
-                                .catch((error) => {
-                                    this.dispatchEvent(new ShowToastEvent({title: 'Payment Refund', message: error.body.message, variant: 'error'}));
-                                });
-                        }
-                    });
                 }
             });
-            return;
-        }*/
+        }
     }
 
     /* Emails */
@@ -374,10 +366,12 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
     spliceTrackingStatus(formattedData, trackingResult) {
         let isSponsor = getFieldValue(this.invoice.data, IS_SPONSOR_INVOICE);
         let isCancelled = getFieldValue(this.invoice.data, INVOICE_CANCELLED);
+        let isPaid = getFieldValue(this.invoice.data, IS_PAID);
 
         formattedData = datatableHelpers.ided(formattedData);
         for(var i=0;i<formattedData.length;i++) {
             try{
+                console.log(formattedData[i]);
                 formattedData[i].lidisabled = false;
                 if(isCancelled) {
                     formattedData[i].LineItemTracked = 'Invoice Cancelled';
@@ -391,7 +385,17 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
                     formattedData[i].lidisabled = false;
                     continue;
                 }
-                formattedData[i].operationName = (formattedData[i].csuoee__Is_Confirmed__c)?'Void Line Item':'Confirm Line Item';
+                if(formattedData[i].csuoee__Is_Voided__c) {
+                    formattedData[i].operationName = 'Already Voided';
+                    formattedData[i].lidisabled = true;
+                } else if(formattedData[i].csuoee__Is_Dropped__c) {
+                    formattedData[i].operationName = 'Already Dropped';
+                    formattedData[i].lidisabled = true;
+                } else if(isPaid) {
+                    formattedData[i].operationName = 'Drop Line Item';
+                } else {
+                    formattedData[i].operationName = (formattedData[i].csuoee__Is_Confirmed__c)?'Void Line Item':'Confirm Line Item';
+                }
                 let status = (trackingResult!=null)?trackingResult[formattedData[i].csuoee__Section_Reference__c]:null;
                 if(status == null){
                     if(formattedData[i].csuoee__Is_Confirmed__c) {
@@ -425,8 +429,6 @@ export default class InvoiceSummary extends NavigationMixin(LightningElement) {
             .then((data) => {
                 getTrackingInterviewsForInvoice({invoiceId: this.recordId})
                     .then((result) => {
-                        console.log(data);
-                        console.log(result);
                         this.lineItemData = this.spliceTrackingStatus(data, result);
                     });
             });

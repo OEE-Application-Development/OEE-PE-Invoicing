@@ -1,6 +1,6 @@
 global with sharing class InvoiceButtonHandler {
     private static csuoee__Noncredit_Invoice__c getInvoiceById(Id invoiceId) {
-        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c, csuoee__Line_Item_Amount__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
+        return [select Id, csuoee__Invoice_Number__c, csuoee__Noncredit_ID__c, csuoee__Registration_Id__c, csuoee__Contact__c, csuoee__Escalate_Automatically__c, csuoee__Escalation_Sent__c, (select Id, csuoee__Is_Confirmed__c, csuoee__Section_Reference__c, csuoee__Line_Item_Amount__c from csuoee__Noncredit_Invoice_Line_Items__r), csuoee__Payer_Account__c from csuoee__Noncredit_Invoice__c where Id = :invoiceId LIMIT 1];
     }
     
     @AuraEnabled
@@ -24,57 +24,41 @@ global with sharing class InvoiceButtonHandler {
     }
 
     @AuraEnabled
-    global static String cancelInvoice(Id invoiceId){
-        //try {
-            csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
-            List<PEConfirmedEvent.PEConfirmedRequest> voidRequests = new List<PEConfirmedEvent.PEConfirmedRequest>();
-            for(csuoee__Noncredit_Invoice_Line_Item__c li : invoice.csuoee__Noncredit_Invoice_Line_Items__r) {
-                if(!li.csuoee__Is_Confirmed__c) continue;
-
-                voidRequests.add(new PEConfirmedEvent.PEConfirmedRequest(invoice.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c));
-            }
-            if(!voidRequests.isEmpty()) {
-                PEVoidConfirmedEvent.unenrollStudent(voidRequests);
-            }
-            Boolean automatedRefundRequested = false; Boolean manualRefundRequested = false;
-            List<csuoee__Noncredit_Invoice_Payment__c> payments = [select Id, csuoee__CSU_Trans_Id__c, csuoee__Is_Actual__c, csuoee__Payment_Type__c, csuoee__Processor_Trans_Id__c, csuoee__Processor_Trans_Status__c, csuoee__Amount__c from csuoee__Noncredit_Invoice_Payment__c where csuoee__Noncredit_Invoice__c = :invoiceId and csuoee__Successful__c = true];
-            
-            Decimal runningManualTotal = 0;
-            for(csuoee__Noncredit_Invoice_Payment__c payment : payments) {
-                if(payment.csuoee__Is_Actual__c) {
-                    if(payment.csuoee__Is_Actual__c && 'Credit Card'.equals(payment.csuoee__Payment_Type__c)) {
-                        if(payment.csuoee__Processor_Trans_Id__c != null) {
-                            automatedRefundRequested = true;
-                        } else {
-                            runningManualTotal += payment.csuoee__Amount__c;
-                            manualRefundRequested = true;
-                        }
-                    }
-                } else {
-                    // Sponsored payment... gotta cancel that sponsor invoice too. Just unset as successful here, we look up related invoices below.
-                    payment.csuoee__Successful__c = false;
-                    update payment;
-                }
-            }
-            PERegistrationCancelEvent.cancelRegistration(new List<PERegistrationCancelEvent.PERegistrationCancelRequest>{new PERegistrationCancelEvent.PERegistrationCancelRequest(invoice.csuoee__Registration_Id__c, 'Cancelled by Salesforce Admin', automatedRefundRequested)});
-
-            String returnMessage;
-            if(automatedRefundRequested) {
-                if(manualRefundRequested) {
-                    returnMessage = 'Partial automated refund/void - looks like a manual Credit Card payment was added. Notifying for manual operation.';
-                } else {
-                    returnMessage = 'Automated refund/void requested. Please allow time for Authorize.Net to begin the refund/void process.';
-                }
+    global static String cancelInvoice(Id invoiceId, Decimal refundAmount){
+        csuoee__Noncredit_Invoice__c invoice = getInvoiceById(invoiceId);
+        List<PEConfirmedEvent.PEConfirmedRequest> dropRequests = new List<PEConfirmedEvent.PEConfirmedRequest>();
+        List<PEVoidLineItemEvent.PEVoidLineItemRequest> voidRequests = new List<PEVoidLineItemEvent.PEVoidLineItemRequest>();
+        
+        for(csuoee__Noncredit_Invoice_Line_Item__c li : invoice.csuoee__Noncredit_Invoice_Line_Items__r) {
+            if(li.csuoee__Is_Confirmed__c) {
+                dropRequests.add(new PEConfirmedEvent.PEConfirmedRequest(invoice.csuoee__Noncredit_ID__c, li.csuoee__Section_Reference__c));
             } else {
-                if(manualRefundRequested) {
-                    returnMessage = 'Refund requested, but no Authorize.Net transaction id found! Notifying finance/support for a manual refund/void process.';
-                } else {
-                    returnMessage = 'No successful Authorize.Net charges found on this invoice to handle; cancelling invoice.';
-                }
+                voidRequests.add(new PEVoidLineItemEvent.PEVoidLineItemRequest(invoice.csuoee__Invoice_Number__c, li.csuoee__Section_Reference__c));
             }
+        }
+        if(!dropRequests.isEmpty()) {
+            PEVoidConfirmedEvent.unenrollStudent(dropRequests);
+        }
+        if(!voidRequests.isEmpty()) {
+            PEVoidLineItemEvent.voidLineItem(voidRequests);
+        }
+        List<csuoee__Noncredit_Invoice_Payment__c> payments = [select Id, csuoee__CSU_Trans_Id__c, csuoee__Is_Actual__c, csuoee__Payment_Type__c, csuoee__Processor_Trans_Id__c, csuoee__Processor_Trans_Status__c, csuoee__Amount__c from csuoee__Noncredit_Invoice_Payment__c where csuoee__Noncredit_Invoice__c = :invoiceId and csuoee__Successful__c = true];
+        List<PEPaymentEvent.PEPaymentRequest> refunds = new List<PEPaymentEvent.PEPaymentRequest>();
+        Decimal runningManualTotal = 0;
+        if(refundAmount == null) refundAmount = 1.0;
+        for(csuoee__Noncredit_Invoice_Payment__c payment : payments) {
+            if(!payment.csuoee__Is_Actual__c || payment.csuoee__CSU_Trans_Id__c == null || ''.equals(payment.csuoee__CSU_Trans_Id__c)) continue;
+            
+            runningManualTotal += payment.csuoee__Amount__c*refundAmount;
+            refunds.add(new PEPaymentEvent.PEPaymentRequest(invoice.csuoee__Invoice_Number__c, 'Refund', payment.csuoee__Amount__c*refundAmount, null, payment.csuoee__CSU_Trans_Id__c));
+        }
+        if(!refunds.isEmpty()) {
+            PEPaymentEvent.createPayment(refunds);
+        }
 
-            // If there is an automated refund requested... send to support.
-            if(manualRefundRequested) {
+        // If there is an automated refund requested... send to support.
+        if(!refunds.isEmpty()) {
+            try {
                 csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = [select csuoee__PE_Manual_Refund_Mailbox__c from csuoee__Marketing_Cloud_Journey_Event_Settings__c LIMIT 1];
                 Account payer = [select Name from Account where Id = :invoice.csuoee__Payer_Account__c LIMIT 1];
                 csuoee__Email_Simple_Request__c emailRequest = new csuoee__Email_Simple_Request__c(
@@ -83,21 +67,29 @@ global with sharing class InvoiceButtonHandler {
                     csuoee__Email_Recipient_List__c = settings.csuoee__PE_Manual_Refund_Mailbox__c
                 );
                 insert emailRequest;
+            } catch(QueryException qe) {
+                // Settings not set... skip email
             }
+        }
 
-            Set<Id> relatedInvoiceIds = new Set<Id>();
-            List<csuoee__Noncredit_Invoice_Line_Item__c> relatedItems = [select Id, csuoee__Noncredit_Invoice__c from csuoee__Noncredit_Invoice_Line_Item__c where csuoee__Sponsor_Payment_Invoice__c = :invoice.Id and csuoee__Is_Actual__c = false];
-            for(csuoee__Noncredit_Invoice_Line_Item__c item : relatedItems) {
-                relatedInvoiceIds.add(item.csuoee__Noncredit_Invoice__c);
-            }
-            for(Id relatedInvoiceId : relatedInvoiceIds) {
-                cancelInvoice(relatedInvoiceId);
-            }
+        Set<Id> relatedInvoiceIds = new Set<Id>();
+        List<csuoee__Noncredit_Invoice_Line_Item__c> relatedItems = [select Id, csuoee__Noncredit_Invoice__c from csuoee__Noncredit_Invoice_Line_Item__c where csuoee__Sponsor_Payment_Invoice__c = :invoice.Id and csuoee__Is_Actual__c = false];
+        for(csuoee__Noncredit_Invoice_Line_Item__c item : relatedItems) {
+            relatedInvoiceIds.add(item.csuoee__Noncredit_Invoice__c);
+        }
+        for(Id relatedInvoiceId : relatedInvoiceIds) {
+            cancelInvoice(relatedInvoiceId, refundAmount);
+        }
 
-            return returnMessage;
-        /*} catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }*/
+        invoice.csuoee__Is_Cancelled__c = true;
+        update invoice;
+
+        EventBus.publish(new csuoee__Flow_Cancel__e(
+            csuoee__Cancel_Type__c = 'Invoice Cancel',
+            csuoee__Cancel_Identifier__c = invoice.Id
+        ));
+
+        return 'Invoice cancellation in progress. Please allow a moment for completion.';
     }
 
     @AuraEnabled
@@ -192,6 +184,42 @@ global with sharing class InvoiceButtonHandler {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+    }
+
+    @AuraEnabled
+    public static string validateTxInOpus(String csuTx, String processorTx) {
+        try {
+            MiddlewareActionResponse resp = MiddlewareIntegration.sendPostRequest('/action/tx/validate', new Map<String, String>{'csuTxId' => csuTx, 'processorTxId' => processorTx});
+            
+            return resp.message;
+        } catch (System.CalloutException e) {
+            return 'Could not get a response from CSU systems - most likely Authorize.Net is being slow to respond.';
+        }
+    }
+    
+
+    global static MiddlewareActionTxResponse getTransactionList(String invoiceNumber) {
+        return sendTxListRequest('/action/tx/getPayments'+csuoee.CombinedFunctions.parameterizeRequestParams(new Map<String, String>{'invoiceNumber' => invoiceNumber}));
+    }
+
+    private static Http http = new Http();
+    private static MiddlewareActionTxResponse sendTxListRequest(String path) {
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('callout:oeesvc__MiddlewareSvc'+path);
+        request.setMethod('GET');
+        request.setHeader('Accept', 'application/json');
+        request.setHeader('Content-Type', 'application/json');
+        
+        HttpResponse response = http.send(request);
+        MiddlewareActionTxResponse actionResponse;
+        try {
+           actionResponse = (MiddlewareActionTxResponse)JSON.deserialize(response.getBody(), MiddlewareActionTxResponse.class);
+           actionResponse.httpStatus = response.getStatusCode();
+        } catch(Exception e) {
+            return null;
+        }
+        
+        return actionResponse;
     }
 
 }

@@ -14,7 +14,7 @@ private class ButtonHandler_TEST {
         System.assert(result);
         
         //Empty cancel
-        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id, 1.0);
         Test.stopTest();
         System.assert(result != null);
     }
@@ -48,7 +48,7 @@ private class ButtonHandler_TEST {
         update li;
 
         //Cancel 1
-        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id);
+        String msg = InvoiceButtonHandler.cancelInvoice(invoice.Id, 10);
 
         invoice.csuoee__Is_Cancelled__c = true;
         update invoice;
@@ -268,6 +268,11 @@ private class ButtonHandler_TEST {
         update li;
         
         LineItemButtonHandler.getLineItemData(li.Id);
+
+        GetLineItemData.LineItemDataRequest request = new GetLineItemData.LineItemDataRequest();
+        request.lineItemId = li.Id;
+
+        GetLineItemData.getLineItemData(new List<GetLineItemData.LineItemDataRequest>{request});
         
         LineItemButtonHandler.setLineItemEnrollment(enrollment.Id, li.Id);
         Test.stopTest();
@@ -309,7 +314,7 @@ private class ButtonHandler_TEST {
         update li;
         System.assert(true);
 
-        InvoiceButtonHandler.cancelInvoice(li.csuoee__Noncredit_Invoice__c);
+        InvoiceButtonHandler.cancelInvoice(li.csuoee__Noncredit_Invoice__c, 1.0);
 
         Test.stopTest();
     }
@@ -403,6 +408,20 @@ private class ButtonHandler_TEST {
         insert payment;
 
         return sponsorInvoice;
+    }
+
+    @IsTest
+    private static void testTxList() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, getTxMiddlewareMock(new MiddlewareActionTxResponse(true, 'Test Message', new List<MiddlewareTransactionResponse>{})));
+        List<List<csuoee__Noncredit_Invoice_Payment__c>> responses = GetTransactionsOnInvoice.getTransactionsOnInvoice(new List<String>{'12345'});
+
+        System.assert(responses.get(0).isEmpty());
+        Test.stopTest();
+    }
+
+    private static HttpCalloutMock getTxMiddlewareMock(MiddlewareActionTxResponse response) {
+        return csuoee.BaseTestUtil.getBasicMiddlewareMock(JSON.serialize(response));
     }
 
 }
