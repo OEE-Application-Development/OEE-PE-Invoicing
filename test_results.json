@@ -1,51 +1,367 @@
 [
     {
         "Children": null,
+        "ClassName": "AzureEventIntegration_TEST",
+        "Method": "constructorCoverage",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 138,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 1,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 2,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 1,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:48:44.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "AzureEventIntegration_TEST",
+        "Method": "getAccount",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 1622,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 2,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 532,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:03.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "AzureEventIntegration_TEST",
+        "Method": "sendEvents",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 34,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:08.000+0000"
+    },
+    {
+        "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "addPayment",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.addPayment: line 136, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 8068
+            "duration": 5703,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 3,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 3,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 718,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 4,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 3,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:19:55.000+0000"
+        "TestTimestamp": "2024-01-23T21:48:45.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "autocompleteInvoiceLineItem",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.autocompleteInvoiceLineItem: line 188, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 663
+            "duration": 2410,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 2,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 1,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 581,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 1,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:20:43.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:01.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "checkLineItemEnrollmentExists",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1\nClass.csuoee.ButtonHandler_TEST.checkLineItemEnrollmentExists: line 291, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 3371
+            "duration": 3013,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 18,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 15,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 972,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 11,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 15,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:20:48.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:05.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "confirmAndCancelInvoice",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.confirmAndCancelInvoice: line 24, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 543
+            "duration": 2756,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 15,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 1,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 5,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 12,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 849,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 15,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 12,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:20:54.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:09.000+0000"
     },
     {
         "Children": null,
@@ -55,9 +371,9 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 1186,
+            "duration": 797,
             "TESTING_LIMITS: Number of SOQL queries": {
-                "used": 0,
+                "used": 4,
                 "allowed": 100
             },
             "TESTING_LIMITS: Number of Email Invocations": {
@@ -69,15 +385,67 @@
                 "allowed": 50
             },
             "TESTING_LIMITS: Number of DML rows": {
+                "used": 3,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 325,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 2,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 3,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:14.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "ButtonHandler_TEST",
+        "Method": "confirmLineItem",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 868,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
                 "used": 0,
                 "allowed": 10000
             },
             "TESTING_LIMITS: Maximum CPU time": {
-                "used": 295,
+                "used": 424,
                 "allowed": 10000
             },
             "TESTING_LIMITS: Number of query rows": {
-                "used": 0,
+                "used": 1,
                 "allowed": 50000
             },
             "TESTING_LIMITS: Number of DML statements": {
@@ -97,43 +465,111 @@
                 "allowed": 100
             }
         },
-        "TestTimestamp": "2024-01-18T18:20:58.000+0000"
-    },
-    {
-        "Children": null,
-        "ClassName": "ButtonHandler_TEST",
-        "Method": "confirmLineItem",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1\nClass.csuoee.ButtonHandler_TEST.confirmLineItem: line 75, column 1",
-        "Stats": {
-            "duration": 812
-        },
-        "TestTimestamp": "2024-01-18T18:21:02.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:16.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "emitEnrollmentComplete",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1\nClass.csuoee.ButtonHandler_TEST.emitEnrollmentComplete: line 247, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 1989
+            "duration": 2529,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 14,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 8,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 869,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 7,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 8,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:21:06.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:18.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "escalateInvoice",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.escalateInvoice: line 324, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 680
+            "duration": 750,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 2,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 323,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 2,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:21:11.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:22.000+0000"
     },
     {
         "Children": null,
@@ -143,9 +579,9 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 189
+            "duration": 153
         },
-        "TestTimestamp": "2024-01-18T18:21:15.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:25.000+0000"
     },
     {
         "Children": null,
@@ -155,45 +591,33 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 484
+            "duration": 375
         },
-        "TestTimestamp": "2024-01-18T18:21:18.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:26.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "generateInvoice",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1",
-        "Stats": {
-            "duration": 739
-        },
-        "TestTimestamp": "2024-01-18T18:21:22.000+0000"
-    },
-    {
-        "Children": null,
-        "ClassName": "ButtonHandler_TEST",
-        "Method": "generateJourneySettings",
         "Message": null,
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 44
+            "duration": 590
         },
-        "TestTimestamp": "2024-01-18T18:21:26.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:28.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "generateLineItem",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 702
+            "duration": 796
         },
-        "TestTimestamp": "2024-01-18T18:21:29.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:30.000+0000"
     },
     {
         "Children": null,
@@ -203,9 +627,9 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 461
+            "duration": 372
         },
-        "TestTimestamp": "2024-01-18T18:21:33.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:33.000+0000"
     },
     {
         "Children": null,
@@ -215,9 +639,9 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 1446,
+            "duration": 998,
             "TESTING_LIMITS: Number of SOQL queries": {
-                "used": 0,
+                "used": 2,
                 "allowed": 100
             },
             "TESTING_LIMITS: Number of Email Invocations": {
@@ -229,19 +653,19 @@
                 "allowed": 50
             },
             "TESTING_LIMITS: Number of DML rows": {
-                "used": 0,
+                "used": 2,
                 "allowed": 10000
             },
             "TESTING_LIMITS: Maximum CPU time": {
-                "used": 447,
+                "used": 478,
                 "allowed": 10000
             },
             "TESTING_LIMITS: Number of query rows": {
-                "used": 0,
+                "used": 2,
                 "allowed": 50000
             },
             "TESTING_LIMITS: Number of DML statements": {
-                "used": 0,
+                "used": 2,
                 "allowed": 150
             },
             "TESTING_LIMITS: Number of Mobile Apex push calls": {
@@ -257,31 +681,71 @@
                 "allowed": 100
             }
         },
-        "TestTimestamp": "2024-01-18T18:21:36.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:35.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "requestInvoice",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.requestInvoice: line 177, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 901
+            "duration": 920,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 3,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 4,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 96,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 3,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 4,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:21:41.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:38.000+0000"
     },
     {
         "Children": null,
         "ClassName": "ButtonHandler_TEST",
         "Method": "sendEscalationEmail",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.sendEscalationEmail: line 157, column 1",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 656
+            "duration": 665
         },
-        "TestTimestamp": "2024-01-18T18:21:45.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:41.000+0000"
     },
     {
         "Children": null,
@@ -291,9 +755,269 @@
         "Outcome": "Pass",
         "StackTrace": null,
         "Stats": {
-            "duration": 129,
+            "duration": 26,
             "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
                 "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 1,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:43.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "ButtonHandler_TEST",
+        "Method": "trackLineItem",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 2681,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 33,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 21,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 399,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 17,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 21,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:46.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "ButtonHandler_TEST",
+        "Method": "voidLineItem",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 938,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 441,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:51.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "createEventsForSection",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 6599,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 9,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 7,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 652,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 8,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 7,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:48:45.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "createRegistrationBatch",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 1898,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 3,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 2,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 3,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 662,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 2,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 3,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:03.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "getContactsByEmails",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 26,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
                 "allowed": 100
             },
             "TESTING_LIMITS: Number of Email Invocations": {
@@ -333,30 +1057,910 @@
                 "allowed": 100
             }
         },
-        "TestTimestamp": "2024-01-18T18:21:48.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:06.000+0000"
     },
     {
         "Children": null,
-        "ClassName": "ButtonHandler_TEST",
-        "Method": "trackLineItem",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1\nClass.csuoee.ButtonHandler_TEST.trackLineItem: line 97, column 1",
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "getNextActiveOffering",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 613
+            "duration": 472,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 2,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 1,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 159,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 1,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:21:52.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:09.000+0000"
     },
     {
         "Children": null,
-        "ClassName": "ButtonHandler_TEST",
-        "Method": "voidLineItem",
-        "Message": "System.DmlException: Insert failed. First exception on row 0; first error: CANNOT_INSERT_UPDATE_ACTIVATE_ENTITY, csuoee.CSUOEE_HandleInvoiceNotification: execution of AfterInsert\n\ncaused by: System.QueryException: List has no rows for assignment to SObject\n\nTrigger.csuoee.CSUOEE_HandleInvoiceNotification: line 2, column 1: []",
-        "Outcome": "Fail",
-        "StackTrace": "Class.csuoee.ButtonHandler_TEST.generateInvoice: line 218, column 1\nClass.csuoee.ButtonHandler_TEST.generateLineItem: line 130, column 1\nClass.csuoee.ButtonHandler_TEST.voidLineItem: line 86, column 1",
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "handleEnrollments",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
         "Stats": {
-            "duration": 589
+            "duration": 2676,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 24,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 16,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 470,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 21,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 15,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
         },
-        "TestTimestamp": "2024-01-18T18:21:56.000+0000"
+        "TestTimestamp": "2024-01-23T21:49:11.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "midpointTriggers",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 2588
+        },
+        "TestTimestamp": "2024-01-23T21:49:17.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "overloadEvent",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 4299,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 1,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 52,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 1533,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 3,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:23.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "refreshData",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 451
+        },
+        "TestTimestamp": "2024-01-23T21:49:30.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "CombinedFunctions_TEST",
+        "Method": "simpleEmail",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 204,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 1,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 2,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 2,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:34.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "InvocableCanvas_TEST",
+        "Method": "importCanvasEnrollment",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 307,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 2,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 1,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 2,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 1,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 1,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:48:50.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "JsonTest_TEST",
+        "Method": "decode",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 36
+        },
+        "TestTimestamp": "2024-01-23T21:48:44.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "JsonTest_TEST",
+        "Method": "encode",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 12
+        },
+        "TestTimestamp": "2024-01-23T21:49:02.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "MiddlewareIntegration_TEST",
+        "Method": "checkEnrollmentStatus",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 155,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 2,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 2,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 1,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:48:48.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "MiddlewareIntegration_TEST",
+        "Method": "sendPostRequest",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 19,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 1,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:02.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "MiddlewareIntegration_TEST",
+        "Method": "testCpsSearches",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 20,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 3,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:03.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "MiddlewareIntegration_TEST",
+        "Method": "testInvocables",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 21,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 0,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 4,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:05.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "cancelRegistration",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 61,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 1,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:48:50.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "enrollStudent",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 198,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:03.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "lmsEnrollmentComplete",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 26,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:07.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "lmsEnrollmentRequest",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 27,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:10.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "registrationBatchTest",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 2286,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 3,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 2,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 4,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 612,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 1,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 3,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:13.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "sendHumanRequired",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 27,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:19.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEEvent_TEST",
+        "Method": "unenrollStudent",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 26,
+            "TESTING_LIMITS: Number of SOQL queries": {
+                "used": 0,
+                "allowed": 100
+            },
+            "TESTING_LIMITS: Number of Email Invocations": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of future calls": {
+                "used": 1,
+                "allowed": 50
+            },
+            "TESTING_LIMITS: Number of DML rows": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Maximum CPU time": {
+                "used": 0,
+                "allowed": 10000
+            },
+            "TESTING_LIMITS: Number of query rows": {
+                "used": 0,
+                "allowed": 50000
+            },
+            "TESTING_LIMITS: Number of DML statements": {
+                "used": 0,
+                "allowed": 150
+            },
+            "TESTING_LIMITS: Number of Mobile Apex push calls": {
+                "used": 0,
+                "allowed": 10
+            },
+            "TESTING_LIMITS: Number of SOSL queries": {
+                "used": 0,
+                "allowed": 20
+            },
+            "TESTING_LIMITS: Number of callouts": {
+                "used": 0,
+                "allowed": 100
+            }
+        },
+        "TestTimestamp": "2024-01-23T21:49:22.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEHandleEnrollments_TEST",
+        "Method": "handleStudentEnrollment",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 2695
+        },
+        "TestTimestamp": "2024-01-23T21:48:53.000+0000"
+    },
+    {
+        "Children": null,
+        "ClassName": "PEHelpers_TEST",
+        "Method": "recordTypeTest",
+        "Message": null,
+        "Outcome": "Pass",
+        "StackTrace": null,
+        "Stats": {
+            "duration": 234
+        },
+        "TestTimestamp": "2024-01-23T21:48:43.000+0000"
     }
 ]
