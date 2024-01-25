@@ -11,7 +11,7 @@ global class InvoiceRequestNotification {
         }
 
         List<csuoee__Marketing_Cloud_Journey_Event__c> journeyEvents = new List<csuoee__Marketing_Cloud_Journey_Event__c>();
-        if(invoice.csuoee__Contact__c == null || journeySettings.csuoee__PE_Notification_Event__c == null) continue;
+        if(invoice.csuoee__Contact__c == null || journeySettings.csuoee__PE_Notification_Event__c == null) return new Map<String, String> {'success' => 'false'};
         
         csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(
                 csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, 
