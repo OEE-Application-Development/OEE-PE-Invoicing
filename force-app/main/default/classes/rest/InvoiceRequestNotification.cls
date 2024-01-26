@@ -3,6 +3,11 @@ global class InvoiceRequestNotification {
 
     @HttpPost
     global static Map<String, String> sendNotification(csuoee__Noncredit_Invoice__c invoice) {
+        try {
+            invoice = [select Id, csuoee__Contact__c from csuoee__Noncredit_Invoice__c LIMIT 1];
+        } catch(DmlException de) {
+            return new Map<String, String> {'success' => 'false', 'message' => 'Nonexistent Invoice.'};
+        }
         csuoee__Marketing_Cloud_Journey_Event_Settings__c journeySettings;
         try {
             journeySettings = [select csuoee__PE_Notification_Event__c, csuoee__Invoicing_Journey_API_Key__c from csuoee__Marketing_Cloud_Journey_Event_Settings__c LIMIT 1];
@@ -24,9 +29,9 @@ global class InvoiceRequestNotification {
             insert event;
         } catch(DmlException de) {
             // Just let the caller know.
-            return new Map<String, String> {'success' => 'false'};
+            return new Map<String, String> {'success' => 'false', 'message' => de.getMessage()};
         }
-        return new Map<String, String> {'success' => 'true'};
+        return new Map<String, String> {'success' => 'true', 'message' => 'Journey Event Created.'};
     }
     
 }
