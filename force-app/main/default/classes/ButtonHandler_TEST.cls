@@ -427,4 +427,11 @@ private class ButtonHandler_TEST {
         return csuoee.BaseTestUtil.getBasicMiddlewareMock(JSON.serialize(response));
     }
 
+    @IsTest
+    private static void sendNotification(){
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        generateLineItem(invoice);
+        InvoiceRequestNotification.sendNotification(invoice);
+    }
+
 }
