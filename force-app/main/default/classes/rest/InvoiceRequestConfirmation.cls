@@ -4,7 +4,12 @@ global class InvoiceRequestConfirmation {
     @HttpPost
     global static Map<String, String> sendConfirmation(csuoee__Noncredit_Invoice__c invoice) {
         try {
-            invoice = [select Id, csuoee__Contact__c, csuoee__Send_Confirmation_Email__c, csuoee__Fulfilled_Email_Sent__c from csuoee__Noncredit_Invoice__c LIMIT 1];
+            if(invoice.Id == null && invoice.csuoee__Invoice_Number__c == null) return new Map<String, String>{'success' => 'false', 'message' => 'Neither Id nor Invoice Number are present.'};
+            if(invoice.Id != null) {
+                invoice = [select Id, csuoee__Contact__c, csuoee__Send_Confirmation_Email__c, csuoee__Fulfilled_Email_Sent__c from csuoee__Noncredit_Invoice__c where Id = :invoice.Id LIMIT 1];
+            } else {
+                invoice = [select Id, csuoee__Contact__c, csuoee__Send_Confirmation_Email__c, csuoee__Fulfilled_Email_Sent__c from csuoee__Noncredit_Invoice__c where csuoee__Invoice_Number__c = :invoice.csuoee__Invoice_Number__c LIMIT 1];
+            }
         } catch(DmlException de) {
             return new Map<String, String> {'success' => 'false', 'message' => 'Nonexistent Invoice.'};
         }
