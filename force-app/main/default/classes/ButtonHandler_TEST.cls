@@ -434,4 +434,11 @@ private class ButtonHandler_TEST {
         InvoiceRequestNotification.sendNotification(invoice);
     }
 
+    @IsTest
+    private static void sendConfirmation(){
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        generateLineItem(invoice);
+        InvoiceRequestConfirmation.sendConfirmation(invoice);
+    }
+
 }
