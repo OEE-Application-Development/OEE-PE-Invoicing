@@ -21,7 +21,13 @@ global class InvoiceRequestConfirmation {
             csuoee__RelatedToId__c = invoice.Id
         );
 
-        Database.insert(event, false);
+        try {
+            insert event;
+        } catch(DmlException de) {
+            // Just let the caller know.
+            return new Map<String, String> {'success' => 'false', 'message' => de.getMessage()};
+        }
+        return new Map<String, String> {'success' => 'true', 'message' => 'Journey Event Created.'};
     }
     
 }
