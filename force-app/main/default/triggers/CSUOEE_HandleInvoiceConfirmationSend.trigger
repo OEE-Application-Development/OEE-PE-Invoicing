@@ -43,6 +43,6 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
         }
     }
 
-    insert journeyEvents;
+    Database.insert(journeyEvents, false);
     update invoicesToComplete;
 }
