@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Sponsor__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Definitive checkbox for if an invoice belongs to a sponsor.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Definitive checkbox for if an invoice belongs to a sponsor.</inlineHelpText>
+    <label>Is Sponsor</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
