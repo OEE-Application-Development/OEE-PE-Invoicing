@@ -69,7 +69,7 @@
     <actionCalls>
         <name>Get_Canvas_Account</name>
         <label>Get Canvas Account</label>
-        <locationX>2893</locationX>
+        <locationX>3025</locationX>
         <locationY>782</locationY>
         <actionName>lms_hed__LMSSettingsController</actionName>
         <actionType>apex</actionType>
@@ -247,7 +247,7 @@
     <actionCalls>
         <name>Send_Invoice_Escalation</name>
         <label>Send Invoice Escalation</label>
-        <locationX>4714</locationX>
+        <locationX>4978</locationX>
         <locationY>566</locationY>
         <actionName>InvoiceEscalationInvocable</actionName>
         <actionType>apex</actionType>
@@ -266,7 +266,7 @@
     <assignments>
         <name>Flip_Escalated_True</name>
         <label>Flip Escalated True</label>
-        <locationX>4714</locationX>
+        <locationX>4978</locationX>
         <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>IsEscalated</assignToReference>
@@ -294,9 +294,22 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>NOOP_End</name>
+        <label>NOOP End</label>
+        <locationX>3834</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>Publish_Confirmation</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>NOOP</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Set_IsEscalated_Variable</name>
         <label>Set IsEscalated Variable</label>
-        <locationX>2778</locationX>
+        <locationX>2910</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>IsEscalated</assignToReference>
@@ -398,7 +411,7 @@
     <decisions>
         <name>Does_Line_Item_Require_Fulfillment</name>
         <label>Does Line Item Require Fulfillment?</label>
-        <locationX>3495</locationX>
+        <locationX>3693</locationX>
         <locationY>674</locationY>
         <defaultConnectorLabel>No Fulfillment Required</defaultConnectorLabel>
         <rules>
@@ -446,7 +459,7 @@
     <decisions>
         <name>Is_this_a_valid_start</name>
         <label>Is this a valid start?</label>
-        <locationX>4274</locationX>
+        <locationX>4472</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Line Item Missing</defaultConnectorLabel>
         <rules>
@@ -611,7 +624,7 @@
     <recordLookups>
         <name>Pre_Escalation_Refresh</name>
         <label>Pre-Escalation Refresh</label>
-        <locationX>4714</locationX>
+        <locationX>4978</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -642,7 +655,7 @@
     <recordLookups>
         <name>Refresh_Line_Item</name>
         <label>Refresh Line Item</label>
-        <locationX>3495</locationX>
+        <locationX>3693</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -673,7 +686,7 @@
     <recordUpdates>
         <name>Cancel_Line_Item</name>
         <label>Cancel Line Item</label>
-        <locationX>2778</locationX>
+        <locationX>2910</locationX>
         <locationY>2366</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -694,7 +707,7 @@
     <recordUpdates>
         <name>Confirm_Line_Item</name>
         <label>Confirm Line Item</label>
-        <locationX>3495</locationX>
+        <locationX>3693</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Refresh_Line_Item</targetReference>
@@ -758,7 +771,7 @@
         <object>Noncredit_Invoice_Line_Item__c</object>
     </recordUpdates>
     <start>
-        <locationX>4148</locationX>
+        <locationX>4346</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_this_a_valid_start</targetReference>
@@ -873,7 +886,7 @@
         <description>Waiting for Confirmation Event.</description>
         <name>Await_Confirmation</name>
         <label>Await Confirmation</label>
-        <locationX>2778</locationX>
+        <locationX>2910</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -1160,7 +1173,7 @@
             </conditions>
             <connector>
                 <isGoTo>true</isGoTo>
-                <targetReference>Pre_Escalation_Refresh</targetReference>
+                <targetReference>Refresh_Line_Item</targetReference>
             </connector>
             <eventType>AlarmEvent</eventType>
             <inputParameters>
@@ -1217,7 +1230,7 @@
         <description>Waiting for Canvas Enrollment.</description>
         <name>Await_Fulfillment</name>
         <label>Await Fulfillment</label>
-        <locationX>2893</locationX>
+        <locationX>3025</locationX>
         <locationY>890</locationY>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
@@ -1291,6 +1304,34 @@
                 <assignToReference>RecordCreatedEvent</assignToReference>
                 <name>csuoee__Record_Create__e</name>
             </outputParameters>
+        </waitEvents>
+        <waitEvents>
+            <name>Fulfillment_Skip</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LineItemInProgress.Is_Fulfilled__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NOOP_End</targetReference>
+            </connector>
+            <eventType>csuoee__Flow_Cancel__e</eventType>
+            <inputParameters>
+                <name>csuoee__Cancel_Type__c</name>
+                <value>
+                    <stringValue>Skip Await Fulfillment</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>csuoee__Cancel_Identifier__c</name>
+                <value>
+                    <elementReference>LineItemInProgress.Id</elementReference>
+                </value>
+            </inputParameters>
+            <label>Fulfillment Skip</label>
         </waitEvents>
         <waitEvents>
             <name>Invoice_Cancelled_for_Line_Item</name>
