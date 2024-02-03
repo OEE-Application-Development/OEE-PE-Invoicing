@@ -1,7 +1,26 @@
 trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_Item__c (after insert, after update ) {
     Set<Id> invoiceIds = new Set<Id>();
+    List<csuoee__Flow_Cancel__e> skips = new List<csuoee__Flow_Cancel__e>();
     for(csuoee__Noncredit_Invoice_Line_Item__c li : (List<csuoee__Noncredit_Invoice_Line_Item__c>) Trigger.new) {
-        if(li.csuoee__Canvas_Enrollment__c != null)invoiceIds.add(li.csuoee__Noncredit_Invoice__c); // Only lookup invoices to complete if this li is fulfilled.
+        csuoee__Noncredit_Invoice_Line_Item__c old = null;
+        if(Trigger.oldMap != null) {
+            old = Trigger.oldMap.get(li.Id);
+            if(li.csuoee__Is_Confirmed__c && (old == null || !old.csuoee__Is_Confirmed__c)) {
+                skips.add(
+                    new csuoee__Flow_Cancel__e(csuoee__Cancel_Type__c = 'Skip Await Confirmation', csuoee__Cancel_Identifier__c = li.Id)
+                );
+            }
+        }
+
+        if(li.csuoee__Canvas_Enrollment__c != null) {
+            invoiceIds.add(li.csuoee__Noncredit_Invoice__c); // Only lookup invoices to complete if this li is fulfilled.
+
+            if(old == null || old.csuoee__Canvas_Enrollment__c != null) {
+                skips.add(
+                    new csuoee__Flow_Cancel__e(csuoee__Cancel_Type__c = 'Skip Await Fulfillment', csuoee__Cancel_Identifier__c = li.Id)
+                );
+            }
+        }
     }
     
     List<csuoee__Marketing_Cloud_Journey_Event__c> journeyEvents = new List<csuoee__Marketing_Cloud_Journey_Event__c>();
@@ -42,6 +61,8 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
             invoice.csuoee__Fulfilled_Email_Sent__c = true;
         }
     }
+
+    if(!skips.isEmpty())EventBus.publish(skips);
 
     Database.insert(journeyEvents, false);
     update invoicesToComplete;

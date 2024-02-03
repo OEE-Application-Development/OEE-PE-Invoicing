@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>InvoiceRequestConfirmation</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceRequestNotification</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Canvas_Enrollment__c</field>
@@ -41,6 +49,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Dropped__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice_Line_Item__c.Is_Fulfilled__c</field>
         <readable>true</readable>
@@ -48,6 +61,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Noncredit_Invoice_Line_Item__c.Is_Open_Entry_Line_Item__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice_Line_Item__c.Is_Voided__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -147,6 +165,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Noncredit_Invoice__c.Escalate_Automatically__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Noncredit_Invoice__c.Escalation_Sent__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -168,6 +191,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice__c.Has_Open_Entry__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Intended_Payment_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Noncredit_Invoice__c.Is_All_F2F__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -201,6 +234,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Is_Sponsor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice__c.LMS_Fulfillment_Required_Count__c</field>
         <readable>true</readable>
@@ -223,6 +261,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Noncredit_Invoice__c.Open_Entry_Line_Item_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Registration_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Noncredit_Invoice__c.Send_Confirmation_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
