@@ -2,11 +2,14 @@ trigger CSUOEE_HandleInvoiceConfirmationSend on csuoee__Noncredit_Invoice_Line_I
     Set<Id> invoiceIds = new Set<Id>();
     List<csuoee__Flow_Cancel__e> skips = new List<csuoee__Flow_Cancel__e>();
     for(csuoee__Noncredit_Invoice_Line_Item__c li : (List<csuoee__Noncredit_Invoice_Line_Item__c>) Trigger.new) {
-        csuoee__Noncredit_Invoice_Line_Item__c old = Trigger.oldMap.get(li.Id);
-        if(li.csuoee__Is_Confirmed__c && (old == null || !old.csuoee__Is_Confirmed__c)) {
-            skips.add(
-                new csuoee__Flow_Cancel__e(csuoee__Cancel_Type__c = 'Skip Await Confirmation', csuoee__Cancel_Identifier__c = li.Id)
-            );
+        csuoee__Noncredit_Invoice_Line_Item__c old = null;
+        if(Trigger.oldMap != null) {
+            old = Trigger.oldMap.get(li.Id);
+            if(li.csuoee__Is_Confirmed__c && (old == null || !old.csuoee__Is_Confirmed__c)) {
+                skips.add(
+                    new csuoee__Flow_Cancel__e(csuoee__Cancel_Type__c = 'Skip Await Confirmation', csuoee__Cancel_Identifier__c = li.Id)
+                );
+            }
         }
 
         if(li.csuoee__Canvas_Enrollment__c != null) {
