@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Is_Dropped__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Course_Name__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

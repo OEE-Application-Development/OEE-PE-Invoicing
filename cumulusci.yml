@@ -33,3 +33,10 @@ tasks:
         options:
             path: robot/OEE-PE-Invoicing/tests
             output: robot/OEE-PE-Invoicing/doc/OEE-PE-Invoicing_tests.html
+
+orgs:
+    scratch:
+        dev:
+            config_file: orgs/dev.json
+            days: 7
+            namespaced: True
