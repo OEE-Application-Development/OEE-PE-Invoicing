@@ -441,4 +441,18 @@ private class ButtonHandler_TEST {
         InvoiceRequestConfirmation.sendConfirmation(invoice);
     }
 
+    @IsTest
+    private static void sendRefund(){
+        csuoee__Noncredit_Invoice__c invoice = generateInvoice();
+        generateLineItem(invoice);
+        
+        csuoee__Noncredit_Invoice_Payment__c payment = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = 120.00, csuoee__CSU_Trans_Id__c = '12345', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Payment', csuoee__Payment_Type__c = 'Credit Card', csuoee__Successful__c = true, csuoee__Processor_Trans_Id__c = '12345');
+        insert payment;
+
+        csuoee__Noncredit_Invoice_Payment__c refund = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = -120.00, csuoee__CSU_Trans_Id__c = '12346', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Refund', csuoee__Payment_Type__c = 'Refund', csuoee__Successful__c = true, csuoee__Processor_Trans_Id__c = '12346');
+        insert refund;
+        
+        InvoiceRequestRefund.sendRefund(invoice, refund)
+    }
+
 }
