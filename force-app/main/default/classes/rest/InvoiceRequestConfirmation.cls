@@ -23,7 +23,7 @@ global class InvoiceRequestConfirmation {
         csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(
             csuoee__ContactWhoId__c = invoice.csuoee__Contact__c, 
             csuoee__Event_Type__c = journeySettings.csuoee__Invoicing_Journey_Confirmation_Type__c, 
-            csuoee__Event__c = journeySettings.csuoee__Invoicing_Journey_API_Key__c,
+            csuoee__Event__c = 'Confirmation',
             csuoee__Key__c = journeySettings.csuoee__Invoicing_Journey_API_Key__c+'-'+invoice.Id+'-Confirmation',
             csuoee__RelatedToId__c = invoice.Id
         );
