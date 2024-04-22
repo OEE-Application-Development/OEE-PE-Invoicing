@@ -450,9 +450,13 @@ private class ButtonHandler_TEST {
         insert payment;
 
         csuoee__Noncredit_Invoice_Payment__c refund = new csuoee__Noncredit_Invoice_Payment__c(csuoee__Amount__c = -120.00, csuoee__CSU_Trans_Id__c = '12346', csuoee__Is_Actual__c = true, csuoee__Noncredit_Invoice__c = invoice.Id, Name = 'Test Refund', csuoee__Payment_Type__c = 'Refund', csuoee__Successful__c = true, csuoee__Processor_Trans_Id__c = '12346');
-        insert refund;
+
+        InvoiceRequestRefund.sendRefund(invoice, refund, payment);
+        invoice.Id = null;
+        InvoiceRequestRefund.sendRefund(invoice, refund, payment);
         
-        InvoiceRequestRefund.sendRefund(invoice, refund)
+        InvoiceRequestRefund.sendRefund(new csuoee__Noncredit_Invoice__c(csuoee__Invoice_Number__c = '00000'), refund, payment);
+        InvoiceRequestRefund.sendRefund(invoice, refund, new csuoee__Noncredit_Invoice_Payment__c());
     }
 
 }
